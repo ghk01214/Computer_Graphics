@@ -26,6 +26,7 @@ GLfloat y = 0;
 GLfloat d = 0;
 bool bStopTimer = TRUE;
 bool bUp = TRUE;
+bool bDir[4] = {FALSE, FALSE , FALSE , FALSE };
 
 void main(GLint iArgc, CHAR** cArgv)									//윈도우 출력하고 콜백함수 설정
 {
@@ -60,7 +61,7 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 	glClear(GL_COLOR_BUFFER_BIT);									// 설정된 색으로 전체를 칠하기
 
 	glColor3f(r, g, b);												// 사각형 색상을 랜덤색으로 지정
-	glRectf(x - 0.3, y + d - 0.3, x + 0.3, y + d + 0.3);				// 사각형을 마우스의 클릭 지점을 중심으로 하는 한 변의 길이가 0.6인 정사각형을 그린다
+	glRectf(x - 0.3, y - 0.3, x + 0.3, y + 0.3);				// 사각형을 마우스의 클릭 지점을 중심으로 하는 한 변의 길이가 0.6인 정사각형을 그린다
 
 	//그리기 부분 구현
 	//그리기 관련 부분이 여기에 포함된다
@@ -116,20 +117,55 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 
 GLvoid Timer(GLint iValue)
 {
-	glutPostRedisplay();												// DrawScene 함수 호출
-
 	if (!bStopTimer)
 	{
-		if (d > 0.1)
-			bUp = FALSE;
-		else if (d < -0.1)
-			bUp = TRUE;
-
-		if (bUp)
-			d += 0.01;
+		if (y + 0.3 >= 1.0)
+		{
+			bDir[0] = TRUE;
+			bDir[3] = FALSE;
+		}
+		else if (x + 0.3 >= 1.0)
+		{
+			bDir[1] = TRUE;
+			bDir[0] = FALSE;
+		}
+		else if (y - 0.3 < -1.0)
+		{
+			bDir[2] = TRUE;
+			bDir[1] = FALSE;
+		}
+		else if (x - 0.3 < -1.0)
+		{
+			bDir[3] = TRUE;
+			bDir[2] = FALSE;
+		}
 		else
-			d -= 0.01;
+		{
+			bDir[3] = TRUE;
+		}
+
+		if (bDir[0])
+		{
+			x += 0.01;
+			y -= 0.01;
+		}
+		else if (bDir[1])
+		{
+			x -= 0.01;
+			y -= 0.01;
+		}
+		else if (bDir[2])
+		{
+			x -= 0.01;
+			y += 0.01;
+		}
+		else if (bDir[3])
+		{
+			x += 0.01;
+			y += 0.01;
+		}
 
 		glutTimerFunc(1, Timer, 1);									// 타이머 콜백함수 설정
 	}
+	glutPostRedisplay();												// DrawScene 함수 호출
 }
