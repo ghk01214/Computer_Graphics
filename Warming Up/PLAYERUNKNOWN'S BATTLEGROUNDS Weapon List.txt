@@ -1,0 +1,19 @@
+AKM Groza Beryl_M762 Mk47_Mutant M16A4 SCAR-L M416 AUG QBZ G36C
+
+Kar98k Mosin-Nagant M24 AWM Win94
+
+SKS Mk14 SLR VSS Mini-14 QBU
+
+Vector Micro_UZI PP-19_Bizon MP5K UMP45 Tommy_Gun
+
+M249 DP-28 MG3
+
+S686 S1897 S12K DBS
+
+Crossbow Panzerfaust
+
+P92 P18C Scorpion P1911 Deagle R45 R1895 Sawed-off Flaare_Gun
+
+Sickle Machete Crowbar Frying_Pan
+
+Frag_Grenade Decoy_Grenade Stun_Grenade Smoke_Grenade Molotov_Cocktail Spike_Trap Sticky_Bomb C4
