@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일\Shader_1">
+      <UniqueIdentifier>{1a381c62-0625-4e7a-8eb3-48463cf16670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Shader_4">
+      <UniqueIdentifier>{69129b6c-1e02-4fa9-881a-07c32a5e89b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Shader_2">
+      <UniqueIdentifier>{adf6c9b1-5720-45d0-9a7d-11eeb21d5a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Shader_3">
+      <UniqueIdentifier>{9b7c1470-72ab-4595-9ea5-d87bf8259ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Shader_1">
+      <UniqueIdentifier>{a03c2051-46bc-4987-b7f9-e444c049f403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Shader_4">
+      <UniqueIdentifier>{1befec9c-c6f8-469a-93c1-ac3d244c9520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Shader_2">
+      <UniqueIdentifier>{863bdaf3-b803-464b-a355-9c9565ed008a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Shader_3">
+      <UniqueIdentifier>{f2595f67-0b90-48ac-9713-2599e7cd7e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Shader_5">
+      <UniqueIdentifier>{4a8dbfd0-c229-4116-af11-0b2f992f570b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Shader_5">
+      <UniqueIdentifier>{b3d44ff0-d8aa-4b2f-95ca-78e80ce1fbfc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Shader_1.cpp">
+      <Filter>소스 파일\Shader_1</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader_2.cpp">
+      <Filter>소스 파일\Shader_2</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader_5.cpp">
+      <Filter>소스 파일\Shader_5</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader_4.cpp">
+      <Filter>소스 파일\Shader_4</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader_3.cpp">
+      <Filter>소스 파일\Shader_3</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Fragment_Shader_3.glsl">
+      <Filter>헤더 파일\Shader_3</Filter>
+    </None>
+    <None Include="Fragment_Shader_4.glsl">
+      <Filter>헤더 파일\Shader_4</Filter>
+    </None>
+    <None Include="Fragment_Shader_5.glsl">
+      <Filter>헤더 파일\Shader_5</Filter>
+    </None>
+    <None Include="Vertex_Shader_3.glsl">
+      <Filter>헤더 파일\Shader_3</Filter>
+    </None>
+    <None Include="Vertex_Shader_4.glsl">
+      <Filter>헤더 파일\Shader_4</Filter>
+    </None>
+    <None Include="Vertex_Shader_5.glsl">
+      <Filter>헤더 파일\Shader_5</Filter>
+    </None>
+    <None Include="Vertex_Shader_2.glsl">
+      <Filter>헤더 파일\Shader_2</Filter>
+    </None>
+    <None Include="Fragment_Shader_1.glsl">
+      <Filter>헤더 파일\Shader_1</Filter>
+    </None>
+    <None Include="Vertex_Shader_1.glsl">
+      <Filter>헤더 파일\Shader_1</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Shader_1.h">
+      <Filter>헤더 파일\Shader_1</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_2.h">
+      <Filter>헤더 파일\Shader_2</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_3.h">
+      <Filter>헤더 파일\Shader_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_4.h">
+      <Filter>헤더 파일\Shader_4</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_5.h">
+      <Filter>헤더 파일\Shader_5</Filter>
+    </ClInclude>
+    <ClInclude Include="Fragment_Shader_2.glsl">
+      <Filter>헤더 파일\Shader_2</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
