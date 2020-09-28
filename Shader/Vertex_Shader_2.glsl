@@ -1,6 +1,11 @@
 #version 330 core
 
+in vec3 vPos;
+in vec3 vInColor;
+out vec3 vOutColor;
+
 void main()
 {
-	gl_Position = vec4(0.5, 0.0, 0.0, 0.1);
-}
+	gl_Position = vec4(vPos.x, vPos.y, vPos.z, 1.0);
+	vOutColor = vInColor;
+}  
