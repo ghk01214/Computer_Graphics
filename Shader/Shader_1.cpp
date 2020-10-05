@@ -1,4 +1,4 @@
-//실습 3번
+//실습 4번
 #include "Shader_1.h"
 
 GLvoid main(GLint iArgc, CHAR** cArgv)									//윈도우 출력하고 콜백함수 설정
