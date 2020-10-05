@@ -23,6 +23,7 @@ GLuint uiFragmentShader;
 GLuint uiShaderProgramID;
 GLuint uiShaderID;
 GLuint uiVAO[4], uiVBO[8];
+
 Pos pTrianglePos[4] =
 {
 	{0.5, 0.5},
@@ -30,53 +31,51 @@ Pos pTrianglePos[4] =
 	{-0.5, -0.5},
 	{0.5, -0.5}
 };
-GLfloat cfTriangle1[3][3] =
+GLfloat cfTriangle[4][3][3] =
 {
-	{pTrianglePos[0].iX - 0.2, pTrianglePos[0].iY - 0.2, 0.0},
-	{pTrianglePos[0].iX + 0.2, pTrianglePos[0].iY - 0.2, 0.0},
-	{pTrianglePos[0].iX, pTrianglePos[0].iY + 0.2, 0.0},
+	{
+		{pTrianglePos[0].iX - 0.2, pTrianglePos[0].iY - 0.2, 0.0},
+		{pTrianglePos[0].iX + 0.2, pTrianglePos[0].iY - 0.2, 0.0},
+		{pTrianglePos[0].iX, pTrianglePos[0].iY + 0.2, 0.0},
+	},
+	{
+		{pTrianglePos[1].iX - 0.2, pTrianglePos[1].iY - 0.2, 0.0},
+		{pTrianglePos[1].iX + 0.2, pTrianglePos[1].iY - 0.2, 0.0},
+		{pTrianglePos[1].iX, pTrianglePos[1].iY + 0.2, 0.0},
+	},
+	{
+		{pTrianglePos[2].iX - 0.2, pTrianglePos[2].iY - 0.2, 0.0},
+		{pTrianglePos[2].iX + 0.2, pTrianglePos[2].iY - 0.2, 0.0},
+		{pTrianglePos[2].iX, pTrianglePos[2].iY + 0.2, 0.0},
+	},
+	{
+		{pTrianglePos[3].iX - 0.2, pTrianglePos[3].iY - 0.2, 0.0},
+		{pTrianglePos[3].iX + 0.2, pTrianglePos[3].iY - 0.2, 0.0},
+		{pTrianglePos[3].iX, pTrianglePos[3].iY + 0.2, 0.0},
+	}
 };
-GLfloat cfTriangle2[3][3] =
+const GLfloat cfColor[4][3][3] =
 {
-	{pTrianglePos[1].iX - 0.2, pTrianglePos[1].iY - 0.2, 0.0},
-	{pTrianglePos[1].iX + 0.2, pTrianglePos[1].iY - 0.2, 0.0},
-	{pTrianglePos[1].iX, pTrianglePos[1].iY + 0.2, 0.0},
-};
-GLfloat cfTriangle3[3][3] =
-{
-	{pTrianglePos[2].iX - 0.2, pTrianglePos[2].iY - 0.2, 0.0},
-	{pTrianglePos[2].iX + 0.2, pTrianglePos[2].iY - 0.2, 0.0},
-	{pTrianglePos[2].iX, pTrianglePos[2].iY + 0.2, 0.0},
-};
-GLfloat cfTriangle4[3][3] =
-{
-	{pTrianglePos[3].iX - 0.2, pTrianglePos[3].iY - 0.2, 0.0},
-	{pTrianglePos[3].iX + 0.2, pTrianglePos[3].iY - 0.2, 0.0},
-	{pTrianglePos[3].iX, pTrianglePos[3].iY + 0.2, 0.0},
-};
-const GLfloat cfColor1[3][3] =
-{
-	{1.0, 0.0, 0.0},
-	{1.0, 0.0, 0.0},
-	{1.0, 0.0, 0.0},
-};
-const GLfloat cfColor2[3][3] =
-{
-	{0.0, 1.0, 0.0},
-	{0.0, 1.0, 0.0},
-	{0.0, 1.0, 0.0},
-};
-const GLfloat cfColor3[3][3] =
-{
-	{0.0, 0.0, 1.0},
-	{0.0, 0.0, 1.0},
-	{0.0, 0.0, 1.0},
-};
-const GLfloat cfColor4[3][3] =
-{
-	{0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0},
+	{
+		{1.0, 0.0, 0.0},
+		{1.0, 0.0, 0.0},
+		{1.0, 0.0, 0.0},
+	},
+	{
+		{0.0, 1.0, 0.0},
+		{0.0, 1.0, 0.0},
+		{0.0, 1.0, 0.0},
+	},
+	{
+		{0.0, 0.0, 1.0},
+		{0.0, 0.0, 1.0},
+		{0.0, 0.0, 1.0},
+	},
+	{
+		{0.0, 0.0, 0.0},
+		{0.0, 0.0, 0.0},
+		{0.0, 0.0, 0.0},
+	}
 };
 
 GLchar* FileToBuf(const GLchar* cFile)
@@ -191,65 +190,22 @@ GLvoid InitializeBuffer()
 		bInitialize = TRUE;
 	}
 
-	//1사분면
-	glBindVertexArray(uiVAO[0]);
+	for (GLint i = 0; i < 4; ++i)
+	{
+		glBindVertexArray(uiVAO[i]);
 
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle1, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2]);
+		glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle[i], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor1, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2 + 1]);
+		glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor[i], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-
-	//2사분면
-	glBindVertexArray(uiVAO[1]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[2]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle2, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor2, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-
-	//3사분면
-	glBindVertexArray(uiVAO[2]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[4]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle3, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[5]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor3, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-
-	//4사분면
-	glBindVertexArray(uiVAO[3]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[6]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle4, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[7]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor4, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(1);
+	}
 }
 
 GLvoid InitializeShader()
@@ -261,63 +217,14 @@ GLvoid InitializeShader()
 
 GLvoid ChangePos(GLint i)
 {
-	switch (i)
-	{
-	case 0:
-	{
-		cfTriangle1[0][0] = pTrianglePos[0].iX - 0.2;
-		cfTriangle1[0][1] = pTrianglePos[0].iY - 0.2;
+	cfTriangle[i][0][0] = pTrianglePos[0].iX - 0.2;
+	cfTriangle[i][0][1] = pTrianglePos[0].iY - 0.2;
 
-		cfTriangle1[1][0] = pTrianglePos[0].iX + 0.2;
-		cfTriangle1[1][1] = pTrianglePos[0].iY - 0.2;
+	cfTriangle[i][1][0] = pTrianglePos[0].iX + 0.2;
+	cfTriangle[i][1][1] = pTrianglePos[0].iY - 0.2;
 
-		cfTriangle1[2][0] = pTrianglePos[0].iX;
-		cfTriangle1[2][1] = pTrianglePos[0].iY + 0.2;
-
-		break;
-	}
-	case 1:
-	{
-		cfTriangle2[0][0] = pTrianglePos[1].iX - 0.2;
-		cfTriangle2[0][1] = pTrianglePos[1].iY - 0.2;
-
-		cfTriangle2[1][0] = pTrianglePos[1].iX + 0.2;
-		cfTriangle2[1][1] = pTrianglePos[1].iY - 0.2;
-
-		cfTriangle2[2][0] = pTrianglePos[1].iX;
-		cfTriangle2[2][1] = pTrianglePos[1].iY + 0.2;
-
-		break;
-	}
-	case 2:
-	{
-		cfTriangle3[0][0] = pTrianglePos[2].iX - 0.2;
-		cfTriangle3[0][1] = pTrianglePos[2].iY - 0.2;
-
-		cfTriangle3[1][0] = pTrianglePos[2].iX + 0.2;
-		cfTriangle3[1][1] = pTrianglePos[2].iY - 0.2;
-
-		cfTriangle3[2][0] = pTrianglePos[2].iX;
-		cfTriangle3[2][1] = pTrianglePos[2].iY + 0.2;
-
-		break;
-	}
-	case 3:
-	{
-		cfTriangle4[0][0] = pTrianglePos[3].iX - 0.2;
-		cfTriangle4[0][1] = pTrianglePos[3].iY - 0.2;
-
-		cfTriangle4[1][0] = pTrianglePos[3].iX + 0.2;
-		cfTriangle4[1][1] = pTrianglePos[3].iY - 0.2;
-
-		cfTriangle4[2][0] = pTrianglePos[3].iX;
-		cfTriangle4[2][1] = pTrianglePos[3].iY + 0.2;
-
-		break;
-	}
-	default:
-		break;
-	}
+	cfTriangle[i][2][0] = pTrianglePos[0].iX;
+	cfTriangle[i][2][1] = pTrianglePos[0].iY + 0.2;
 }
 
 GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
