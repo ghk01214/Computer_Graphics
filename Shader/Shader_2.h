@@ -18,6 +18,11 @@ typedef struct Position
 	GLfloat iX, iY;
 } Pos;
 
+typedef struct Color
+{
+	GLfloat fR, fG, fB;
+} Col;
+
 enum Crash
 {
 	None, Left, Right, Top, Bottom
@@ -30,14 +35,10 @@ GLuint uiShaderID;
 GLuint uiVAO[4], uiVBO[8];
 BOOL bChangeColor = FALSE;
 BOOL bStartTimer = FALSE;
-GLint iCrash[4][4] =
+GLint iCrash[4] =
 {
-	{ None, None, None, None },
-	{ None, None, None, None },
-	{ None, None, None, None },
-	{ None, None, None, None }
+	Right, Right, Right, Right
 };
-Pos pStartPos[4];
 
 Pos pTrianglePos[4] =
 {
@@ -46,53 +47,51 @@ Pos pTrianglePos[4] =
 	{-0.5, -0.5},
 	{0.5, -0.5}
 };
-GLfloat cfTriangle1[3][3] =
+GLfloat cfTriangle[4][3][3] =
 {
-	{pTrianglePos[0].iX - 0.2, pTrianglePos[0].iY - 0.2, 0.0},
-	{pTrianglePos[0].iX + 0.2, pTrianglePos[0].iY - 0.2, 0.0},
-	{pTrianglePos[0].iX, pTrianglePos[0].iY + 0.2, 0.0},
+	{
+		{pTrianglePos[0].iX - 0.2, pTrianglePos[0].iY - 0.2, 0.0},
+		{pTrianglePos[0].iX + 0.2, pTrianglePos[0].iY - 0.2, 0.0},
+		{pTrianglePos[0].iX, pTrianglePos[0].iY + 0.2, 0.0},
+	},
+	{
+		{pTrianglePos[1].iX - 0.2, pTrianglePos[1].iY - 0.2, 0.0},
+		{pTrianglePos[1].iX + 0.2, pTrianglePos[1].iY - 0.2, 0.0},
+		{pTrianglePos[1].iX, pTrianglePos[1].iY + 0.2, 0.0},
+	},
+	{
+		{pTrianglePos[2].iX - 0.2, pTrianglePos[2].iY - 0.2, 0.0},
+		{pTrianglePos[2].iX + 0.2, pTrianglePos[2].iY - 0.2, 0.0},
+		{pTrianglePos[2].iX, pTrianglePos[2].iY + 0.2, 0.0},
+	},
+	{
+		{pTrianglePos[3].iX - 0.2, pTrianglePos[3].iY - 0.2, 0.0},
+		{pTrianglePos[3].iX + 0.2, pTrianglePos[3].iY - 0.2, 0.0},
+		{pTrianglePos[3].iX, pTrianglePos[3].iY + 0.2, 0.0},
+	}
 };
-GLfloat cfTriangle2[3][3] =
+GLfloat cfColor[4][3][3] =
 {
-	{pTrianglePos[1].iX - 0.2, pTrianglePos[1].iY - 0.2, 0.0},
-	{pTrianglePos[1].iX + 0.2, pTrianglePos[1].iY - 0.2, 0.0},
-	{pTrianglePos[1].iX, pTrianglePos[1].iY + 0.2, 0.0},
-};
-GLfloat cfTriangle3[3][3] =
-{
-	{pTrianglePos[2].iX - 0.2, pTrianglePos[2].iY - 0.2, 0.0},
-	{pTrianglePos[2].iX + 0.2, pTrianglePos[2].iY - 0.2, 0.0},
-	{pTrianglePos[2].iX, pTrianglePos[2].iY + 0.2, 0.0},
-};
-GLfloat cfTriangle4[3][3] =
-{
-	{pTrianglePos[3].iX - 0.2, pTrianglePos[3].iY - 0.2, 0.0},
-	{pTrianglePos[3].iX + 0.2, pTrianglePos[3].iY - 0.2, 0.0},
-	{pTrianglePos[3].iX, pTrianglePos[3].iY + 0.2, 0.0},
-};
-const GLfloat cfColor1[3][3] =
-{
-	{1.0, 0.0, 0.0},
-	{1.0, 0.0, 0.0},
-	{1.0, 0.0, 0.0},
-};
-const GLfloat cfColor2[3][3] =
-{
-	{0.0, 1.0, 0.0},
-	{0.0, 1.0, 0.0},
-	{0.0, 1.0, 0.0},
-};
-const GLfloat cfColor3[3][3] =
-{
-	{0.0, 0.0, 1.0},
-	{0.0, 0.0, 1.0},
-	{0.0, 0.0, 1.0},
-};
-const GLfloat cfColor4[3][3] =
-{
-	{0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0},
+	{
+		{1.0, 0.0, 0.0},
+		{1.0, 0.0, 0.0},
+		{1.0, 0.0, 0.0},
+	},
+	{
+		{0.0, 1.0, 0.0},
+		{0.0, 1.0, 0.0},
+		{0.0, 1.0, 0.0},
+	},
+	{
+		{0.0, 0.0, 1.0},
+		{0.0, 0.0, 1.0},
+		{0.0, 0.0, 1.0},
+	},
+	{
+		{0.0, 0.0, 0.0},
+		{0.0, 0.0, 0.0},
+		{0.0, 0.0, 0.0},
+	}
 };
 
 GLchar* FileToBuf(const GLchar* cFile)
@@ -207,65 +206,22 @@ GLvoid InitializeBuffer()
 		bInitialize = TRUE;
 	}
 
-	//1사분면
-	glBindVertexArray(uiVAO[0]);
+	for (GLint i = 0; i < 4; ++i)
+	{
+		glBindVertexArray(uiVAO[i]);
 
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle1, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2]);
+		glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle[i], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor1, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2 + 1]);
+		glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor[i], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-
-	//2사분면
-	glBindVertexArray(uiVAO[1]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[2]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle2, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor2, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-
-	//3사분면
-	glBindVertexArray(uiVAO[2]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[4]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle3, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[5]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor3, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-
-	//4사분면
-	glBindVertexArray(uiVAO[3]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[6]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfTriangle4, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[7]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), cfColor4, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(1);
+	}
 }
 
 GLvoid InitializeShader()
@@ -277,63 +233,14 @@ GLvoid InitializeShader()
 
 GLvoid ChangePos(GLint i)
 {
-	switch (i)
-	{
-	case 0:
-	{
-		cfTriangle1[0][0] = pTrianglePos[0].iX - 0.2;
-		cfTriangle1[0][1] = pTrianglePos[0].iY - 0.2;
+	cfTriangle[i][0][0] = pTrianglePos[i].iX - 0.2;
+	cfTriangle[i][0][1] = pTrianglePos[i].iY - 0.2;
 
-		cfTriangle1[1][0] = pTrianglePos[0].iX + 0.2;
-		cfTriangle1[1][1] = pTrianglePos[0].iY - 0.2;
+	cfTriangle[i][1][0] = pTrianglePos[i].iX + 0.2;
+	cfTriangle[i][1][1] = pTrianglePos[i].iY - 0.2;
 
-		cfTriangle1[2][0] = pTrianglePos[0].iX;
-		cfTriangle1[2][1] = pTrianglePos[0].iY + 0.2;
-
-		break;
-	}
-	case 1:
-	{
-		cfTriangle2[0][0] = pTrianglePos[1].iX - 0.2;
-		cfTriangle2[0][1] = pTrianglePos[1].iY - 0.2;
-
-		cfTriangle2[1][0] = pTrianglePos[1].iX + 0.2;
-		cfTriangle2[1][1] = pTrianglePos[1].iY - 0.2;
-
-		cfTriangle2[2][0] = pTrianglePos[1].iX;
-		cfTriangle2[2][1] = pTrianglePos[1].iY + 0.2;
-
-		break;
-	}
-	case 2:
-	{
-		cfTriangle3[0][0] = pTrianglePos[2].iX - 0.2;
-		cfTriangle3[0][1] = pTrianglePos[2].iY - 0.2;
-
-		cfTriangle3[1][0] = pTrianglePos[2].iX + 0.2;
-		cfTriangle3[1][1] = pTrianglePos[2].iY - 0.2;
-
-		cfTriangle3[2][0] = pTrianglePos[2].iX;
-		cfTriangle3[2][1] = pTrianglePos[2].iY + 0.2;
-
-		break;
-	}
-	case 3:
-	{
-		cfTriangle4[0][0] = pTrianglePos[3].iX - 0.2;
-		cfTriangle4[0][1] = pTrianglePos[3].iY - 0.2;
-
-		cfTriangle4[1][0] = pTrianglePos[3].iX + 0.2;
-		cfTriangle4[1][1] = pTrianglePos[3].iY - 0.2;
-
-		cfTriangle4[2][0] = pTrianglePos[3].iX;
-		cfTriangle4[2][1] = pTrianglePos[3].iY + 0.2;
-
-		break;
-	}
-	default:
-		break;
-	}
+	cfTriangle[i][2][0] = pTrianglePos[i].iX;
+	cfTriangle[i][2][1] = pTrianglePos[i].iY + 0.2;
 }
 
 GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
@@ -358,6 +265,72 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 	glutSwapBuffers();												// 화면에 출력하기
 }
 
+GLvoid Timer(GLint iValue)
+{
+	if (bStartTimer)
+	{
+		for (GLint i = 0; i < 4; ++i)
+		{
+			if (cfTriangle[i][1][0] > 1.0)
+			{
+				pTrianglePos[i].iX = 0.8;
+				iCrash[i] = Top;
+			}
+			else if (cfTriangle[i][2][1] > 1.0)
+			{
+				pTrianglePos[i].iY = 0.8;
+				iCrash[i] = Left;
+			}
+			else if (cfTriangle[i][0][0] < -1.0)
+			{
+				pTrianglePos[i].iX = -0.8;
+				iCrash[i] = Bottom;
+			}
+			else if (cfTriangle[i][0][1] < -1.0)
+			{
+				pTrianglePos[i].iY = -0.8;
+				iCrash[i] = Right;
+			}
+		}
+
+		for (GLint i = 0; i < 4; ++i)
+		{
+			switch (iCrash[i])
+			{
+			case Top:
+			{
+				pTrianglePos[i].iY += 0.05;
+				break;
+			}
+			case Bottom:
+			{
+				pTrianglePos[i].iY -= 0.03;
+				break;
+			}
+			case Left:
+			{
+				pTrianglePos[i].iX -= 0.02;
+				break;
+			}
+			case Right:
+			{
+				pTrianglePos[i].iX += 0.1;
+				break;
+			}
+			default:
+				break;
+			}
+
+			ChangePos(i);
+		}
+		
+		InitializeBuffer();
+		glutTimerFunc(1, Timer, 1);
+	}
+
+	glutPostRedisplay();
+}
+
 GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 {
 	switch (ubKey)
@@ -374,6 +347,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	case 'M': case 'm':
 	{
 		bStartTimer = TRUE;
+		Timer(1);
 		break;
 	}
 	case 'S': case 's':
@@ -383,6 +357,20 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	case 'C': case 'c':
 	{
+		std::random_device rRandom;
+		std::mt19937 mGen(rRandom());
+		std::uniform_real_distribution<GLfloat> uDis(0.0, 1.0);
+
+		for (GLint i = 0; i < 4; ++i)
+		{
+			for (GLint j = 0; j < 3; ++j)
+			{
+				for (GLint k = 0; k < 3; ++k)
+				{
+					cfColor[i][j][k] = uDis(mGen);
+				}
+			}
+		}
 
 		break;
 	}
@@ -395,6 +383,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 		break;
 	}
 
+	InitializeBuffer();
 	glutPostRedisplay();
 }
 
@@ -412,39 +401,7 @@ GLvoid Mouse(GLint iButton, GLint iState, GLint iX, GLint iY)
 		i = (i + 1) % 4;
 	}
 
-	for (GLint j = 0; j < 4; ++j)
-		pStartPos[i] = pTrianglePos[i];
-
 	InitializeBuffer();
-	glutPostRedisplay();
-}
-
-GLvoid Timer(GLint iValue)
-{
-	if (bStartTimer)
-	{
-		if (cfTriangle1[1][0] >= 1.0)
-		{
-			pTrianglePos[0].iY += 0.1;
-		}
-		else if (cfTriangle1[2][1] >= 1.0)
-		{
-			pTrianglePos[0].iX -= 0.1;
-		}
-		else if (cfTriangle1[0][0] <= -1.0)
-		{
-			pTrianglePos[0].iY -= 0.1;
-		}
-		else if (cfTriangle1[0][1] <= -1.0)
-		{
-
-		}
-
-
-
-		glutTimerFunc(1, Timer, 1);
-	}
-
 	glutPostRedisplay();
 }
 
