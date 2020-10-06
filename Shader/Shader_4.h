@@ -102,6 +102,7 @@ Object::Object()
 	Object::iDirection = Direction::Top;
 
 	Object::ChangeColor();
+	Object::ChangePos();
 
 	Object::bStartTimer = FALSE;
 }
