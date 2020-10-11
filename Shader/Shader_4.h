@@ -79,7 +79,7 @@ private:
 	Pos pTriangleCenter;
 	GLfloat fTrianglePos[3][3];
 	GLfloat fColor[3][3];
-	GLint iDirection;
+	GLint iMovingDirection;
 	BOOL bStartTimer;
 public:
 	Object();
@@ -87,7 +87,6 @@ public:
 	GLvoid ChangePos();
 	GLfloat Color(GLint, GLint);
 	GLvoid ChangeColor();
-	GLint Direction();
 	GLvoid ChangeDirection();
 	BOOL StartTimer();
 	GLvoid ChangeTimer(GLint);
@@ -99,7 +98,7 @@ Object::Object()
 	Object::pTriangleCenter.iX = 0.0f;
 	Object::pTriangleCenter.iY = -0.8f;
 	Object::pTriangleCenter.iZ = 1.0f;
-	Object::iDirection = Direction::Top;
+	Object::iMovingDirection = Direction::Top;
 
 	Object::ChangeColor();
 	Object::ChangePos();
@@ -112,7 +111,7 @@ GLfloat Object::TrianglePos(GLint i, GLint j)
 }
 GLvoid Object::ChangePos()
 {
-	switch (Object::iDirection)
+	switch (Object::iMovingDirection)
 	{
 	case Direction::Top:
 	{
@@ -186,40 +185,48 @@ GLfloat Object::Color(GLint i, GLint j)
 {
 	return Object::fColor[i][j];
 }
-GLvoid Object::ChangeColor()
-{
-	std::random_device rRandom;
-	std::mt19937 mGen(rRandom());
-	std::uniform_real_distribution<GLfloat> uDis(0.0f, 1.0f);
-
-	for (GLint i = 0; i < 3; ++i)
-	{
-		for (GLint j = 0; j < 3; ++j)
-		{
-			Object::fColor[i][j] = uDis(mGen);
-		}
-	}
-}
 GLvoid Object::ChangeDirection()
+{
+	if (Object::fTrianglePos[0][0] < -1.0f && Object::iMovingDirection != Direction::Right)
+	{
+		Object::iMovingDirection = Direction::Right;
+		Object::ChangeColor();
+	}
+	else if (Object::fTrianglePos[0][1] > 0.8f && Object::iMovingDirection != Direction::Bottom)
+	{
+		Object::iMovingDirection = Direction::Bottom;
+		Object::ChangeColor();
+	}
+	else if (Object::fTrianglePos[0][0] > 1.0f && Object::iMovingDirection != Direction::Left)
+	{
+		Object::iMovingDirection = Direction::Left;
+		Object::ChangeColor();
+	}
+	else if (Object::fTrianglePos[0][1] < -0.8f && Object::iMovingDirection != Direction::Top)
+	{
+		Object::iMovingDirection = Direction::Top;
+		Object::ChangeColor();
+	}
+}GLvoid Object::ChangeDirection()
 {
 	if (Object::fTrianglePos[0][0] < -1.0f)
 	{
-		Object::iDirection = Direction::Right;
+		Object::iMovingDirection = Direction::Right;
 		Object::ChangeColor();
 	}
 	else if (Object::fTrianglePos[0][1] > 0.8f)
 	{
-		Object::iDirection = Direction::Bottom;
+		Object::iMovingDirection = Direction::Bottom;
 		Object::ChangeColor();
 	}
 	else if (Object::fTrianglePos[0][0] > 1.0f)
 	{
-		Object::iDirection = Direction::Left;
+		Object::iMovingDirection = Direction::Left;
 		Object::ChangeColor();
 	}
 	else if (Object::fTrianglePos[0][1] < -0.8f)
 	{
-		Object::iDirection = Direction::Top;
+		Object::iMovingDirection = Direction::Top;
 		Object::ChangeColor();
 	}
 }
@@ -237,7 +244,7 @@ Object::~Object()
 }
 
 Shader mMaster;
-Object oObject;
+Object oOutside;
 GLuint uiVAO, uiVBO[VBO];
 
 GLchar* FileToBuf(const GLchar* cFile)
@@ -366,8 +373,8 @@ GLvoid InitializeBuffer()
 	{
 		for (GLint j = 0; j < 3; ++j)
 		{
-			Triangle[i][j] = oObject.TrianglePos(i, j);
-			TriangleColor[i][j] = oObject.Color(i, j);
+			Triangle[i][j] = oOutside.TrianglePos(i, j);
+			TriangleColor[i][j] = oOutside.Color(i, j);
 		}
 	}
 
@@ -410,10 +417,10 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 
 GLvoid Timer(GLint iValue)
 {
-	if (oObject.StartTimer())
+	if (oOutside.StartTimer())
 	{
-		oObject.ChangeDirection();
-		oObject.ChangePos();
+		oOutside.ChangeDirection();
+		oOutside.ChangePos();
 
 		InitializeBuffer();
 		glutTimerFunc(1, Timer, 1);
@@ -428,13 +435,13 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	{
 	case 'S': case 's':
 	{
-		oObject.ChangeTimer(TRUE);
+		oOutside.ChangeTimer(TRUE);
 		Timer(1);
 		break;
 	}
 	case 'T': case 't':
 	{
-		oObject.ChangeTimer(FALSE);
+		oOutside.ChangeTimer(FALSE);
 		break;
 	}
 	case 'Q': case 'q':
