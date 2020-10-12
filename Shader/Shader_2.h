@@ -376,7 +376,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	case 'Q': case 'q':
 	{
-		glutDestroyWindow(1);
+		exit(0);
 		break;
 	}
 	default:
