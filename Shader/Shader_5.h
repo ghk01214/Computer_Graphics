@@ -1,20 +1,10 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <random>
-#include <cmath>
-#include <gl/glew.h>
-#include <gl/freeglut.h>
-#include <gl/freeglut_ext.h>
-#include <glm/glm.hpp>
-#include <glm/ext.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "Shader.h"
 #define WINDOW_POS_X 500
 #define WINDOW_POS_Y 500
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-#define VAO 4
-#define VBO 7
+#define VAO 13
+#define VBO 25
 
 typedef struct Position
 {
@@ -26,52 +16,6 @@ enum Direction
 {
 	Top, Right, Bottom, Left
 };
-
-class Shader
-{
-private:
-	GLuint uiVertexShader;
-	GLuint uiFragmentShader;
-	GLuint uiShaderProgramID;
-	GLuint uiShaderID;
-public:
-	Shader();
-	GLuint VertexShader();
-	GLuint FragmentShader();
-	GLuint ShaderProgram();
-	GLvoid InputShaderID(GLuint);
-	GLuint ShaderID();
-	~Shader();
-};
-
-Shader::Shader()
-{
-
-}
-GLuint Shader::VertexShader()
-{
-	return Shader::uiVertexShader;
-}
-GLuint Shader::FragmentShader()
-{
-	return Shader::uiFragmentShader;
-}
-GLuint Shader::ShaderProgram()
-{
-	return Shader::uiShaderProgramID;
-}
-GLvoid Shader::InputShaderID(GLuint ShaderID)
-{
-	Shader::uiShaderID = ShaderID;
-}
-GLuint Shader::ShaderID()
-{
-	return Shader::uiShaderID;
-}
-Shader::~Shader()
-{
-
-}
 
 class Object
 {
@@ -96,18 +40,74 @@ public:
 
 Object::Object(GLint i)
 {
+	std::random_device rRandom;
+	std::mt19937 mGen(rRandom());
+	std::uniform_real_distribution<GLfloat> uRealDis(-1.0f, 1.0f);
+	std::uniform_int_distribution<GLint> uIntDis(Top, Left);
+
 	switch (i)
 	{
 	case 0:
 	{
-		Object::pTriangleCenter.iY = -0.9f;
-		Object::iMovingDirection = Direction::Left;
-		Object::iDrawDirection = Direction::Top;
+		do
+		{
+			Object::pTriangleCenter.iX = uRealDis(mGen);
+
+		} while (Object::pTriangleCenter.iX > -0.4f && Object::pTriangleCenter.iX < 0.4f);
+
+		do
+		{
+			Object::pTriangleCenter.iY = uRealDis(mGen);
+		} while (Object::pTriangleCenter.iY > -0.4f && Object::pTriangleCenter.iY < 0.4f);
+
+
+		if (Object::pTriangleCenter.iY < -0.4f && Object::pTriangleCenter.iY > -0.65f)
+		{
+			Object::iMovingDirection = Direction::Bottom;
+			Object::iDrawDirection = Direction::Bottom;
+		}
+		else if (Object::pTriangleCenter.iY < -0.65f)
+		{
+			Object::iMovingDirection = Direction::Left;
+			Object::iDrawDirection = Direction::Top;
+		}
+		else if (Object::pTriangleCenter.iY > 0.4f && Object::pTriangleCenter.iY < 0.65f)
+		{
+			Object::iMovingDirection = Direction::Top;
+			Object::iDrawDirection = Direction::Top;
+		}
+		else if (Object::pTriangleCenter.iY > 0.65f)
+		{
+			Object::iMovingDirection = Direction::Right;
+			Object::iDrawDirection = Direction::Bottom;
+		}
+
+		if (Object::pTriangleCenter.iX < -0.4f && Object::pTriangleCenter.iX > -0.65f)
+		{
+			Object::iMovingDirection = Direction::Left;
+			Object::iDrawDirection = Direction::Left;
+		}
+		else if (Object::pTriangleCenter.iX < -0.65f)
+		{
+			Object::iMovingDirection = Direction::Top;
+			Object::iDrawDirection = Direction::Right;
+		}
+		else if (Object::pTriangleCenter.iX > 0.4f && Object::pTriangleCenter.iX < 0.65f)
+		{
+			Object::iMovingDirection = Direction::Right;
+			Object::iDrawDirection = Direction::Right;
+		}
+		else if (Object::pTriangleCenter.iX > 0.65f)
+		{
+			Object::iMovingDirection = Direction::Bottom;
+			Object::iDrawDirection = Direction::Left;
+		}
 
 		break;
 	}
 	case 1:
 	{
+		Object::pTriangleCenter.iX = 0.0f;
 		Object::pTriangleCenter.iY = -0.3f;
 		Object::iMovingDirection = Direction::Left;
 		Object::iDrawDirection = Direction::Top;
@@ -116,6 +116,7 @@ Object::Object(GLint i)
 	}
 	case 2:
 	{
+		Object::pTriangleCenter.iX = 0.0f;
 		Object::pTriangleCenter.iY = 0.3f;
 		Object::iMovingDirection = Direction::Right;
 		Object::iDrawDirection = Direction::Bottom;
@@ -126,7 +127,6 @@ Object::Object(GLint i)
 		break;
 	}
 
-	Object::pTriangleCenter.iX = 0.0f;
 	Object::pTriangleCenter.iZ = 1.0f;
 
 	Object::ChangeColor();
@@ -246,21 +246,19 @@ GLvoid Object::ChangeColor()
 {
 	std::random_device rRandom;
 	std::mt19937 mGen(rRandom());
-	std::uniform_real_distribution<GLfloat> uDis(0.0f, 1.0f);
+	std::uniform_real_distribution<GLfloat> uRealDis(0.0f, 1.0f);
 
 	for (GLint i = 0; i < 3; ++i)
 	{
 		for (GLint j = 0; j < 3; ++j)
 		{
-			Object::fColor[i][j] = uDis(mGen);
+			Object::fColor[i][j] = uRealDis(mGen);
 		}
 	}
 }
 GLvoid Object::ChangeDirection(GLint i)
 {
-	switch (i)
-	{
-	case 1:
+	if (i == 0)
 	{
 		if (Object::fTrianglePos[0][0] < -1.0f && Object::iMovingDirection != Direction::Top)
 		{
@@ -286,7 +284,7 @@ GLvoid Object::ChangeDirection(GLint i)
 			Object::iDrawDirection = Direction::Top;
 			Object::ChangeColor();
 		}
-		
+
 		//내부 사각형 접촉
 		if (Object::fTrianglePos[2][0] > -0.4f && Object::fTrianglePos[2][0] < 0.4f)
 		{
@@ -342,10 +340,8 @@ GLvoid Object::ChangeDirection(GLint i)
 				Object::ChangeColor();
 			}
 		}
-
-		break;
 	}
-	case 2: case 3:
+	else
 	{
 		if (Object::fTrianglePos[0][0] < -0.4f && Object::iMovingDirection != Direction::Top)
 		{
@@ -371,8 +367,6 @@ GLvoid Object::ChangeDirection(GLint i)
 			Object::iDrawDirection = Direction::Top;
 			Object::ChangeColor();
 		}
-		break;
-	}
 	}
 }
 BOOL Object::StartTimer()
@@ -388,126 +382,9 @@ Object::~Object()
 
 }
 
-Shader mMaster;
-Object oOutside(0);
+Object* oOutside[10];
 Object* oInside[2];
 GLuint uiVAO[VAO], uiVBO[VBO];
-
-GLchar* FileToBuf(const GLchar* cFile)
-{
-	FILE* fFile;
-	GLulong ulLength;
-	GLchar* cBuf;
-
-	fFile = fopen(cFile, "rb");
-
-	if (!fFile)
-		return NULL;
-
-	fseek(fFile, 0, SEEK_END);
-	ulLength = ftell(fFile);
-	cBuf = (GLchar*)malloc(ulLength + 1);
-	fseek(fFile, 0, SEEK_SET);
-	fread(cBuf, ulLength, 1, fFile);
-	fclose(fFile);
-	cBuf[ulLength] = 0;
-
-	return cBuf;
-
-	//std::string sShaderCode;
-	//std::ifstream ifShaderStream(cFile, std::ios::in);
-
-	//if (ifShaderStream.is_open())
-	//{
-	//	std::stringstream sstr;
-	//	sstr << ifShaderStream.rdbuf();
-	//	sShaderCode = sstr.str();
-	//	ifShaderStream.close();
-	//}
-}
-
-GLuint MakeVertexShader()
-{
-	GLchar* cVertexShaderSource = FileToBuf("Vertex_Shader_1.glsl");
-	GLuint VertexShader = mMaster.VertexShader();
-	VertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(VertexShader, 1, &cVertexShaderSource, NULL);
-	glCompileShader(VertexShader);
-
-	GLint iResult;
-	GLchar cErrorLog[512];
-	glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &iResult);
-
-	if (!iResult)
-	{
-		glGetShaderInfoLog(VertexShader, 512, NULL, cErrorLog);
-		std::cerr << "ERROR: Vertex Shader Compile Failed\n" << cErrorLog << std::endl;
-
-		return FALSE;
-	}
-
-	return VertexShader;
-}
-
-GLuint MakeFragmentShader()
-{
-	GLchar* cFragmentShaderSource = FileToBuf("Fragment_Shader_1.glsl");
-	GLuint FragmentShader = mMaster.FragmentShader();
-	FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(FragmentShader, 1, &cFragmentShaderSource, NULL);
-	glCompileShader(FragmentShader);
-
-	GLint iResult;
-	GLchar cErrorLog[512];
-	glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &iResult);
-
-	if (!iResult)
-	{
-		glGetShaderInfoLog(FragmentShader, 512, NULL, cErrorLog);
-		std::cerr << "ERROR: Fragment Shader Compile Failed\n" << cErrorLog << std::endl;
-
-		return FALSE;
-	}
-
-	return FragmentShader;
-}
-
-GLuint MakeShaderProgram()
-{
-	GLuint VertexShader = MakeVertexShader();;
-	GLuint FragmentShader = MakeFragmentShader();;
-	GLuint ShaderProgramID = mMaster.ShaderProgram();
-
-	ShaderProgramID = glCreateProgram();
-	glAttachShader(ShaderProgramID, VertexShader);
-	glAttachShader(ShaderProgramID, FragmentShader);
-	glLinkProgram(ShaderProgramID);
-
-	glDeleteShader(VertexShader);
-	glDeleteShader(FragmentShader);
-
-	GLint iResult;
-	GLchar cErrorLog[512];
-	glGetProgramiv(ShaderProgramID, GL_LINK_STATUS, &iResult);
-
-	if (!iResult)
-	{
-		glGetProgramInfoLog(ShaderProgramID, 512, NULL, cErrorLog);
-		std::cerr << "ERROR: Shader Program Link Failed\n" << cErrorLog << std::endl;
-
-		return FALSE;
-	}
-
-	glUseProgram(ShaderProgramID);
-
-	return ShaderProgramID;
-}
-
-GLvoid InitializeShader()
-{
-	GLuint ShaderID = MakeShaderProgram();
-	mMaster.InputShaderID(ShaderID);
-}
 
 GLvoid InitializeBuffer()
 {
@@ -518,9 +395,12 @@ GLvoid InitializeBuffer()
 		glGenVertexArrays(VAO, uiVAO);
 		glGenBuffers(VBO, uiVBO);
 
-		for (GLint i = 0; i < 2; ++i)
+		for (GLint i = 0; i < 10; ++i)
 		{
-			oInside[i] = new Object(i + 1);
+			if (i < 2)
+				oInside[i] = new Object(i + 1);
+
+			oOutside[i] = new Object(0);
 		}
 
 		GLfloat Rect[4][3] =
@@ -531,9 +411,9 @@ GLvoid InitializeBuffer()
 			{0.4f, 0.4f, 0.0f}
 		};
 
-		glBindVertexArray(uiVAO[3]);
+		glBindVertexArray(uiVAO[VAO - 1]);
 
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[6]);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[VBO - 1]);
 		glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), Rect, GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -542,23 +422,23 @@ GLvoid InitializeBuffer()
 		bInitialize = TRUE;
 	}
 
-	GLfloat Triangle[3][3][3], TriangleColor[3][3][3];
+	GLfloat Triangle[12][3][3], TriangleColor[12][3][3];
 
-	for (GLint k = 1; k < 3; ++k)
+	for (GLint k = 0; k < 12; ++k)
 	{
 		for (GLint i = 0; i < 3; ++i)
 		{
 			for (GLint j = 0; j < 3; ++j)
 			{
-				Triangle[k][i][j] = oInside[k - 1]->TrianglePos(i, j);
-				TriangleColor[k][i][j] = oInside[0]->Color(i, j);
-
-				if (k == 2)
-					continue;
+				if (k < 10)
+				{
+					Triangle[k][i][j] = oOutside[k]->TrianglePos(i, j);
+					TriangleColor[k][i][j] = oOutside[k]->Color(i, j);
+				}
 				else
 				{
-					Triangle[0][i][j] = oOutside.TrianglePos(i, j);
-					TriangleColor[0][i][j] = oOutside.Color(i, j);
+					Triangle[k][i][j] = oInside[k - 10]->TrianglePos(i, j);
+					TriangleColor[k][i][j] = oInside[0]->Color(i, j);
 				}
 			}
 		}
@@ -590,7 +470,7 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 	GLuint ShaderID = mMaster.ShaderID();
 	glUseProgram(ShaderID);
 
-	glBindVertexArray(uiVAO[3]);
+	glBindVertexArray(uiVAO[VAO - 1]);
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
 	for (GLint i = 0; i < VAO - 1; ++i)
@@ -604,23 +484,23 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 
 GLvoid Timer(GLint iValue)
 {
-	if (iValue == 1 && oOutside.StartTimer())
+	if ((iValue >= 0 && iValue <= 9) && oOutside[iValue]->StartTimer())
 	{
-		oOutside.ChangeDirection(iValue);
-		oOutside.ChangePos();
+		oOutside[iValue]->ChangeDirection(0);
+		oOutside[iValue]->ChangePos();
 	}
-	else if (iValue == 2 && oInside[0]->StartTimer())
+	else if (iValue == 10 && oInside[0]->StartTimer())
 	{
-		oInside[0]->ChangeDirection(iValue);
+		oInside[0]->ChangeDirection(1);
 		oInside[0]->ChangePos();
 	}
-	else if (iValue == 3 && oInside[1]->StartTimer())
+	else if (iValue == 11 && oInside[1]->StartTimer())
 	{
-		oInside[1]->ChangeDirection(iValue);
+		oInside[1]->ChangeDirection(1);
 		oInside[1]->ChangePos();
 	}
 
-	glutTimerFunc(iValue, Timer, iValue);
+	glutTimerFunc(1, Timer, iValue);
 	InitializeBuffer();
 	glutPostRedisplay();
 }
@@ -631,31 +511,38 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	{
 	case 'S': case 's':
 	{
-		oOutside.ChangeTimer(TRUE);
-		for (GLint i = 0; i < 3; ++i)
+		for (GLint i = 0; i < VAO - 1; ++i)
 		{
-			if (i != 2)
+			if (i < 2)
 				oInside[i]->ChangeTimer(TRUE);
 
-			Timer(i + 1);
+			oOutside[i]->ChangeTimer(TRUE);
+
+			Timer(i);
 		}
 
 		break;
 	}
 	case 'T': case 't':
 	{
-		oOutside.ChangeTimer(FALSE);
-		for (GLint i = 0; i < 2; ++i)
+
+		for (GLint i = 0; i < VAO - 1; ++i)
 		{
-			oInside[i]->ChangeTimer(FALSE);
+			if (i < 2)
+				oInside[i]->ChangeTimer(FALSE);
+
+			oOutside[i]->ChangeTimer(FALSE);
 		}
 		break;
 	}
 	case 'Q': case 'q':
 	{
-		for (GLint i = 0; i < 2; ++i)
+		for (GLint i = 0; i < 10; ++i)
 		{
-			delete oInside[i];
+			if (i < 2)
+				delete oInside[i];
+
+			delete oOutside[i];
 		}
 		exit(0);
 		break;
