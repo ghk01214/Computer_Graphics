@@ -13,140 +13,44 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="헤더 파일\Shader_1">
-      <UniqueIdentifier>{1a381c62-0625-4e7a-8eb3-48463cf16670}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Shader_4">
-      <UniqueIdentifier>{69129b6c-1e02-4fa9-881a-07c32a5e89b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Shader_2">
-      <UniqueIdentifier>{adf6c9b1-5720-45d0-9a7d-11eeb21d5a44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Shader_3">
-      <UniqueIdentifier>{9b7c1470-72ab-4595-9ea5-d87bf8259ea1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Shader_1">
-      <UniqueIdentifier>{a03c2051-46bc-4987-b7f9-e444c049f403}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Shader_4">
-      <UniqueIdentifier>{1befec9c-c6f8-469a-93c1-ac3d244c9520}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Shader_2">
-      <UniqueIdentifier>{863bdaf3-b803-464b-a355-9c9565ed008a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Shader_3">
-      <UniqueIdentifier>{f2595f67-0b90-48ac-9713-2599e7cd7e43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Shader_5">
-      <UniqueIdentifier>{4a8dbfd0-c229-4116-af11-0b2f992f570b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Shader_5">
-      <UniqueIdentifier>{b3d44ff0-d8aa-4b2f-95ca-78e80ce1fbfc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Shader_6">
-      <UniqueIdentifier>{62088892-b9e5-4939-a95b-0c59b86020f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Shader_7">
-      <UniqueIdentifier>{e8470bda-a0f2-43cd-8b1c-503443a772ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Shader_6">
-      <UniqueIdentifier>{ee21c161-43e6-4ad8-8eb9-6771de0ee316}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Shader_7">
-      <UniqueIdentifier>{72438b1d-7f65-41c2-bd9d-861c206d0eb6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Shader_1.cpp">
-      <Filter>소스 파일\Shader_1</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader_2.cpp">
-      <Filter>소스 파일\Shader_2</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader_5.cpp">
-      <Filter>소스 파일\Shader_5</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader_4.cpp">
-      <Filter>소스 파일\Shader_4</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader_3.cpp">
-      <Filter>소스 파일\Shader_3</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader_6.cpp">
-      <Filter>소스 파일\Shader_6</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader_7.cpp">
-      <Filter>소스 파일\Shader_7</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Fragment_Shader_3.glsl">
-      <Filter>헤더 파일\Shader_3</Filter>
+    <None Include="Fragment_Shader.glsl">
+      <Filter>헤더 파일</Filter>
     </None>
-    <None Include="Fragment_Shader_4.glsl">
-      <Filter>헤더 파일\Shader_4</Filter>
-    </None>
-    <None Include="Fragment_Shader_5.glsl">
-      <Filter>헤더 파일\Shader_5</Filter>
-    </None>
-    <None Include="Vertex_Shader_3.glsl">
-      <Filter>헤더 파일\Shader_3</Filter>
-    </None>
-    <None Include="Vertex_Shader_4.glsl">
-      <Filter>헤더 파일\Shader_4</Filter>
-    </None>
-    <None Include="Vertex_Shader_5.glsl">
-      <Filter>헤더 파일\Shader_5</Filter>
-    </None>
-    <None Include="Vertex_Shader_2.glsl">
-      <Filter>헤더 파일\Shader_2</Filter>
-    </None>
-    <None Include="Fragment_Shader_1.glsl">
-      <Filter>헤더 파일\Shader_1</Filter>
-    </None>
-    <None Include="Vertex_Shader_1.glsl">
-      <Filter>헤더 파일\Shader_1</Filter>
-    </None>
-    <None Include="Fragment_Shader_6.glsl">
-      <Filter>헤더 파일\Shader_6</Filter>
-    </None>
-    <None Include="Vertec_Shader_6.glsl">
-      <Filter>헤더 파일\Shader_6</Filter>
-    </None>
-    <None Include="Vertec_Shader_7.glsl">
-      <Filter>헤더 파일\Shader_7</Filter>
+    <None Include="Vertex_Shader.glsl">
+      <Filter>헤더 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader_1.h">
-      <Filter>헤더 파일\Shader_1</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader_2.h">
-      <Filter>헤더 파일\Shader_2</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader_3.h">
-      <Filter>헤더 파일\Shader_3</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader_4.h">
-      <Filter>헤더 파일\Shader_4</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader_5.h">
-      <Filter>헤더 파일\Shader_5</Filter>
-    </ClInclude>
-    <ClInclude Include="Fragment_Shader_2.glsl">
-      <Filter>헤더 파일\Shader_2</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader_6.h">
-      <Filter>헤더 파일\Shader_6</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader_7.h">
-      <Filter>헤더 파일\Shader_7</Filter>
-    </ClInclude>
-    <ClInclude Include="Fragment_Shader_7.glsl">
-      <Filter>헤더 파일\Shader_7</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Shader_1.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_2.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_3.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_4.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_5.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_6.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader_7.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Shader.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
