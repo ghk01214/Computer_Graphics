@@ -140,49 +140,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Shader_1.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Shader_2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Shader_3.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Shader_4.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Shader_5.cpp">
+    <ClCompile Include="Shader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Shader_6.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Shader_7.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fragment_Shader_1.glsl" />
-    <None Include="Fragment_Shader_3.glsl" />
-    <None Include="Fragment_Shader_4.glsl" />
-    <None Include="Fragment_Shader_5.glsl" />
-    <None Include="Fragment_Shader_6.glsl" />
-    <None Include="Vertec_Shader_6.glsl" />
-    <None Include="Vertec_Shader_7.glsl" />
-    <None Include="Vertex_Shader_1.glsl" />
-    <None Include="Vertex_Shader_2.glsl" />
-    <None Include="Vertex_Shader_3.glsl" />
-    <None Include="Vertex_Shader_4.glsl" />
-    <None Include="Vertex_Shader_5.glsl" />
+    <None Include="Fragment_Shader.glsl" />
+    <None Include="Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Fragment_Shader_7.glsl" />
-    <ClInclude Include="Fragment_Shader_2.glsl" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Shader_1.h" />
     <ClInclude Include="Shader_2.h" />
