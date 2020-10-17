@@ -92,7 +92,7 @@ GLchar* FileToBuf(const GLchar* cFile)
 
 GLuint MakeVertexShader()
 {
-	GLchar* cVertexShaderSource = FileToBuf("Vertex_Shader_1.glsl");
+	GLchar* cVertexShaderSource = FileToBuf("Vertex_Shader.glsl");
 	GLuint VertexShader = mMaster.VertexShader();
 	VertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(VertexShader, 1, &cVertexShaderSource, NULL);
@@ -115,7 +115,7 @@ GLuint MakeVertexShader()
 
 GLuint MakeFragmentShader()
 {
-	GLchar* cFragmentShaderSource = FileToBuf("Fragment_Shader_1.glsl");
+	GLchar* cFragmentShaderSource = FileToBuf("Fragment_Shader.glsl");
 	GLuint FragmentShader = mMaster.FragmentShader();
 	FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(FragmentShader, 1, &cFragmentShaderSource, NULL);

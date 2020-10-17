@@ -1,10 +1,11 @@
+//실습 8번
 #include "Shader.h"
 #define WINDOW_POS_X 500
 #define WINDOW_POS_Y 500
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-#define VAO 13
-#define VBO 25
+#define VAO_NUM 13
+#define VBO_NUM 25
 
 typedef struct Position
 {
@@ -384,7 +385,7 @@ Object::~Object()
 
 Object* oOutside[10];
 Object* oInside[2];
-GLuint uiVAO[VAO], uiVBO[VBO];
+GLuint uiVAO[VAO_NUM], uiVBO[VBO_NUM];
 
 GLvoid InitializeBuffer()
 {
@@ -392,8 +393,8 @@ GLvoid InitializeBuffer()
 
 	if (!bInitialize)
 	{
-		glGenVertexArrays(VAO, uiVAO);
-		glGenBuffers(VBO, uiVBO);
+		glGenVertexArrays(VAO_NUM, uiVAO);
+		glGenBuffers(VBO_NUM, uiVBO);
 
 		for (GLint i = 0; i < 10; ++i)
 		{
@@ -411,9 +412,9 @@ GLvoid InitializeBuffer()
 			{0.4f, 0.4f, 0.0f}
 		};
 
-		glBindVertexArray(uiVAO[VAO - 1]);
+		glBindVertexArray(uiVAO[VAO_NUM - 1]);
 
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[VBO - 1]);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[VBO_NUM - 1]);
 		glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), Rect, GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -444,7 +445,7 @@ GLvoid InitializeBuffer()
 		}
 	}
 
-	for (GLint i = 0; i < VAO - 1; ++i)
+	for (GLint i = 0; i < VAO_NUM - 1; ++i)
 	{
 		glBindVertexArray(uiVAO[i]);
 
@@ -470,10 +471,10 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 	GLuint ShaderID = mMaster.ShaderID();
 	glUseProgram(ShaderID);
 
-	glBindVertexArray(uiVAO[VAO - 1]);
+	glBindVertexArray(uiVAO[VAO_NUM - 1]);
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
-	for (GLint i = 0; i < VAO - 1; ++i)
+	for (GLint i = 0; i < VAO_NUM - 1; ++i)
 	{
 		glBindVertexArray(uiVAO[i]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -511,7 +512,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	{
 	case 'S': case 's':
 	{
-		for (GLint i = 0; i < VAO - 1; ++i)
+		for (GLint i = 0; i < VAO_NUM - 1; ++i)
 		{
 			if (i < 2)
 				oInside[i]->ChangeTimer(TRUE);
@@ -526,7 +527,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	case 'T': case 't':
 	{
 
-		for (GLint i = 0; i < VAO - 1; ++i)
+		for (GLint i = 0; i < VAO_NUM - 1; ++i)
 		{
 			if (i < 2)
 				oInside[i]->ChangeTimer(FALSE);

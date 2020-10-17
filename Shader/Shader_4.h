@@ -1,10 +1,11 @@
+//실습 7번
 #include "Shader.h"
 #define WINDOW_POS_X 500
 #define WINDOW_POS_Y 500
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-#define VAO 10
-#define VBO 20
+#define VAO_NUM 10
+#define VBO_NUM 20
 
 typedef struct Position
 {
@@ -184,8 +185,8 @@ Object::~Object()
 
 }
 
-Object oOutside[VAO];
-GLuint uiVAO[VAO], uiVBO[VBO];
+Object oOutside[VAO_NUM];
+GLuint uiVAO[VAO_NUM], uiVBO[VBO_NUM];
 
 GLvoid InitializeBuffer()
 {
@@ -193,7 +194,7 @@ GLvoid InitializeBuffer()
 
 	GLfloat Triangle[10][3][3], TriangleColor[10][3][3];
 
-	for (GLint k = 0; k < VAO; ++k)
+	for (GLint k = 0; k < VAO_NUM; ++k)
 	{
 		for (GLint i = 0; i < 3; ++i)
 		{
@@ -207,13 +208,13 @@ GLvoid InitializeBuffer()
 
 	if (!bInitialize)
 	{
-		glGenVertexArrays(VAO, uiVAO);
-		glGenBuffers(VBO, uiVBO);
+		glGenVertexArrays(VAO_NUM, uiVAO);
+		glGenBuffers(VBO_NUM, uiVBO);
 
 		bInitialize = TRUE;
 	}
 
-	for (GLint i = 0; i < VAO; ++i)
+	for (GLint i = 0; i < VAO_NUM; ++i)
 	{
 		glBindVertexArray(uiVAO[i]);
 
@@ -239,7 +240,7 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 	GLuint ShaderID = mMaster.ShaderID();
 	glUseProgram(ShaderID);
 
-	for (GLint i = 0; i < VAO; ++i)
+	for (GLint i = 0; i < VAO_NUM; ++i)
 	{
 		glBindVertexArray(uiVAO[i]);
 
@@ -269,7 +270,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	{
 	case 'S': case 's':
 	{
-		for (GLint i = 0; i < VAO; ++i)
+		for (GLint i = 0; i < VAO_NUM; ++i)
 		{
 			oOutside[i].ChangeTimer(TRUE);
 			Timer(i);
@@ -279,7 +280,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	case 'T': case 't':
 	{
-		for (GLint i = 0; i < VAO; ++i)
+		for (GLint i = 0; i < VAO_NUM; ++i)
 		{
 			oOutside[i].ChangeTimer(FALSE);
 		}
