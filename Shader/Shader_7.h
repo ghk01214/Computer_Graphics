@@ -14,7 +14,7 @@ private:
 	GLfloat Position[5][3];
 	GLfloat Color[5][3];
 	GLuint Index[3][3];
-	GLint iDelta;
+	GLfloat iDelta;
 public:
 	Object(GLint);
 	GLvoid Expand(GLint);
@@ -34,11 +34,10 @@ Object::Object(GLint k)
 	for (GLint i = 0; i < 5; ++i)
 	{
 		Object::Position[i][2] = 0.0f;
-		Object::Color[i][0] = 1.0f;
 
-		for (GLint j = 1; j < 3; ++j)
+		for (GLint j = 0; j < 3; ++j)
 		{
-			Object::Color[i][j] = 0.0f;
+			Object::Color[i][j] = uDis(mGen);
 		}
 	}
 
@@ -77,14 +76,14 @@ Object::Object(GLint k)
 		Object::Position[3][0] = 0.5f;
 		Object::Position[3][1] = 0.8f;
 
-		for (GLint i = 0; i < 3; ++i)
+		for (GLuint i = 0; i < 3; ++i)
 		{
 			Object::Index[0][i] = i;
 		}
 
 		Object::Index[1][0] = 0;
 
-		for (GLint i = 1; i < 3; ++i)
+		for (GLuint i = 1; i < 3; ++i)
 		{
 			Object::Index[1][i] = i + 1;
 		}
@@ -126,20 +125,20 @@ Object::Object(GLint k)
 	}
 	case 6:
 	{
-		Object::Position[0][0] = 0.3f;
+		Object::Position[0][0] = 0.2f;
 		Object::Position[0][1] = -0.5f;
 
-		Object::Position[1][0] = 0.37f;
-		Object::Position[1][1] = -0.75f;
+		Object::Position[1][0] = 0.3f;
+		Object::Position[1][1] = -0.8f;
 
-		Object::Position[2][0] = 0.63f;
-		Object::Position[2][1] = -0.75f;
+		Object::Position[2][0] = 0.7f;
+		Object::Position[2][1] = -0.8f;
 
-		Object::Position[3][0] = 0.7f;
+		Object::Position[3][0] = 0.8f;
 		Object::Position[3][1] = -0.5f;
 
 		Object::Position[4][0] = 0.5f;
-		Object::Position[4][1] = -0.3f;
+		Object::Position[4][1] = -0.2f;
 
 		for (GLint i = 0; i < 3; ++i)
 		{
@@ -159,7 +158,7 @@ Object::Object(GLint k)
 		break;
 	}
 
-	Object::iDelta = 0.05f;
+	Object::iDelta = 0.005f;
 }
 GLvoid Object::Expand(GLint k)
 {
@@ -195,59 +194,61 @@ GLvoid Object::Expand(GLint k)
 	}
 	case 5:
 	{
-		if (Object::Position[4][1] > -0.3f)
+		if (Object::Position[4][1] > -0.2f)
 		{
 			Object::Position[4][1] = -0.5f;
 		}
 		else
 		{
-			Object::Position[2][1] += Object::iDelta;
+			Object::Position[4][1] += Object::iDelta;
 		}
 
 		break;
 	}
 	case 6:
 	{
-		if (Object::Position[4][1] < -0.55f)
+		static GLfloat iTemp = 0;
+
+		if (iTemp > 0.2f)
 		{
-			Object::Position[0][0] = 0.3f;
+			Object::Position[0][0] = 0.2f;
 			Object::Position[0][1] = -0.5f;
 
-			Object::Position[1][0] = 0.37f;
-			Object::Position[1][1] = -0.75f;
+			Object::Position[1][0] = 0.3f;
+			Object::Position[1][1] = -0.8f;
 
-			Object::Position[2][0] = 0.63f;
-			Object::Position[2][1] = -0.75f;
+			Object::Position[2][0] = 0.7f;
+			Object::Position[2][1] = -0.8f;
 
-			Object::Position[3][0] = 0.7f;
+			Object::Position[3][0] = 0.8f;
 			Object::Position[3][1] = -0.5f;
 
 			Object::Position[4][0] = 0.5f;
-			Object::Position[4][1] = -0.3f;
+			Object::Position[4][1] = -0.2f;
+
+			iTemp = Object::iDelta;
 		}
 		else
 		{
+
 			for (GLint i = 0; i < 2; ++i)
 			{
 				Object::Position[i][0] += Object::iDelta;
 			}
 
-			for (GLint i = 3; i < 5; ++i)
+			for (GLint i = 2; i < 4; ++i)
 			{
 				Object::Position[i][0] -= Object::iDelta;
 			}
-
-			Object::Position[0][1] -= Object::iDelta;
 
 			for (GLint i = 1; i < 3; ++i)
 			{
 				Object::Position[i][1] += Object::iDelta;
 			}
 
-			for (GLint i = 3; i < 5; ++i)
-			{
-				Object::Position[i][1] -= Object::iDelta;
-			}
+			Object::Position[4][1] -= Object::iDelta;
+
+			iTemp += Object::iDelta;
 		}
 
 		break;
@@ -284,8 +285,9 @@ BOOL bStartTimer = FALSE;
 GLvoid InitializeBuffer()
 {
 	static BOOL bInitialize = FALSE;
-	GLfloat TriInfo[2][3][3], RectInfo[2][4][3], PentaInfo[2][2][5][3];				//[종류(1: 좌표, 2: 컬러)][정점 개수][X, Y, Z/R, G, B]
+	GLfloat TriInfo[2][3][3], RectPos[4][3], PentaInfo[2][2][5][3];				//[종류(1: 좌표, 2: 컬러)][정점 개수][X, Y, Z/R, G, B]
 	GLuint TriIndex[3], RectIndex[2][3], PentaIndex[2][3][3];
+	GLfloat RectColor[4][3];
 
 	if (!bInitialize)
 	{
@@ -316,8 +318,8 @@ GLvoid InitializeBuffer()
 	{
 		for (GLint j = 0; j < 3; ++j)
 		{
-			RectInfo[0][i][j] = oObject[1]->ReturnPos(i, j);
-			RectInfo[1][i][j] = oObject[1]->ReturnColor(i, j);
+			RectPos[i][j] = oObject[1]->ReturnPos(i, j);
+			RectColor[i][j] = oObject[1]->ReturnColor(i, j);
 
 			if (i < 2)
 			{
@@ -365,7 +367,7 @@ GLvoid InitializeBuffer()
 	glBindVertexArray(uiVAO[1]);
 
 	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[2]);
-	glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), RectInfo[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), RectPos, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiEBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLuint), RectIndex, GL_STATIC_DRAW);
@@ -374,7 +376,7 @@ GLvoid InitializeBuffer()
 	glEnableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), RectInfo[1], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLfloat), RectColor, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(1);
@@ -384,7 +386,7 @@ GLvoid InitializeBuffer()
 	{
 		glBindVertexArray(uiVAO[i + 2]);
 
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2 + 2]);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2 + 4]);
 		glBufferData(GL_ARRAY_BUFFER, 15 * sizeof(GLfloat), PentaInfo[i][0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiEBO);
@@ -393,8 +395,8 @@ GLvoid InitializeBuffer()
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2 + 3]);
-		glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), PentaInfo[i][1], GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBO[i * 2 + 5]);
+		glBufferData(GL_ARRAY_BUFFER, 15 * sizeof(GLfloat), PentaInfo[i][1], GL_STATIC_DRAW);
 
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(1);
@@ -458,6 +460,7 @@ GLvoid DrawScene()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBindVertexArray(uiVAO[0]);
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBindVertexArray(uiVAO[1]);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
