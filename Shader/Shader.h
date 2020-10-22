@@ -9,6 +9,8 @@
 #include <glm/ext.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+GLchar* FileToBuf(const GLchar*);
+
 class Shader
 {
 private:
@@ -18,11 +20,11 @@ private:
 	GLuint uiShaderID;
 public:
 	Shader();
-	GLuint VertexShader();
-	GLuint FragmentShader();
-	GLuint ShaderProgram();
-	GLvoid InputShaderID(GLuint);
 	GLuint ShaderID();
+	GLvoid InputShaderID(GLuint);
+	GLuint MakeVertexShader();
+	GLuint MakeFragmentShader();
+	GLuint MakeShaderProgram();
 	~Shader();
 };
 
@@ -30,25 +32,80 @@ Shader::Shader()
 {
 
 }
-GLuint Shader::VertexShader()
+GLuint Shader::ShaderID()
 {
-	return Shader::uiVertexShader;
-}
-GLuint Shader::FragmentShader()
-{
-	return Shader::uiFragmentShader;
-}
-GLuint Shader::ShaderProgram()
-{
-	return Shader::uiShaderProgramID;
+	return Shader::uiShaderID;
 }
 GLvoid Shader::InputShaderID(GLuint ShaderID)
 {
 	Shader::uiShaderID = ShaderID;
 }
-GLuint Shader::ShaderID()
+GLuint Shader::MakeVertexShader()
 {
-	return Shader::uiShaderID;
+	GLchar* cVertexShaderSource = FileToBuf("Vertex_Shader.glsl");
+	Shader::uiVertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(Shader::uiVertexShader, 1, &cVertexShaderSource, NULL);
+	glCompileShader(Shader::uiVertexShader);
+
+	GLint iResult;
+	GLchar cErrorLog[512];
+	glGetShaderiv(Shader::uiVertexShader, GL_COMPILE_STATUS, &iResult);
+
+	if (!iResult)
+	{
+		glGetShaderInfoLog(Shader::uiVertexShader, 512, NULL, cErrorLog);
+		std::cerr << "ERROR: Vertex Shader Compile Failed\n" << cErrorLog << std::endl;
+
+		return FALSE;
+	}
+}
+GLuint Shader::MakeFragmentShader()
+{
+	GLchar* cFragmentShaderSource = FileToBuf("Fragment_Shader.glsl");
+	Shader::uiFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(Shader::uiFragmentShader, 1, &cFragmentShaderSource, NULL);
+	glCompileShader(Shader::uiFragmentShader);
+
+	GLint iResult;
+	GLchar cErrorLog[512];
+	glGetShaderiv(Shader::uiFragmentShader, GL_COMPILE_STATUS, &iResult);
+
+	if (!iResult)
+	{
+		glGetShaderInfoLog(Shader::uiFragmentShader, 512, NULL, cErrorLog);
+		std::cerr << "ERROR: Fragment Shader Compile Failed\n" << cErrorLog << std::endl;
+
+		return FALSE;
+	}
+}
+GLuint Shader::MakeShaderProgram()
+{
+	Shader::MakeVertexShader();
+	Shader::MakeFragmentShader();
+
+	Shader::uiShaderProgramID = glCreateProgram();
+	glAttachShader(Shader::uiShaderProgramID, Shader::uiVertexShader);
+	glAttachShader(Shader::uiShaderProgramID, Shader::uiFragmentShader);
+	glLinkProgram(Shader::uiShaderProgramID);
+
+	glDeleteShader(Shader::uiVertexShader);
+	glDeleteShader(Shader::uiFragmentShader);
+
+	GLint iResult;
+	GLchar cErrorLog[512];
+	glGetProgramiv(Shader::uiShaderProgramID, GL_LINK_STATUS, &iResult);
+
+	if (!iResult)
+	{
+		glGetProgramInfoLog(Shader::uiShaderProgramID, 512, NULL, cErrorLog);
+		std::cerr << "ERROR: Shader Program Link Failed\n" << cErrorLog << std::endl;
+
+		return FALSE;
+	}
+
+	glUseProgram(Shader::uiShaderProgramID);
+
+	return Shader::uiShaderProgramID;
 }
 Shader::~Shader()
 {
@@ -90,85 +147,7 @@ GLchar* FileToBuf(const GLchar* cFile)
 	//}
 }
 
-GLuint MakeVertexShader()
-{
-	GLchar* cVertexShaderSource = FileToBuf("Vertex_Shader.glsl");
-	GLuint VertexShader = mMaster.VertexShader();
-	VertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(VertexShader, 1, &cVertexShaderSource, NULL);
-	glCompileShader(VertexShader);
-
-	GLint iResult;
-	GLchar cErrorLog[512];
-	glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &iResult);
-
-	if (!iResult)
-	{
-		glGetShaderInfoLog(VertexShader, 512, NULL, cErrorLog);
-		std::cerr << "ERROR: Vertex Shader Compile Failed\n" << cErrorLog << std::endl;
-
-		return FALSE;
-	}
-
-	return VertexShader;
-}
-
-GLuint MakeFragmentShader()
-{
-	GLchar* cFragmentShaderSource = FileToBuf("Fragment_Shader.glsl");
-	GLuint FragmentShader = mMaster.FragmentShader();
-	FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(FragmentShader, 1, &cFragmentShaderSource, NULL);
-	glCompileShader(FragmentShader);
-
-	GLint iResult;
-	GLchar cErrorLog[512];
-	glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &iResult);
-
-	if (!iResult)
-	{
-		glGetShaderInfoLog(FragmentShader, 512, NULL, cErrorLog);
-		std::cerr << "ERROR: Fragment Shader Compile Failed\n" << cErrorLog << std::endl;
-
-		return FALSE;
-	}
-
-	return FragmentShader;
-}
-
-GLuint MakeShaderProgram()
-{
-	GLuint VertexShader = MakeVertexShader();;
-	GLuint FragmentShader = MakeFragmentShader();;
-	GLuint ShaderProgramID = mMaster.ShaderProgram();
-
-	ShaderProgramID = glCreateProgram();
-	glAttachShader(ShaderProgramID, VertexShader);
-	glAttachShader(ShaderProgramID, FragmentShader);
-	glLinkProgram(ShaderProgramID);
-
-	glDeleteShader(VertexShader);
-	glDeleteShader(FragmentShader);
-
-	GLint iResult;
-	GLchar cErrorLog[512];
-	glGetProgramiv(ShaderProgramID, GL_LINK_STATUS, &iResult);
-
-	if (!iResult)
-	{
-		glGetProgramInfoLog(ShaderProgramID, 512, NULL, cErrorLog);
-		std::cerr << "ERROR: Shader Program Link Failed\n" << cErrorLog << std::endl;
-
-		return FALSE;
-	}
-
-	glUseProgram(ShaderProgramID);
-
-	return ShaderProgramID;
-}
-
 GLvoid InitializeShader()
 {
-	GLuint ShaderID = MakeShaderProgram();
-	mMaster.InputShaderID(ShaderID);
+	mMaster.InputShaderID(mMaster.MakeShaderProgram());
 }
