@@ -237,8 +237,7 @@ GLvoid DrawScene()													// 콜백 함수 : 그리기 콜백 함수
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);							// 바탕색을 흰색으로 지정
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// 설정된 색으로 전체를 칠하기
 
-	GLuint ShaderID = mMaster.ShaderID();
-	glUseProgram(ShaderID);
+	glUseProgram(mMaster.ShaderID());
 
 	for (GLint i = 0; i < VAO_NUM; ++i)
 	{
