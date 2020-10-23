@@ -28,7 +28,8 @@ public:
 	Pos ReturnPos(GLint);
 	Color ReturnColor(GLint);
 	GLuint ReturnIndex(GLint, GLint);
-	GLvoid Resize(GLfloat, GLfloat);
+	BOOL Click(GLfloat, GLfloat, GLint);
+	GLvoid Resize(GLfloat, GLfloat, GLint);
 	~Rect();
 };
 
@@ -86,23 +87,26 @@ GLuint Rect::ReturnIndex(GLint i, GLint j)
 {
 	return Rect::fIndex[i][j];
 }
-GLvoid Rect::Resize(GLfloat fX, GLfloat fY)
+BOOL Rect::Click(GLfloat fX, GLfloat fY, GLint i)
 {
-	for (GLint i = 1; i < 5; ++i)
+	if (fX >= Rect::pPos[i].fX - 0.1f && fX <= Rect::pPos[i].fX + 0.1f)
 	{
-		if (fX >= Rect::pPos[i].fX - 0.1f && fX <= Rect::pPos[i].fX + 0.1f)
+		if (fY >= Rect::pPos[i].fY - 0.1f && fY <= Rect::pPos[i].fY + 0.1f)
 		{
-			if (fY >= Rect::pPos[i].fY - 0.1f && fY <= Rect::pPos[i].fY + 0.1f)
-			{
-				GLfloat dX = fX - Rect::pPos[i].fX;
-				GLfloat dY = fY - Rect::pPos[i].fY;
+			return TRUE;
+		}
+	}
 
-				Rect::pPos[i].fX += dX;
-				Rect::pPos[i].fY += dY;
-
-				Rect::pPos[i].fX += dX;
-				Rect::pPos[i].fY += dY;
-			}
+	return FALSE;
+}
+GLvoid Rect::Resize(GLfloat fX, GLfloat fY, GLint i)
+{
+	if (fX >= Rect::pPos[i].fX - 0.1f && fX <= Rect::pPos[i].fX + 0.1f)
+	{
+		if (fY >= Rect::pPos[i].fY - 0.1f && fY <= Rect::pPos[i].fY + 0.1f)
+		{
+			Rect::pPos[i].fX = fX;
+			Rect::pPos[i].fY = fY;
 		}
 	}
 }
@@ -114,6 +118,8 @@ Rect::~Rect()
 GLuint uiVAO[VAO_NUM];
 GLuint uiVBO[VBO_NUM];
 GLuint uiEBO;
+
+BOOL bClick[4];
 
 Rect rRect;
 
@@ -129,6 +135,11 @@ GLvoid InitializeBuffer()
 		glGenVertexArrays(VAO_NUM, uiVAO);
 		glGenBuffers(VBO_NUM, uiVBO);
 		glGenBuffers(1, &uiEBO);
+
+		for (GLint i = 0; i < 4; ++i)
+		{
+			bClick[i] = FALSE;
+		}
 
 		bInitialize = TRUE;
 	}
@@ -170,14 +181,36 @@ GLvoid Mouse(GLint iButton, GLint iState, GLint iX, GLint iY)
 	if (iButton == GLUT_LEFT_BUTTON && iState == GLUT_DOWN)
 	{
 		GLfloat glPos[2] = { (GLfloat)(iX - WINDOW_WIDTH / 2) / (WINDOW_WIDTH / 2), (GLfloat)(WINDOW_HEIGHT / 2 - iY) / (WINDOW_HEIGHT / 2) };
-		
-		rRect.Resize(glPos[0], glPos[1]);
 
-
+		for (GLint i = 0; i < 4; ++i)
+		{
+			bClick[i] = rRect.Click(glPos[0], glPos[1], i + 1);
+		}
 	}
+}
 
-	InitializeBuffer();
-	glutPostRedisplay();
+GLvoid Motion(GLint iX, GLint iY)
+{
+	for (GLint i = 0; i < 4; ++i)
+	{
+		if (bClick[i])
+		{
+			GLfloat glPos[2] = { (GLfloat)(iX - WINDOW_WIDTH / 2) / (WINDOW_WIDTH / 2), (GLfloat)(WINDOW_HEIGHT / 2 - iY) / (WINDOW_HEIGHT / 2) };
+
+			rRect.Resize(glPos[0], glPos[1], i + 1);
+		}
+
+		InitializeBuffer();
+		glutPostRedisplay();
+	}
+}
+
+GLvoid Passive(GLint iX, GLint iY)
+{
+	for (GLint i = 0; i < 4; ++i)
+	{
+		bClick[i] = FALSE;
+	}
 }
 
 GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
@@ -231,5 +264,7 @@ GLvoid FuctionalizeGlut()
 	glutReshapeFunc(Reshape);											// 다시 그리기 콜백함수 지정
 	glutKeyboardFunc(Keyboard);
 	glutMouseFunc(Mouse);
+	glutMotionFunc(Motion);
+	glutPassiveMotionFunc(Passive);
 	glutMainLoop();														// 이벤트 처리 시작
 }
