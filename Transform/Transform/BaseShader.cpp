@@ -5,15 +5,16 @@ BaseShader::BaseShader()
 	BaseShader::uiVBO = new GLuint[VBO_NUM];
 
 	BaseShader::mTranslate = glm::mat4(1.0f);
-	BaseShader::mRotate = glm::mat4(1.0f);
+	BaseShader::rRotate = { glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f) };
 	BaseShader::mScale = glm::mat4(1.0f);
 	BaseShader::mWorld = glm::mat4(1.0f);
 	BaseShader::uiModelLocation = 0;
 
 	BaseShader::vMove = { 0.0f, 0.0f, 0.0f };
-	BaseShader::vAxis = { 0.0f, 0.0f, 0.0f };
-	BaseShader::vSize = { 0.0f, 0.0f, 0.0f };
-	BaseShader::fDegree = 0.0f;
+	BaseShader::vSize = { 1.0f, 1.0f, 1.0f };
+	BaseShader::aDegree = { 30.0f, -30.f, 0.0f };
+
+	BaseShader::bRotate = GL_FALSE;
 }
 
 GLuint BaseShader::MakeVertexShader()
@@ -105,6 +106,16 @@ GLvoid BaseShader::InputIndexNum(GLint Index)
 	BaseShader::iIndexNum = Index;
 }
 
+GLvoid BaseShader::InputRotationFactor(Angle Degree)
+{
+	BaseShader::aDegree = Degree;
+}
+
+GLvoid BaseShader::ChangeRotation(BOOL b)
+{
+	BaseShader::bRotate = b;
+}
+
 GLvoid BaseShader::InitializeBaseAttribute()
 {
 	BaseShader::pPos = new Pos[BaseShader::iVertexNum];
@@ -134,7 +145,7 @@ GLvoid BaseShader::Render()
 {
 	glUseProgram(BaseShader::uiShaderID);
 
-	BaseShader::VertexTransform();
+	BaseShader::WorldTransform();
 
 	glBindVertexArray(BaseShader::uiVAO);
 	glDrawElements(GL_TRIANGLES, BaseShader::iIndexNum * 3, GL_UNSIGNED_INT, 0);
@@ -142,10 +153,17 @@ GLvoid BaseShader::Render()
 
 GLvoid BaseShader::WorldTransform()
 {
-	BaseShader::mTranslate = glm::translate(BaseShader::mTranslate, BaseShader::vMove);										//이동 변환
-	BaseShader::mRotate = glm::rotate(BaseShader::mRotate, glm::radians(BaseShader::fDegree), BaseShader::vAxis);			//회전 변환
-	BaseShader::mScale = glm::scale(BaseShader::mScale, BaseShader::vSize);													//신축 변환
-	BaseShader::mWorld = BaseShader::mTranslate * BaseShader::mRotate;														//월드 변환
+	BaseShader::mTranslate = glm::translate(BaseShader::mTranslate, BaseShader::vMove);															//이동 변환
+	if (!bRotate)
+	{
+		BaseShader::rRotate.mX = glm::rotate(BaseShader::rRotate.mX, glm::radians(BaseShader::aDegree.fX), glm::vec3(1.0f, 0.0f, 0.0f));			//X축 회전 변환
+		BaseShader::rRotate.mY = glm::rotate(BaseShader::rRotate.mY, glm::radians(BaseShader::aDegree.fY), glm::vec3(0.0f, 1.0f, 0.0f));		//Y축 회전 변환
+		BaseShader::rRotate.mZ = glm::rotate(BaseShader::rRotate.mZ, glm::radians(BaseShader::aDegree.fZ), glm::vec3(0.0f, 0.0f, 1.0f));			//Z축 회전 변환
+
+		BaseShader::bRotate = GL_TRUE;
+	}
+	BaseShader::mScale = glm::scale(BaseShader::mScale, BaseShader::vSize);																		//신축 변환
+	BaseShader::mWorld = BaseShader::mTranslate * BaseShader::rRotate.mX * BaseShader::rRotate.mY;						//월드 변환
 
 	BaseShader::uiModelLocation = glGetUniformLocation(BaseShader::uiShaderID, "mTransform");
 
