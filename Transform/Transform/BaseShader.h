@@ -1,25 +1,10 @@
 #pragma once
-#include "header.h"
+#include "struct.h"
 #define WINDOW_POS_X 300
 #define WINDOW_POS_Y 300
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define VBO_NUM 2
-
-struct Pos
-{
-	GLfloat fX, fY, fZ;
-};
-
-struct Color
-{
-	GLfloat fR, fG, fB;
-};
-
-struct Index
-{
-	GLuint uiV1, uiV2, uiV3;
-};
 
 class BaseShader
 {
@@ -42,16 +27,15 @@ private:
 	GLint iIndexNum;
 private:
 	glm::mat4 mTranslate;								//이동 행렬
-	glm::mat4 mRotate;									//회전 행렬
+	RotateMat rRotate;									//회전 행렬
 	glm::mat4 mScale;									//신축 행렬
 	glm::mat4 mWorld;									//월드 행렬
 	GLuint uiModelLocation;
 private:
 	glm::vec3 vMove;									//이동량
-	glm::vec3 vAxis;									//회전축
-	GLfloat fDegree;									//회전 각도
+	Angle aDegree;										//회전 각도
 	glm::vec3 vSize;									//신축률
-
+	BOOL bRotate;
 public:
 	BaseShader();
 	~BaseShader();
@@ -71,8 +55,10 @@ public:
 	GLvoid InputIndexNum(GLint);
 
 	GLvoid InputTranslateCoordinate(GLfloat, GLfloat, GLfloat);
-	GLvoid InputRotationFactor(GLfloat, GLfloat, GLfloat, GLfloat);
+	GLvoid InputRotationFactor(Angle);
 	GLvoid InputScaleSize(GLfloat, GLfloat, GLfloat);
+
+	GLvoid ChangeRotation(BOOL b);
 public:
 	GLvoid InitializeBaseAttribute();
 	GLvoid InitializeBuffer();
