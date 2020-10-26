@@ -13,38 +13,47 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Shader">
+      <UniqueIdentifier>{460f1dab-9909-4473-8c6e-47d17c17a396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\GLSL">
+      <UniqueIdentifier>{162fefa9-bd69-4e0e-98fa-4f455a96a98f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="BaseShader.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Shader3D.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="BaseShader.h">
+    <ClInclude Include="header.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Shader3D.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="header.h">
+    <ClInclude Include="BaseShader.h">
+      <Filter>소스 파일\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fragment_Shader.glsl">
-      <Filter>리소스 파일</Filter>
-    </None>
     <None Include="Vertex_Shader.glsl">
-      <Filter>리소스 파일</Filter>
+      <Filter>리소스 파일\GLSL</Filter>
+    </None>
+    <None Include="Fragment_Shader.glsl">
+      <Filter>리소스 파일\GLSL</Filter>
     </None>
   </ItemGroup>
 </Project>
