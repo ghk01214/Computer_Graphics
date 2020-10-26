@@ -2,10 +2,45 @@
 #include "Shader3D.h"
 
 Shader3D sMaster;
+GLint iDepth = 0;
+GLint iPolygon = 0;
+BOOL bTimer = FALSE;
+Angle Degree = {0.0f, 0.0f, 0.0f};
 
 GLvoid Timer(GLint iValue)
 {
+	if (bTimer)
+	{
+		switch (iValue)
+		{
+		case 1:
+		{
+			if (Degree.fX > 360.0f)
+			{
+				Degree.fX = 0.0f;
+			}
+			else
+			{
+				Degree.fX = 1.0f;
+			}
 
+			sMaster.ChangeRotation(FALSE);
+			sMaster.InputRotationFactor(Degree);
+			break;
+		}
+		case 2:
+		{
+
+		}
+		default:
+			break;
+		}
+
+		sMaster.InitializeBuffer();
+
+		glutTimerFunc(100, Timer, iValue);
+		glutPostRedisplay();
+	}
 }
 
 GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
@@ -24,29 +59,20 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	case 'H': case 'h':
 	{
-		static BOOL bDepth = GL_FALSE;
-
-		if (!bDepth)
-		{
-			glEnable(GL_DEPTH_TEST | GL_CULL_FACE);
-			bDepth = GL_TRUE;
-		}
-		else
-		{
-			glDisable(GL_DEPTH_TEST | GL_CULL_FACE);
-			bDepth = GL_FALSE;
-		}
+		++iDepth;
 
 		break;
 	}
 	case 'x':
 	{
-
+		bTimer = TRUE;
+		glutTimerFunc(100, Timer, 1);
+		//Timer(1);
 		break;
 	}
 	case 'X':
 	{
-
+		glutTimerFunc(1, Timer, 2);
 		break;
 	}
 	case 'y':
@@ -61,18 +87,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	case 'W': case 'w':
 	{
-		static BOOL bPolygon = GL_FALSE;
-
-		if (!bPolygon)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			bPolygon = GL_TRUE;
-		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			bPolygon = GL_FALSE;
-		}
+		++iPolygon;
 
 		break;
 	}
@@ -127,7 +142,25 @@ GLvoid DrawScene()
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	sMaster.DrawPolygon(0.0f, 0.0f, 0.0f, 1);
+	if (iDepth % 2 == 0)
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
+	else
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
+
+	if (iPolygon % 2 == 0)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+
+	sMaster.DrawPolygon(0.0f, 0.0f, 0.0f, 2);
 
 	glutSwapBuffers();
 }
