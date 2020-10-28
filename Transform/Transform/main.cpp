@@ -24,8 +24,8 @@ GLvoid main(GLint iArgc, GLchar** cArgv)
 
 	glutDisplayFunc(DrawScene);
 	glutReshapeFunc(Reshape);
-	//glutTimerFunc(1, Timer, 1);
 	glutKeyboardFunc(Keyboard);
-	glutKeyboardUpFunc(KeyUp);
+	glutSpecialFunc(Special);
+	glutSpecialUpFunc(SpecialUp);
 	glutMainLoop();
 }
