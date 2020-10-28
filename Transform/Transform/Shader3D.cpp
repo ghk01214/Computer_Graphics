@@ -16,21 +16,21 @@ GLvoid Shader3D::InitializeAttribute(GLint iVertex)
 	Shader3D::iIndex = new Index[2 * Shader3D::iVertexNum - 4];
 }
 
-GLvoid Shader3D::DrawPolygon(GLfloat X, GLfloat Y, GLfloat Z, GLint iType)
+GLvoid Shader3D::DrawPolygon(Pos Coord, GLint iType)
 {
 	switch (iType)
 	{
 	case PYRAMID:
 	{
 		Shader3D::InitializeAttribute(5);
-		Shader3D::DrawPyramid(X, Y, Z);
+		Shader3D::DrawPyramid(Coord);
 		
 		break;
 	}
 	case HEXA:
 	{
 		Shader3D::InitializeAttribute(8);
-		Shader3D::DrawHexahedron(X, Y, Z);
+		Shader3D::DrawHexahedron(Coord);
 
 		break;
 	}
@@ -55,13 +55,13 @@ GLvoid Shader3D::DrawPolygon(GLfloat X, GLfloat Y, GLfloat Z, GLint iType)
 	Shader3D::Render();
 }
 
-GLvoid Shader3D::DrawPyramid(GLfloat X, GLfloat Y, GLfloat Z)
+GLvoid Shader3D::DrawPyramid(Pos Coord)
 {
-	Shader3D::pPos[0] = { X, Y + 0.2f, Z };
-	Shader3D::pPos[1] = { X - 0.2f, Y - 0.2f, Z - 0.2f };
-	Shader3D::pPos[2] = { X + 0.2f, Y - 0.2f, Z - 0.2f };
-	Shader3D::pPos[3] = { X + 0.2f, Y - 0.2f, Z + 0.2f };
-	Shader3D::pPos[4] = { X - 0.2f, Y - 0.2f, Z + 0.2f };
+	Shader3D::pPos[0] = { Coord.fX, Coord.fY + 0.2f, Coord.fZ };
+	Shader3D::pPos[1] = { Coord.fX - 0.2f, Coord.fY - 0.2f, Coord.fZ - 0.2f };
+	Shader3D::pPos[2] = { Coord.fX + 0.2f, Coord.fY - 0.2f, Coord.fZ - 0.2f };
+	Shader3D::pPos[3] = { Coord.fX + 0.2f, Coord.fY - 0.2f, Coord.fZ + 0.2f };
+	Shader3D::pPos[4] = { Coord.fX - 0.2f, Coord.fY - 0.2f, Coord.fZ + 0.2f };
 
 	Shader3D::cColor[0] = { 1.0f, 1.0f, 1.0f };
 	Shader3D::cColor[1] = { 0.0f, 1.0f, 0.0f };
@@ -77,16 +77,16 @@ GLvoid Shader3D::DrawPyramid(GLfloat X, GLfloat Y, GLfloat Z)
 	Shader3D::iIndex[5] = { 1, 3, 2 };
 }
 
-GLvoid Shader3D::DrawHexahedron(GLfloat X, GLfloat Y, GLfloat Z)
+GLvoid Shader3D::DrawHexahedron(Pos Coord)
 {
-	Shader3D::pPos[0] = { X - 0.2f, Y + 0.2f, Z - 0.2f };
-	Shader3D::pPos[1] = { X - 0.2f, Y - 0.2f, Z - 0.2f };
-	Shader3D::pPos[2] = { X + 0.2f, Y - 0.2f, Z - 0.2f };
-	Shader3D::pPos[3] = { X + 0.2f, Y + 0.2f, Z - 0.2f };
-	Shader3D::pPos[4] = { X - 0.2f, Y + 0.2f, Z + 0.2f };
-	Shader3D::pPos[5] = { X - 0.2f, Y - 0.2f, Z + 0.2f };
-	Shader3D::pPos[6] = { X + 0.2f, Y - 0.2f, Z + 0.2f };
-	Shader3D::pPos[7] = { X + 0.2f, Y + 0.2f, Z + 0.2f };
+	Shader3D::pPos[0] = { Coord.fX - 0.2f, Coord.fY + 0.2f, Coord.fZ - 0.2f };
+	Shader3D::pPos[1] = { Coord.fX - 0.2f, Coord.fY - 0.2f, Coord.fZ - 0.2f };
+	Shader3D::pPos[2] = { Coord.fX + 0.2f, Coord.fY - 0.2f, Coord.fZ - 0.2f };
+	Shader3D::pPos[3] = { Coord.fX + 0.2f, Coord.fY + 0.2f, Coord.fZ - 0.2f };
+	Shader3D::pPos[4] = { Coord.fX - 0.2f, Coord.fY + 0.2f, Coord.fZ + 0.2f };
+	Shader3D::pPos[5] = { Coord.fX - 0.2f, Coord.fY - 0.2f, Coord.fZ + 0.2f };
+	Shader3D::pPos[6] = { Coord.fX + 0.2f, Coord.fY - 0.2f, Coord.fZ + 0.2f };
+	Shader3D::pPos[7] = { Coord.fX + 0.2f, Coord.fY + 0.2f, Coord.fZ + 0.2f };
 
 	Shader3D::cColor[0] = { 0.0f, 1.0f, 1.0f };
 	Shader3D::cColor[1] = { 0.0f, 0.0f, 1.0f };
