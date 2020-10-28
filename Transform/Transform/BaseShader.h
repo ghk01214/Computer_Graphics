@@ -1,5 +1,6 @@
 #pragma once
 #include "struct.h"
+#include <cstdbool>
 #define WINDOW_POS_X 300
 #define WINDOW_POS_Y 300
 #define WINDOW_WIDTH 800
@@ -30,12 +31,25 @@ private:
 	RotateMat rRotate;									//회전 행렬
 	glm::mat4 mScale;									//신축 행렬
 	glm::mat4 mWorld;									//월드 행렬
+
+	glm::mat4 mInitTrans;
+	RotateMat rInitRotate;
+	glm::mat4 mInitScale;
 	GLuint uiModelLocation;
+
+	BOOL bReset;
 private:
 	glm::vec3 vMove;									//이동량
 	Angle aDegree;										//회전 각도
 	glm::vec3 vSize;									//신축률
+
+	glm::vec3 vInitMove;
+	Angle aInitDegree;
+	glm::vec3 vInitSize;
+private:
+	BOOL bTranslate;
 	BOOL bRotate;
+	BOOL bScale;
 public:
 	BaseShader();
 	~BaseShader();
@@ -54,15 +68,18 @@ public:
 	GLvoid InputVertexNum(GLint);
 	GLvoid InputIndexNum(GLint);
 
-	GLvoid InputTranslateCoordinate(GLfloat, GLfloat, GLfloat);
+	GLvoid InputTranslateCoordinate(glm::vec3);
 	GLvoid InputRotationFactor(Angle);
 	GLvoid InputScaleSize(GLfloat, GLfloat, GLfloat);
 
-	GLvoid ChangeRotation(BOOL b);
+	GLvoid TranslateShader(BOOL);
+	GLvoid RotateShader(BOOL);
+	GLvoid ScaleShader(BOOL bS);
 public:
 	GLvoid InitializeBaseAttribute();
 	GLvoid InitializeBuffer();
 	GLvoid Render();
+	GLvoid Reset(BOOL);
 public:
 	//변환 함수
 	GLvoid WorldTransform();
