@@ -326,13 +326,13 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	case 'T': case 't':
 	{
 		bStartTimer = TRUE;
-		Timer(1);
+		glutTimerFunc(1, Timer, 1);
 		break;
 	}
 	case 'S': case 's':
 	{
 		bStartTimer = TRUE;
-		Timer(2);
+		glutTimerFunc(1, Timer, 2);
 		break;
 	}
 	case 'Q': case 'q':
@@ -394,6 +394,5 @@ GLvoid FuctionalizeGlut()
 	glutReshapeFunc(Reshape);											// 다시 그리기 콜백함수 지정
 	glutKeyboardFunc(Keyboard);
 	glutSpecialFunc(SpecialKey);
-	glutTimerFunc(1, Timer, 1);
 	glutMainLoop();														// 이벤트 처리 시작
 }
