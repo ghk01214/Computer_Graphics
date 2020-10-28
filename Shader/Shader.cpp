@@ -1,4 +1,4 @@
-#include "Shader_8.h"
+#include "Shader_6.h"
 
 GLvoid main(GLint iArgc, CHAR** cArgv)									//윈도우 출력하고 콜백함수 설정
 {
