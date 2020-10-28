@@ -16,8 +16,8 @@ public:
 	Shader3D();
 	~Shader3D();
 public:
-	GLvoid DrawPolygon(GLfloat, GLfloat, GLfloat, GLint);
-	GLvoid DrawPyramid(GLfloat, GLfloat, GLfloat);
-	GLvoid DrawHexahedron(GLfloat, GLfloat, GLfloat);
+	GLvoid DrawPolygon(Pos, GLint);
+	GLvoid DrawPyramid(Pos);
+	GLvoid DrawHexahedron(Pos);
 	GLvoid InitializeAttribute(GLint);
 };
