@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main_1.h"
 
 GLvoid main(GLint iArgc, GLchar** cArgv)
 {
