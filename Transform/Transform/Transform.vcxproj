@@ -150,7 +150,7 @@
   <ItemGroup>
     <ClInclude Include="BaseShader.h" />
     <ClInclude Include="header.h" />
-    <ClInclude Include="main.h" />
+    <ClInclude Include="main_1.h" />
     <ClInclude Include="Shader3D.h" />
     <ClInclude Include="struct.h" />
   </ItemGroup>
