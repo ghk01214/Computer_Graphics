@@ -134,6 +134,66 @@ GLchar* BaseShader::FileToBuf(const GLchar* cFile)
 	//	ifShaderStream.close();
 	//}
 }
+GLvoid BaseShader::ReadObj(FILE* fObjFile)
+{
+	//--- 1. 전체 버텍스 개수 및 삼각형 개수 세기 
+	GLchar cCount[512];
+	GLint iVertex = 0;
+	GLint iSide = 0;
+
+	while (!feof(fObjFile))
+	{
+		fscanf(fObjFile, "%s", cCount);
+
+		if (cCount[0] == 'v' && cCount[1] == '\0')
+		{
+			++iVertex;
+		}
+
+		if (cCount[0] == 'f' && cCount[1] == '\0')
+		{
+			++iSide;
+		}
+
+		memset(cCount, '\0', sizeof(cCount));
+	}
+
+	this->iVertexNum = iVertex;
+	this->iIndexNum = iSide;
+
+	this->pPos = new Pos[this->iVertexNum];
+	this->iIndex = new Index[this->iIndexNum];
+
+	GLchar cBind[512];
+	GLint iVertexIndex = 0;
+	GLint iSideIndex = 0;
+	GLint iNormalIndex = 0;
+
+	fseek(fObjFile, 0, SEEK_SET);
+
+	while (!feof(fObjFile))
+	{
+		fscanf(fObjFile, "%s", cBind);
+
+		if (cBind[0] == 'v' && cBind[1] == '\0')
+		{
+			fscanf(fObjFile, "%f %f %f", &this->pPos[this->iVertexNum].X, &this->pPos[this->iVertexNum].Y, &this->pPos[this->iVertexNum].Z);
+
+			++iVertexIndex;
+		}
+
+		if (cBind[0] == 'f' && cBind[1] == '\0')
+		{
+			fscanf(fObjFile, "%d %*c %*d %*c %*d %d %*c %*d %*c %*d %d", &this->iIndex[iSideIndex].V1, &this->iIndex[iSideIndex].V2, &this->iIndex[iSideIndex].V3);
+
+			++iSideIndex;
+		}
+
+		memset(cBind, '\0', sizeof(cBind));
+	}
+
+	fclose(fObjFile);
+}
 
 BaseShader::~BaseShader()
 {

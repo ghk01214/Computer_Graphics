@@ -9,6 +9,6 @@ out vec3 vOutColor;
 
 void main()
 {
-	gl_Position = mTransform * vec4(vPos, 1.0f);
+	gl_Position = vec4(vPos, 1.0f);
 	vOutColor = vInColor;
 }

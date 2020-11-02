@@ -63,4 +63,5 @@ public:
 
 public:
 	GLchar* FileToBuf(const GLchar*);
+	GLvoid ReadObj(FILE*);
 };
