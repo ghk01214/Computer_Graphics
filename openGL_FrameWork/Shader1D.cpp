@@ -2,41 +2,41 @@
 
 Shader1D::Shader1D(GLint k)
 {
-	this->pPos = new Pos[k];
-	this->cColor = new Color[k];
-	this->iIndex = new Index[k];
+	pPos = new Pos[k];
+	cColor = new Color[k];
+	iIndex = new Index[k];
 }
 
 GLvoid Shader1D::InitializeBuffer()
 {
-	this->uiVAO = this->ReturnVAO();
+	uiVAO = ReturnVAO();
 
-	glBindVertexArray(this->uiVAO);
+	glBindVertexArray(uiVAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, this->uiVBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, this->iVertexNum * sizeof(Pos), this->pPos, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, iVertexNum * sizeof(Pos), pPos, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->uiEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->iIndexNum * sizeof(Index), this->iIndex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, iIndexNum * sizeof(Index), iIndex, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, this->uiVBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, this->iVertexNum * sizeof(Color), this->cColor, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[1]);
+	glBufferData(GL_ARRAY_BUFFER, iVertexNum * sizeof(Color), cColor, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(1);
 
-	this->InputVAO(this->uiVAO);
+	InputVAO(uiVAO);
 }
 
 GLvoid Shader1D::Render()
 {
-	glUseProgram(this->ReturnShaderID());
+	glUseProgram(ReturnShaderID());
 
-	glBindVertexArray(this->uiVAO);
-	glDrawElements(GL_TRIANGLES, this->iIndexNum * 3, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(uiVAO);
+	glDrawElements(GL_TRIANGLES, iIndexNum * 3, GL_UNSIGNED_INT, 0);
 }
 
 GLvoid Shader1D::InitializeProgram()
@@ -46,7 +46,7 @@ GLvoid Shader1D::InitializeProgram()
 
 Shader1D::~Shader1D()
 {
-	delete[] this->pPos;
-	delete[] this->cColor;
-	delete[] this->iIndex;
+	delete[] pPos;
+	delete[] cColor;
+	delete[] iIndex;
 }

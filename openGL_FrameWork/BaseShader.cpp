@@ -2,33 +2,42 @@
 
 BaseShader::BaseShader()
 {
-	this->mTranslate = glm::mat4(1.0f);
-	this->rmRotate = { glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f) };
-	this->mScale = glm::mat4(1.0f);
-	this->mWorld = glm::mat4(1.0f);
-	this->uiModelLocation = 0;
+	mTranslate = glm::mat4(1.0f);
+	rmRotate = { glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f) };
+	mScale = glm::mat4(1.0f);
+	mWorld = glm::mat4(1.0f);
 
-	this->vMove = { 0.0f, 0.0f, 0.0f };
-	this->vSize = { 1.0f, 1.0f, 1.0f };
-	this->aDegree = { 30.0f, -30.f, 0.0f };
+	mView = glm::mat4(1.0f);
 
-	this->MakeShaderProgram();
+	mProjection = glm::mat4(1.0f);
+
+	uiWorldLocation = 0;
+
+	vMove = { 0.0f, 0.0f, 0.0f };
+	vSize = { 0.5f, 0.5f, 0.5f };
+	aDegree = { 30.0f, 30.0f, 0.0f };
+
+	vPos = { 0.0f, 0.0f, 3.0f };
+	vDirection = { 0.0f, 0.0f, 0.0f };
+	vUp = { 0.0f, 1.0f, 0.0f };
+
+	MakeShaderProgram();
 }
 
 GLuint BaseShader::MakeVertexShader()
 {
 	GLchar* cVertexShaderSource = FileToBuf("Vertex_Shader.glsl");
-	this->uiVertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(this->uiVertexShader, 1, &cVertexShaderSource, NULL);
-	glCompileShader(this->uiVertexShader);
+	uiVertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(uiVertexShader, 1, &cVertexShaderSource, NULL);
+	glCompileShader(uiVertexShader);
 
 	GLint iResult;
 	GLchar cErrorLog[512];
-	glGetShaderiv(this->uiVertexShader, GL_COMPILE_STATUS, &iResult);
+	glGetShaderiv(uiVertexShader, GL_COMPILE_STATUS, &iResult);
 
 	if (!iResult)
 	{
-		glGetShaderInfoLog(this->uiVertexShader, 512, NULL, cErrorLog);
+		glGetShaderInfoLog(uiVertexShader, 512, NULL, cErrorLog);
 		std::cerr << "ERROR: Vertex Shader Compile Failed\n" << cErrorLog << std::endl;
 
 		return GL_FALSE;
@@ -36,18 +45,18 @@ GLuint BaseShader::MakeVertexShader()
 }
 GLuint BaseShader::MakeFragmentShader()
 {
-	GLchar* cFragmentShaderSource = this->FileToBuf("Fragment_Shader.glsl");
-	this->uiFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(this->uiFragmentShader, 1, &cFragmentShaderSource, NULL);
-	glCompileShader(this->uiFragmentShader);
+	GLchar* cFragmentShaderSource = FileToBuf("Fragment_Shader.glsl");
+	uiFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(uiFragmentShader, 1, &cFragmentShaderSource, NULL);
+	glCompileShader(uiFragmentShader);
 
 	GLint iResult;
 	GLchar cErrorLog[512];
-	glGetShaderiv(this->uiFragmentShader, GL_COMPILE_STATUS, &iResult);
+	glGetShaderiv(uiFragmentShader, GL_COMPILE_STATUS, &iResult);
 
 	if (!iResult)
 	{
-		glGetShaderInfoLog(this->uiFragmentShader, 512, NULL, cErrorLog);
+		glGetShaderInfoLog(uiFragmentShader, 512, NULL, cErrorLog);
 		std::cerr << "ERROR: Fragment Shader Compile Failed\n" << cErrorLog << std::endl;
 
 		return GL_FALSE;
@@ -55,51 +64,57 @@ GLuint BaseShader::MakeFragmentShader()
 }
 GLuint BaseShader::MakeShaderProgram()
 {
-	this->MakeVertexShader();
-	this->MakeFragmentShader();
+	MakeVertexShader();
+	MakeFragmentShader();
 
-	this->uiShaderID = glCreateProgram();
-	glAttachShader(this->uiShaderID, this->uiVertexShader);
-	glAttachShader(this->uiShaderID, this->uiFragmentShader);
-	glLinkProgram(this->uiShaderID);
+	uiShaderID = glCreateProgram();
+	glAttachShader(uiShaderID, uiVertexShader);
+	glAttachShader(uiShaderID, uiFragmentShader);
+	glLinkProgram(uiShaderID);
 
-	glDeleteShader(this->uiVertexShader);
-	glDeleteShader(this->uiFragmentShader);
+	glDeleteShader(uiVertexShader);
+	glDeleteShader(uiFragmentShader);
 
 	GLint iResult;
 	GLchar cErrorLog[512];
-	glGetProgramiv(this->uiShaderID, GL_LINK_STATUS, &iResult);
+	glGetProgramiv(uiShaderID, GL_LINK_STATUS, &iResult);
 
 	if (!iResult)
 	{
-		glGetProgramInfoLog(this->uiShaderID, 512, NULL, cErrorLog);
+		glGetProgramInfoLog(uiShaderID, 512, NULL, cErrorLog);
 		std::cerr << "ERROR: Shader Program Link Failed\n" << cErrorLog << std::endl;
 
 		return GL_FALSE;
 	}
 
-	glGenVertexArrays(1, &(this->uiVAO));
+	glGenVertexArrays(1, &(uiVAO));
 }
 
 GLvoid BaseShader::WorldTransform()
 {
-	this->mTranslate = glm::translate(this->mTranslate, this->vMove);														//이동 변환
-	this->rmRotate.X = glm::rotate(this->rmRotate.X, glm::radians(this->aDegree.X), glm::vec3(1.0f, 0.0f, 0.0f));			//X축 회전 변환
-	this->rmRotate.Y = glm::rotate(this->rmRotate.Y, glm::radians(this->aDegree.Y), glm::vec3(0.0f, 1.0f, 0.0f));			//Y축 회전 변환
-	this->rmRotate.Z = glm::rotate(this->rmRotate.Z, glm::radians(this->aDegree.Z), glm::vec3(0.0f, 0.0f, 1.0f));			//Z축 회전 변환
-	this->mScale = glm::scale(this->mScale, this->vSize);
+	mTranslate = glm::translate(mTranslate, vMove);														//이동 변환
+	rmRotate.X = glm::rotate(rmRotate.X, glm::radians(aDegree.X), glm::vec3(1.0f, 0.0f, 0.0f));			//X축 회전 변환
+	rmRotate.Y = glm::rotate(rmRotate.Y, glm::radians(aDegree.Y), glm::vec3(0.0f, 1.0f, 0.0f));			//Y축 회전 변환
+	rmRotate.Z = glm::rotate(rmRotate.Z, glm::radians(aDegree.Z), glm::vec3(0.0f, 0.0f, 1.0f));			//Z축 회전 변환
+	mScale = glm::scale(mScale, vSize);
 
-	this->mWorld = this->mTranslate * this->rmRotate.X * this->rmRotate.Y * this->rmRotate.Z;								//월드 변환
-	this->uiModelLocation = glGetUniformLocation(this->uiShaderID, "mTransform");
-	glUniformMatrix4fv(this->uiModelLocation, 1, GL_FALSE, glm::value_ptr(this->mWorld));
+	mWorld = mTranslate * rmRotate.X * rmRotate.Y * rmRotate.Z * mScale;								//월드 변환
+	uiWorldLocation = glGetUniformLocation(uiShaderID, "mWorld");
+	glUniformMatrix4fv(uiWorldLocation, 1, GL_FALSE, glm::value_ptr(mWorld));
 }
 GLvoid BaseShader::ViewTransform()
 {
-	
+	mView = glm::lookAt(vPos, vDirection, vUp);
+
+	uiViewLocation = glGetUniformLocation(uiShaderID, "mView");
+	glUniformMatrix4fv(uiViewLocation, 1, GL_FALSE, glm::value_ptr(mView));
 }
 GLvoid BaseShader::ProjectionTransform()
 {
-	
+	mProjection = glm::perspective(glm::radians(45.0f), (GLfloat)NUM::WINDOW_WIDTH / (GLfloat)NUM::WINDOW_HEIGHT, 1.0f, 200.0f);
+
+	uiProjectionLocation = glGetUniformLocation(uiShaderID, "mProjection");
+	glUniformMatrix4fv(uiProjectionLocation, 1, GL_FALSE, glm::value_ptr(mProjection));
 }
 
 GLchar* BaseShader::FileToBuf(const GLchar* cFile)
@@ -134,16 +149,16 @@ GLchar* BaseShader::FileToBuf(const GLchar* cFile)
 	//	ifShaderStream.close();
 	//}
 }
-GLvoid BaseShader::ReadObj(FILE* fObjFile)
+GLvoid BaseShader::ReadObj(FILE* fObj)
 {
 	//--- 1. 전체 버텍스 개수 및 삼각형 개수 세기 
 	GLchar cCount[512];
 	GLint iVertex = 0;
 	GLint iSide = 0;
 
-	while (!feof(fObjFile))
+	while (!feof(fObj))
 	{
-		fscanf(fObjFile, "%s", cCount);
+		fscanf(fObj, "%s", cCount);
 
 		if (cCount[0] == 'v' && cCount[1] == '\0')
 		{
@@ -158,33 +173,37 @@ GLvoid BaseShader::ReadObj(FILE* fObjFile)
 		memset(cCount, '\0', sizeof(cCount));
 	}
 
-	this->iVertexNum = iVertex;
-	this->iIndexNum = iSide;
+	iVertexNum = iVertex;
+	iIndexNum = iSide;
 
-	this->pPos = new Pos[this->iVertexNum];
-	this->iIndex = new Index[this->iIndexNum];
+	pPos = new Pos[iVertexNum];
+	iIndex = new Index[iIndexNum];
 
 	GLchar cBind[512];
 	GLint iVertexIndex = 0;
 	GLint iSideIndex = 0;
 	GLint iNormalIndex = 0;
 
-	fseek(fObjFile, 0, SEEK_SET);
+	fseek(fObj, 0, SEEK_SET);
 
-	while (!feof(fObjFile))
+	while (!feof(fObj))
 	{
-		fscanf(fObjFile, "%s", cBind);
+		fscanf(fObj, "%s", cBind);
 
 		if (cBind[0] == 'v' && cBind[1] == '\0')
 		{
-			fscanf(fObjFile, "%f %f %f", &this->pPos[this->iVertexNum].X, &this->pPos[this->iVertexNum].Y, &this->pPos[this->iVertexNum].Z);
+			fscanf(fObj, "%f %f %f", &pPos[iVertexIndex].X, &pPos[iVertexIndex].Y, &pPos[iVertexIndex].Z);
 
 			++iVertexIndex;
 		}
 
 		if (cBind[0] == 'f' && cBind[1] == '\0')
 		{
-			fscanf(fObjFile, "%d %*c %*d %*c %*d %d %*c %*d %*c %*d %d", &this->iIndex[iSideIndex].V1, &this->iIndex[iSideIndex].V2, &this->iIndex[iSideIndex].V3);
+			fscanf(fObj, "%d %*c %*d %*c %*d %d %*c %*d %*c %*d %d", &iIndex[iSideIndex].V1, &iIndex[iSideIndex].V2, &iIndex[iSideIndex].V3);
+
+			iIndex[iSideIndex].V1 -= 1;
+			iIndex[iSideIndex].V2 -= 1;
+			iIndex[iSideIndex].V3 -= 1;
 
 			++iSideIndex;
 		}
@@ -192,7 +211,7 @@ GLvoid BaseShader::ReadObj(FILE* fObjFile)
 		memset(cBind, '\0', sizeof(cBind));
 	}
 
-	fclose(fObjFile);
+	fclose(fObj);
 }
 
 BaseShader::~BaseShader()

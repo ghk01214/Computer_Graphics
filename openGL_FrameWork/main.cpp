@@ -1,23 +1,6 @@
 #include "header.h"
 #include "define.h"
-#include "ShaderAdmin.h"
-
-ShaderAdmin sAdmin;
-
-GLvoid DrawScene()
-{
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	sAdmin.MakeShader(Manage::Triangle);
-
-	glutSwapBuffers();
-}
-
-GLvoid Reshape(GLint iWidth, GLint iHeight)
-{
-	glViewport(0, 0, iWidth, iHeight);
-}
+#include "main.h"
 
 GLvoid main(GLint iArgc, GLchar** cArgv)
 {
@@ -38,12 +21,6 @@ GLvoid main(GLint iArgc, GLchar** cArgv)
 	else
 		std::cout << "GLEW Initialized n";
 
-	sAdmin.MakeShader(Manage::Triangle);
-
-	glutDisplayFunc(DrawScene);
-	glutReshapeFunc(Reshape);
-	//glutKeyboardFunc(Keyboard);
-	//glutSpecialFunc(Special);
-	//glutSpecialUpFunc(SpecialUp);
+	CallBackFunc();
 	glutMainLoop();
 }

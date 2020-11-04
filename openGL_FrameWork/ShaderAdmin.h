@@ -7,19 +7,13 @@
 class ShaderAdmin
 {
 private:
-	std::vector<BaseShader> vList;
+	BaseShader* bShader;
+	std::vector<std::pair<BaseShader*, std::pair<GLint, Pos>>> vList;
 public:
 	ShaderAdmin();
 	~ShaderAdmin();
 public:
-	GLvoid MakeShader(GLint);
+	GLvoid MakeShader(GLint, Pos);
+	GLvoid Render();
 };
 
-namespace Manage
-{
-	enum Type
-	{
-		//점, 선, 삼각형, 사각형, 정사면체, 사각뿔, 정육면체, 구
-		Line, Triangle, Square, Circle, Tetrahedron, Pyramid, Hexahedron, Sphere
-	};
-}

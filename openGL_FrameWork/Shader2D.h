@@ -14,7 +14,5 @@ public:
 	virtual GLvoid InitializeBuffer() override;
 	virtual GLvoid Render() override;
 public:
-	GLvoid InitializeProgram();
-public:
 	virtual GLvoid MakePolygon(GLint, Pos) override;
 };

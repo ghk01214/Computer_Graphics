@@ -22,6 +22,9 @@
     <Filter Include="소스 파일\OBJ">
       <UniqueIdentifier>{cc57b157-ef1d-4227-b5ac-319b71e524d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Camera">
+      <UniqueIdentifier>{320795ad-4f8b-433c-98a4-aa7bd5ec3c5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="BaseShader.cpp">
       <Filter>소스 파일\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>소스 파일\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader1D.h">
@@ -59,17 +65,17 @@
     <ClInclude Include="BaseShader.h">
       <Filter>소스 파일\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="main_2.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="main_1.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="header.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="define.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>소스 파일\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +83,9 @@
       <Filter>소스 파일\OBJ</Filter>
     </Text>
     <Text Include="sphere.txt">
+      <Filter>소스 파일\OBJ</Filter>
+    </Text>
+    <Text Include="cone.txt">
       <Filter>소스 파일\OBJ</Filter>
     </Text>
   </ItemGroup>

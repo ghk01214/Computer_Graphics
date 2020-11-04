@@ -92,6 +92,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>glew32.lib freeglut.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseShader.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader1D.cpp" />
     <ClCompile Include="Shader2D.cpp" />
@@ -148,16 +150,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseShader.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="header.h" />
-    <ClInclude Include="main_1.h" />
-    <ClInclude Include="main_2.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="Shader1D.h" />
     <ClInclude Include="Shader2D.h" />
     <ClInclude Include="Shader3D.h" />
     <ClInclude Include="ShaderAdmin.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="cone.txt" />
     <Text Include="cube.txt" />
     <Text Include="sphere.txt" />
   </ItemGroup>
