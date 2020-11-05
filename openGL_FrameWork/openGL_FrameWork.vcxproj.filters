@@ -19,11 +19,11 @@
     <Filter Include="소스 파일\GLSL">
       <UniqueIdentifier>{0facfcd3-2601-486e-88a2-64c8bdff6bcf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\OBJ">
-      <UniqueIdentifier>{cc57b157-ef1d-4227-b5ac-319b71e524d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\Camera">
       <UniqueIdentifier>{320795ad-4f8b-433c-98a4-aa7bd5ec3c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\obj">
+      <UniqueIdentifier>{cc57b157-ef1d-4227-b5ac-319b71e524d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,22 +79,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="cube.txt">
-      <Filter>소스 파일\OBJ</Filter>
-    </Text>
-    <Text Include="sphere.txt">
-      <Filter>소스 파일\OBJ</Filter>
-    </Text>
-    <Text Include="cone.txt">
-      <Filter>소스 파일\OBJ</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Fragment_Shader.glsl">
       <Filter>소스 파일\GLSL</Filter>
     </None>
     <None Include="Vertex_Shader.glsl">
       <Filter>소스 파일\GLSL</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="cone.obj">
+      <Filter>소스 파일\obj</Filter>
+    </Text>
+    <Text Include="cube.obj">
+      <Filter>소스 파일\obj</Filter>
+    </Text>
+    <Text Include="sphere.obj">
+      <Filter>소스 파일\obj</Filter>
+    </Text>
   </ItemGroup>
 </Project>
