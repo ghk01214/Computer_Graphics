@@ -15,4 +15,9 @@ public:
 	virtual GLvoid Render() override;
 public:
 	virtual GLvoid MakePolygon(GLint, Pos) override;
+
+	virtual GLvoid KeyDown(GLchar cKey, GLint iX, GLint iY)	override;
+	virtual GLvoid KeyUp(GLchar cKey, GLint iX, GLint iY) override;
+	virtual GLvoid SpecialDown(GLint iKey, GLint iX, GLint iY) override;
+	virtual GLvoid SpecialUp(GLint iKey, GLint iX, GLint iY) override;
 };
