@@ -160,13 +160,13 @@
     <ClInclude Include="ShaderAdmin.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="cone.txt" />
-    <Text Include="cube.txt" />
-    <Text Include="sphere.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Fragment_Shader.glsl" />
     <None Include="Vertex_Shader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="cone.obj" />
+    <Text Include="cube.obj" />
+    <Text Include="sphere.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
