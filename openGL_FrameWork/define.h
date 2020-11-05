@@ -1,6 +1,9 @@
 #pragma once
 #include "header.h"
 
+typedef bool GLbool;
+typedef unsigned char GLchar;
+
 struct Pos
 {
 	GLfloat X, Y, Z;
