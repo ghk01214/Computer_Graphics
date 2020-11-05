@@ -1,9 +1,10 @@
 # Computer_Graphics
 
-1. 개요\
-openGL을 이용한 3D 상호작용 프로그램 제작
+1. 개요<br>
+	openGL을 이용한 3D 상호작용 프로그램 제작
+<br>
 
-2. 상세\
+2. 상세<br>
 	3차원에서 사용자와 프로그램이 상호작용하는 프로그램 제작
 	+ 객체 표현: 육면체나 구 등, 간단한 객체로 표현(obj 파일 사용 가능)
 	+ 기능
@@ -14,12 +15,14 @@ openGL을 이용한 3D 상호작용 프로그램 제작
 		* 특정 조건이 되면 프로그램 종료
 	+ 3차원의 효과를 최대한으로 반영
 	+ 예시)
-		* Project Debug http://youtu.be/VjRabvusVUk
-		* Manless Factory https://youtu.be/xEXoKXbGjrY
-  
+		* Project Debug: http://youtu.be/VjRabvusVUk
+		* Manless Factory: https://youtu.be/xEXoKXbGjrY
+<br>
+
 3. 프로젝트 진행
 	+ 2인 팀을 구성하여 프로젝트 수행
 	+ 제안서 제출(On/Offline)
+<br>
 
 4. 프로젝트 제안서
 	+ 내용
@@ -31,6 +34,7 @@ openGL을 이용한 3D 상호작용 프로그램 제작
 	+ 스케줄 표
 	+ A4 3장 이상의 내용을 작성
 	+ 제출기한: 11/12 (목)
+<br>
 
 5. 최종 프로젝트
 	+ 제출 목록
@@ -51,7 +55,8 @@ openGL을 이용한 3D 상호작용 프로그램 제작
 			+ 프로젝트 진행에 있어 사용한 모든 코드
 			+ 실행 파일(Release 모드)
 	+ 제출 기한: 12/16 (수)
-  
+<br>
+
 6. 기타
 	1. repo 파일 목록
 		+ OpenGL Basic: openGL 기초 실습 문제
