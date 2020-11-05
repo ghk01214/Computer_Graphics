@@ -77,11 +77,15 @@ public:
 	GLvoid ProjectionTransform();		//투영 변환
 
 public:
-	//
+	//순수 가상 함수
 	virtual GLvoid InitializeBuffer() = 0;
 	virtual GLvoid MakePolygon(GLint, Pos) = 0;
 	virtual GLvoid Render() = 0;
 
+	virtual GLvoid KeyDown(GLchar, GLint, GLint) = 0;
+	virtual GLvoid KeyUp(GLchar, GLint, GLint) = 0;
+	virtual GLvoid SpecialDown(GLint, GLint, GLint) = 0;
+	virtual GLvoid SpecialUp(GLint, GLint, GLint) = 0;
 public:
 	GLchar* FileToBuf(const GLchar*);
 	GLvoid ReadObj(FILE*);
