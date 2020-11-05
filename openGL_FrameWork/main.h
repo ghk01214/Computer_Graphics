@@ -10,12 +10,12 @@ GLvoid Idle()
 }
 
 //키보드 입력
-GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
+GLvoid Keyboard(GLchar cKey, GLint iX, GLint iY)
 {
 	//ubKey = 입력 키보드
 	//iX, iY = 키보드 입력 시 마우스 위치
 
-	switch (ubKey)
+	switch (cKey)
 	{
 	//선분
 	case 'l':
@@ -32,7 +32,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 		break;
 	}
 	//사각형
-	case 's':
+	case 'S':
 	{
 		Pos pPos = { 0.0f, 0.0f, 0.0f };
 		sAdmin.MakeShader(Manage::Square, pPos);
@@ -76,7 +76,7 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 		break;
 	}
 	//구
-	case 'S':
+	case 's':
 	{
 		Pos pPos = { 0.0f, 0.0f, 0.0f };
 		sAdmin.MakeShader(Manage::Sphere, pPos);
@@ -116,12 +116,12 @@ GLvoid Special(GLint iKey, GLint iX, GLint iY)
 }
 
 //키보드 떼기
-GLvoid KeyboardUp(GLubyte ubKey, GLint iX, GLint iY)
+GLvoid KeyboardUp(GLchar cKey, GLint iX, GLint iY)
 {
 	//ubKey = 입력 키보드
 	//iX, iY = 키보드 입력 시 마우스 위치
 
-	switch (ubKey)
+	switch (cKey)
 	{
 
 	}
