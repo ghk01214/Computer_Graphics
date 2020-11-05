@@ -60,7 +60,7 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 	{
 	case Manage::Cube:
 	{
-		fObj = fopen("cube.txt", "r");
+		fObj = fopen("cube.obj", "r");
 
 		cColor[0] = { 0.0f, 1.0f, 1.0f };
 		cColor[1] = { 0.0f, 0.0f, 1.0f };
@@ -75,14 +75,15 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 	}
 	case Manage::Cone:
 	{
-		fObj = fopen("cone.txt", "r");
+		fObj = fopen("cone.obj", "r");
 		vSize = glm::vec3(10.0f, 10.0f, 10.0f);
 
 		break;
 	}
 	case Manage::Sphere:
 	{
-		fObj = fopen("sphere.txt", "r");
+		fObj = fopen("sphere.obj", "r");
+		vSize = glm::vec3(0.1f, 0.1f, 0.1f);
 
 		break;
 	}
@@ -92,12 +93,32 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 
 	ReadObj(fObj);
 
-	//for (GLint i = 0; i < iVertexNum; ++i)
-	//{
-	//	cColor[i] = { uDis(mGen), uDis(mGen), uDis(mGen) };
-	//}
+	for (GLint i = 0; i < iVertexNum; ++i)
+	{
+		cColor[i] = { uDis(mGen), uDis(mGen), uDis(mGen) };
+	}
 
 	InitializeBuffer();
+}
+
+GLvoid Shader3D::KeyDown(GLchar cKey, GLint iX, GLint iY)
+{
+	
+}
+
+GLvoid Shader3D::KeyUp(GLchar cKey, GLint iX, GLint iY)
+{
+	
+}
+
+GLvoid Shader3D::SpecialDown(GLint iKey, GLint iX, GLint iY)
+{
+	
+}
+
+GLvoid Shader3D::SpecialUp(GLint iKey, GLint iX, GLint iY)
+{
+	
 }
 
 Shader3D::~Shader3D()
