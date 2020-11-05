@@ -57,7 +57,7 @@ GLvoid ShaderAdmin::MakeShader(GLint k, Pos pPos)
 	}
 	case Manage::Sphere:
 	{
-		bShader = new Shader3D(162);
+		bShader = new Shader3D(482);
 
 		break;
 	}
