@@ -78,5 +78,6 @@ GLvoid ShaderAdmin::Render()
 
 ShaderAdmin::~ShaderAdmin()
 {
-	delete bShader;
+	if (bShader != nullptr)
+		delete bShader;
 }
