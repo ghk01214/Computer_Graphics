@@ -37,21 +37,15 @@ protected:
 	GLint iVertexNum;
 	GLint iIndexNum;
 protected:
-	//변환 속성
+	//월드변환 속성
 	glm::vec3 vMove;
 	Angle aDegree;
 	glm::vec3 vSize;
 
+	//뷰변환 속성
 	glm::vec3 vPos;					//카메라 위치
-
-	glm::vec3 vTarget;				//카메라가 바라보는 좌표
 	glm::vec3 vDirection;			//카메라의 방향벡터(n벡터)
-
-	glm::vec3 vUPVec;				//UP 벡터
-	glm::vec3 vRight;				//u벡터
-
 	glm::vec3 vUp;					//v벡터
-
 
 public:
 	//생성자, 소멸자
@@ -60,6 +54,11 @@ public:
 public:
 	//Input 함수
 	GLvoid InputVAO(GLuint VAO) { uiVAO = VAO; }
+
+	//카메라 인자 카메라 클래스에서 받아오기
+	GLvoid InputCameraPos(glm::vec3 vPos) { this->vPos = vPos; }
+	GLvoid InputCameraDirection(glm::vec3 vDirection) { this->vDirection = vDirection; }
+	GLvoid InputCameraUpVector(glm::vec3 vUp) { this->vUp = vUp; }
 public:
 	//Return 함수
 	GLuint ReturnShaderID() { return uiShaderID; }
@@ -82,8 +81,8 @@ public:
 	virtual GLvoid MakePolygon(GLint, Pos) = 0;
 	virtual GLvoid Render() = 0;
 
-	virtual GLvoid KeyDown(GLchar, GLint, GLint) = 0;
-	virtual GLvoid KeyUp(GLchar, GLint, GLint) = 0;
+	virtual GLvoid KeyDown(GLubyte, GLint, GLint) = 0;
+	virtual GLvoid KeyUp(GLubyte, GLint, GLint) = 0;
 	virtual GLvoid SpecialDown(GLint, GLint, GLint) = 0;
 	virtual GLvoid SpecialUp(GLint, GLint, GLint) = 0;
 public:
