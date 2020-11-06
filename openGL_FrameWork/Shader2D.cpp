@@ -94,6 +94,26 @@ GLvoid Shader2D::MakePolygon(GLint iType, Pos pCenter)
 	InitializeBuffer();
 }
 
+GLvoid Shader2D::KeyDown(GLubyte, GLint, GLint)
+{
+	return GLvoid();
+}
+
+GLvoid Shader2D::KeyUp(GLubyte, GLint, GLint)
+{
+	return GLvoid();
+}
+
+GLvoid Shader2D::SpecialDown(GLint, GLint, GLint)
+{
+	return GLvoid();
+}
+
+GLvoid Shader2D::SpecialUp(GLint, GLint, GLint)
+{
+	return GLvoid();
+}
+
 Shader2D::~Shader2D()
 {
 	delete[] pPos;
