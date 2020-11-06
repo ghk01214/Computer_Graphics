@@ -82,7 +82,7 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 	}
 	case Manage::Sphere:
 	{
-		fObj = fopen("sphere.obj", "r");
+		fObj = fopen("sphere.txt", "r");
 		vSize = glm::vec3(0.1f, 0.1f, 0.1f);
 
 		break;
@@ -101,12 +101,12 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 	InitializeBuffer();
 }
 
-GLvoid Shader3D::KeyDown(GLchar cKey, GLint iX, GLint iY)
+GLvoid Shader3D::KeyDown(GLubyte ubKey, GLint iX, GLint iY)
 {
 	
 }
 
-GLvoid Shader3D::KeyUp(GLchar cKey, GLint iX, GLint iY)
+GLvoid Shader3D::KeyUp(GLubyte ubKey, GLint iX, GLint iY)
 {
 	
 }
