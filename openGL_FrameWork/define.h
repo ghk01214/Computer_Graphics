@@ -2,7 +2,6 @@
 #include "header.h"
 
 typedef bool GLbool;
-typedef unsigned char GLchar;
 
 struct Pos
 {
