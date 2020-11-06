@@ -87,13 +87,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="cone.obj">
-      <Filter>소스 파일\obj</Filter>
-    </Text>
-    <Text Include="cube.obj">
-      <Filter>소스 파일\obj</Filter>
-    </Text>
-    <Text Include="sphere.obj">
+    <Text Include="sphere.txt">
       <Filter>소스 파일\obj</Filter>
     </Text>
   </ItemGroup>
