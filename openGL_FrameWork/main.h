@@ -10,12 +10,12 @@ GLvoid Idle()
 }
 
 //키보드 입력
-GLvoid Keyboard(GLchar cKey, GLint iX, GLint iY)
+GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 {
 	//ubKey = 입력 키보드
 	//iX, iY = 키보드 입력 시 마우스 위치
 
-	switch (cKey)
+	switch (ubKey)
 	{
 	//선분
 	case 'l':
@@ -68,6 +68,7 @@ GLvoid Keyboard(GLchar cKey, GLint iX, GLint iY)
 
 		break;
 	}
+	//정육면체
 	case 'h':
 	{
 		Pos pPos = { 0.0f, 0.0f, 0.0f };
@@ -116,12 +117,12 @@ GLvoid Special(GLint iKey, GLint iX, GLint iY)
 }
 
 //키보드 떼기
-GLvoid KeyboardUp(GLchar cKey, GLint iX, GLint iY)
+GLvoid KeyboardUp(GLubyte ubKey, GLint iX, GLint iY)
 {
 	//ubKey = 입력 키보드
 	//iX, iY = 키보드 입력 시 마우스 위치
 
-	switch (cKey)
+	switch (ubKey)
 	{
 
 	}
