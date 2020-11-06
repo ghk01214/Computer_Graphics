@@ -144,7 +144,10 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader1D.cpp" />
-    <ClCompile Include="Shader2D.cpp" />
+    <ClCompile Include="Shader2D.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Shader3D.cpp" />
     <ClCompile Include="ShaderAdmin.cpp" />
   </ItemGroup>
@@ -164,9 +167,7 @@
     <None Include="Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="cone.obj" />
-    <Text Include="cube.obj" />
-    <Text Include="sphere.obj" />
+    <Text Include="sphere.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
