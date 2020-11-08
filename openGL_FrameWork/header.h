@@ -16,3 +16,4 @@
 //추가 라이브러리
 #include <random>
 #include <vector>
+#include <cmath>

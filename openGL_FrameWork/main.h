@@ -15,73 +15,18 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	//ubKey = 입력 키보드
 	//iX, iY = 키보드 입력 시 마우스 위치
 
+	sAdmin.Keyboard(ubKey, iX, iY);
+
 	switch (ubKey)
 	{
-	//선분
 	case 'l':
 	{
-
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		break;
 	}
-	//삼각형
-	case 't':
+	case 'f':
 	{
-		Pos pPos = { 0.0f, 0.0f, 0.0f };
-		sAdmin.MakeShader(Manage::Triangle, pPos);
-
-		break;
-	}
-	//사각형
-	case 'S':
-	{
-		Pos pPos = { 0.0f, 0.0f, 0.0f };
-		sAdmin.MakeShader(Manage::Square, pPos);
-
-		break;
-	}
-	//원
-	case 'c':
-	{
-
-		break;
-	}
-	//정사면체
-	case 'T':
-	{
-		Pos pPos = { 0.0f, 0.0f, 0.0f };
-		//sAdmin.MakeShader(Manage::Tetrahedron, pPos);
-
-		break;
-	}
-	case 'P':
-	{
-		Pos pPos = { 0.0f, 0.0f, 0.0f };
-		sAdmin.MakeShader(Manage::Pyramid, pPos);
-
-		break;
-	}
-	//원뿔
-	case 'C':
-	{
-		Pos pPos = { 0.0f, 0.0f, 0.0f };
-		sAdmin.MakeShader(Manage::Cone, pPos);
-
-		break;
-	}
-	//정육면체
-	case 'h':
-	{
-		Pos pPos = { 0.0f, 0.0f, 0.0f };
-		sAdmin.MakeShader(Manage::Cube, pPos);
-
-		break;
-	}
-	//구
-	case 's':
-	{
-		Pos pPos = { 0.0f, 0.0f, 0.0f };
-		sAdmin.MakeShader(Manage::Sphere, pPos);
-
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		break;
 	}
 	//종료
@@ -90,8 +35,6 @@ GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 		exit(0);
 		break;
 	}
-	default:
-		break;
 	}
 
 	glutPostRedisplay();
@@ -110,10 +53,9 @@ GLvoid Special(GLint iKey, GLint iX, GLint iY)
 	GLUT_KEY_HOME, GLUT_KEY_END, GLUT_KEY_INSERT, GLUT_KEY_PAGE_UP, GLUT_KEY_PAGE_DOWN
 	*/
 
-	switch (iKey)
-	{
+	sAdmin.Special(iKey, iX, iY);
 
-	}
+	glutPostRedisplay();
 }
 
 //키보드 떼기
@@ -122,10 +64,8 @@ GLvoid KeyboardUp(GLubyte ubKey, GLint iX, GLint iY)
 	//ubKey = 입력 키보드
 	//iX, iY = 키보드 입력 시 마우스 위치
 
-	switch (ubKey)
-	{
 
-	}
+	glutPostRedisplay();
 }
 
 //ASCII가 아닌 특수 키 떼기
@@ -170,7 +110,7 @@ GLvoid Passive(GLint iX, GLint iY)
 //출력 함수
 GLvoid DrawScene()
 {
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	sAdmin.Render();

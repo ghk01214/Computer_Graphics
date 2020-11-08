@@ -28,7 +28,7 @@ struct RotateMat
 	glm::mat4 X, Y, Z;
 };
 
-namespace NUM
+namespace Num
 {
 	enum Size
 	{
@@ -41,6 +41,14 @@ namespace Manage
 	enum Type
 	{
 		//점, 선, 삼각형, 사각형, 정사면체, 사각뿔, 정육면체, 구
-		Line, Triangle, Square, Circle, Tetrahedron, Pyramid, Cone, Cube, Sphere
+		Line, Triangle, Square, Circle, Pyramid, Cone, Cube, Sphere, X, Y, Z
+	};
+}
+
+namespace Transform
+{
+	enum Type
+	{
+		Translate, Rotate, Scale
 	};
 }

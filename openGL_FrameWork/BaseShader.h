@@ -1,5 +1,6 @@
 #pragma once
 #include "define.h"
+#include "Camera.h"
 
 class BaseShader
 {
@@ -15,38 +16,40 @@ private:
 	//셰이더 변환 인자
 	//월드 변환
 	glm::mat4 mTranslate;			//이동 행렬
-	RotateMat rmRotate;				//회전 행렬
+	glm::mat4 mRotate;				//회전 행렬
 	glm::mat4 mScale;				//신축 행렬
 	glm::mat4 mWorld;				//월드 행렬
 	GLuint uiWorldLocation;			//월드 변환 후 객체 위치
 
 	//뷰 변환
+	glm::vec3 vCameraPos;			//카메라 위치
+	glm::vec3 vCameraDirection;		//카메라가 바라보는 방향
+	glm::vec3 vCameraUp;			//카메라 v벡터
 	glm::mat4 mView;				//뷰 변환 행렬
 	GLuint uiViewLocation;			//뷰 변환 우 객체 위치
 
 	//투영 변환
-	glm::mat4 mProjection;
+	glm::mat4 mProjection;			//투영 변환 행렬
 	GLuint uiProjectionLocation;	//투영 변환 후 객체 위치
 
 protected:
 	//셰이더 속성
-	Pos* pPos;
-	Color* cColor;
-	Index* iIndex;
+	Pos* pPos;						//정점 좌표
+	Color* cColor;					//정점 색상
+	Index* iIndex;					//정점 인덱스
 
-	GLint iVertexNum;
-	GLint iIndexNum;
+	GLint iVertexNum;				//정점 개수
+	GLint iIndexNum;				//인덱스 삼각형 개수
 protected:
 	//월드변환 속성
-	glm::vec3 vMove;
-	Angle aDegree;
-	glm::vec3 vSize;
+	glm::vec3 vMove;				//이동량
+	GLfloat fMove;					//축별 이동량
 
-	//뷰변환 속성
-	glm::vec3 vPos;					//카메라 위치
-	glm::vec3 vDirection;			//카메라의 방향벡터(n벡터)
-	glm::vec3 vUp;					//v벡터
+	glm::vec3 vAxis;				//회전 축
+	GLfloat fDegree;				//축별 회전량
 
+	glm::vec3 vSize;				//신축량
+	GLfloat fSize;					//축별 신축량
 public:
 	//생성자, 소멸자
 	BaseShader();
@@ -55,37 +58,42 @@ public:
 	//Input 함수
 	GLvoid InputVAO(GLuint VAO) { uiVAO = VAO; }
 
-	//카메라 인자 카메라 클래스에서 받아오기
-	GLvoid InputCameraPos(glm::vec3 vPos) { this->vPos = vPos; }
-	GLvoid InputCameraDirection(glm::vec3 vDirection) { this->vDirection = vDirection; }
-	GLvoid InputCameraUpVector(glm::vec3 vUp) { this->vUp = vUp; }
+	//월드 변환 인자 Input 함수
+	GLvoid InputTranslatePos(GLfloat fMove, GLchar cAxis, GLfloat fSign);			//객체 이동량 Input
+	GLvoid InputRotateAngle(GLfloat fDegree, GLchar cAxis, GLfloat fSign);			//객체 회전 각도 Input
+	GLvoid InputScaleSize(GLfloat fSize, GLchar cAxis, GLfloat fSign);				//객체 신축량 Input
+
+	//뷰 변환 인자 Input 함수
+	//GLvoid InputCameraPos(glm::vec3 vCameraPos) { this->vCameraPos = vCameraPos; }
+	//GLvoid InputCameraDirection(glm::vec3 vCameraDirection) { this->vCameraDirection = vCameraDirection; }
+	//GLvoid InputCameraUp(glm::vec3 vCameraUp) { this->vCameraUp = vCameraUp; }
 public:
 	//Return 함수
 	GLuint ReturnShaderID() { return uiShaderID; }
 	GLuint ReturnVAO() { return uiVAO; }
-	GLfloat Return(GLint i) { return pPos[i].X; }
 public:
 	//셰이더 생성 함수
-	GLuint MakeVertexShader();
-	GLuint MakeFragmentShader();
-	GLuint MakeShaderProgram();
+	GLuint MakeVertexShader();											//Vertex Shader 생성
+	GLuint MakeFragmentShader();										//Fragment Shader 생성
+	GLuint MakeShaderProgram();											//셰이더 생성 프로그램
 public:
-	//변환 함수
-	GLvoid WorldTransform();			//월드 변환
-	GLvoid ViewTransform();				//뷰 변환
-	GLvoid ProjectionTransform();		//투영 변환
+	//월드 변환 함수
+	GLvoid TranslateWorld();											//이동 변환
+	GLvoid RotateWorld();												//회전 변환
+	GLvoid ScaleWorld();												//신축 변환
+	GLvoid ResetWorldTransform();										//월드 변환 초기화
 
+	//뷰 변환
+	GLvoid MoveCamera(glm::vec3 vCameraPos, glm::vec3 vCameraDirection, glm::vec3 vCameraUp);												//카메라 이동
+
+	//전체 변환 함수
+	GLvoid TransformShader();											//전체 변환
 public:
 	//순수 가상 함수
-	virtual GLvoid InitializeBuffer() = 0;
-	virtual GLvoid MakePolygon(GLint, Pos) = 0;
-	virtual GLvoid Render() = 0;
-
-	virtual GLvoid KeyDown(GLubyte, GLint, GLint) = 0;
-	virtual GLvoid KeyUp(GLubyte, GLint, GLint) = 0;
-	virtual GLvoid SpecialDown(GLint, GLint, GLint) = 0;
-	virtual GLvoid SpecialUp(GLint, GLint, GLint) = 0;
+	virtual GLvoid InitializeBuffer() = 0;								//버퍼 초기화
+	virtual GLvoid CreateObject(GLint iType, Pos pCenter) = 0;			//객체 생성
+	virtual GLvoid Render() = 0;										//렌더링
 public:
-	GLchar* FileToBuf(const GLchar*);
-	GLvoid ReadObj(FILE*);
+	GLchar* ReadGLSL(const GLchar*);									//glsl 파일 읽기
+	GLvoid ReadObj(FILE*);												//obj 파일 읽기
 };

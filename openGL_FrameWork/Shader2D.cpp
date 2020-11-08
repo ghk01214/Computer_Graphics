@@ -9,7 +9,7 @@ Shader2D::Shader2D(GLint k)
 	iVertexNum = k;
 	iIndexNum = k - 2;
 
-	glGenBuffers(NUM::VBO, uiVBO);
+	glGenBuffers(Num::VBO, uiVBO);
 	glGenBuffers(1, &(uiEBO));
 }
 
@@ -46,7 +46,7 @@ GLvoid Shader2D::Render()
 	glDrawElements(GL_TRIANGLES, iIndexNum * 3, GL_UNSIGNED_INT, 0);
 }
 
-GLvoid Shader2D::MakePolygon(GLint iType, Pos pCenter)
+GLvoid Shader2D::CreateObject(GLint iType, Pos pCenter)
 {
 	std::random_device rRandom;
 	std::mt19937 mGen(rRandom());
@@ -92,26 +92,6 @@ GLvoid Shader2D::MakePolygon(GLint iType, Pos pCenter)
 	}
 
 	InitializeBuffer();
-}
-
-GLvoid Shader2D::KeyDown(GLubyte, GLint, GLint)
-{
-	return GLvoid();
-}
-
-GLvoid Shader2D::KeyUp(GLubyte, GLint, GLint)
-{
-	return GLvoid();
-}
-
-GLvoid Shader2D::SpecialDown(GLint, GLint, GLint)
-{
-	return GLvoid();
-}
-
-GLvoid Shader2D::SpecialUp(GLint, GLint, GLint)
-{
-	return GLvoid();
 }
 
 Shader2D::~Shader2D()

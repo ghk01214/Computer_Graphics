@@ -90,5 +90,11 @@
     <Text Include="sphere.txt">
       <Filter>소스 파일\obj</Filter>
     </Text>
+    <Text Include="cone.txt">
+      <Filter>소스 파일\obj</Filter>
+    </Text>
+    <Text Include="cube.txt">
+      <Filter>소스 파일\obj</Filter>
+    </Text>
   </ItemGroup>
 </Project>

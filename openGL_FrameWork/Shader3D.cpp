@@ -6,7 +6,7 @@ Shader3D::Shader3D(GLint k)
 	cColor = new Color[k];
 	iIndex = new Index[2 * k - 4];
 
-	glGenBuffers(NUM::VBO, uiVBO);
+	glGenBuffers(Num::VBO, uiVBO);
 	glGenBuffers(1, &(uiEBO));
 }
 
@@ -39,17 +39,14 @@ GLvoid Shader3D::Render()
 {
 	glUseProgram(ReturnShaderID());
 
-	ProjectionTransform();
-	ViewTransform();
-	WorldTransform();
-
+	TransformShader();
 	glEnable(GL_DEPTH_TEST);
 
 	glBindVertexArray(uiVAO);
 	glDrawElements(GL_TRIANGLES, iIndexNum * 3, GL_UNSIGNED_INT, 0);
 }
 
-GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
+GLvoid Shader3D::CreateObject(GLint iType, Pos pCenter)
 {
 	std::random_device rRandom;
 	std::mt19937 mGen(rRandom());
@@ -60,7 +57,7 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 	{
 	case Manage::Cube:
 	{
-		fObj = fopen("cube.obj", "r");
+		fObj = fopen("cube.txt", "r");
 
 		cColor[0] = { 0.0f, 1.0f, 1.0f };
 		cColor[1] = { 0.0f, 0.0f, 1.0f };
@@ -75,8 +72,8 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 	}
 	case Manage::Cone:
 	{
-		fObj = fopen("cone.obj", "r");
-		vSize = glm::vec3(10.0f, 10.0f, 10.0f);
+		fObj = fopen("cone.txt", "r");
+		vSize = glm::vec3(2.0f, 2.0f, 2.0f);
 
 		break;
 	}
@@ -93,32 +90,16 @@ GLvoid Shader3D::MakePolygon(GLint iType, Pos pCenter)
 
 	ReadObj(fObj);
 
-	for (GLint i = 0; i < iVertexNum; ++i)
+	//새로운 셰이더에 색상이 없으면 정점별 랜덤 색상을 한 번만 할당
+	if (cColor[0].R < 0.0f || cColor[0].R > 1.0f)
 	{
-		cColor[i] = { uDis(mGen), uDis(mGen), uDis(mGen) };
+		for (GLint i = 0; i < iVertexNum; ++i)
+		{
+			cColor[i] = { uDis(mGen), uDis(mGen), uDis(mGen) };
+		}
 	}
 
 	InitializeBuffer();
-}
-
-GLvoid Shader3D::KeyDown(GLubyte ubKey, GLint iX, GLint iY)
-{
-	
-}
-
-GLvoid Shader3D::KeyUp(GLubyte ubKey, GLint iX, GLint iY)
-{
-	
-}
-
-GLvoid Shader3D::SpecialDown(GLint iKey, GLint iX, GLint iY)
-{
-	
-}
-
-GLvoid Shader3D::SpecialUp(GLint iKey, GLint iX, GLint iY)
-{
-	
 }
 
 Shader3D::~Shader3D()

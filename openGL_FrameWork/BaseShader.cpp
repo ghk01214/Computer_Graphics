@@ -3,30 +3,29 @@
 BaseShader::BaseShader()
 {
 	mTranslate = glm::mat4(1.0f);
-	rmRotate = { glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f) };
+	mRotate = glm::mat4(1.0f);
 	mScale = glm::mat4(1.0f);
 	mWorld = glm::mat4(1.0f);
 
-	mView = glm::mat4(1.0f);
+	mView = glm::lookAt(vCameraPos, vCameraDirection, vCameraUp);
 
 	mProjection = glm::mat4(1.0f);
 
 	uiWorldLocation = 0;
 
-	vMove = { 0.0f, 0.0f, 0.0f };
-	vSize = { 0.5f, 0.5f, 0.5f };
-	aDegree = { 30.0f, 30.0f, 0.0f };
-
-	vPos = { 0.0f, 0.0f, 3.0f };
-	vDirection = { 0.0f, 0.0f, 0.0f };
-	vUp = { 0.0f, 1.0f, 0.0f };
+	vMove = glm::vec3(0.0f, 0.0f, 0.0f);
+	vAxis = glm::vec3(0.0f, 0.0f, 0.0f);
+	vSize = glm::vec3(1.0f, 1.0f, 1.0f);
+	fDegree = 0.0f;
+	fMove = 0.0f;
 
 	MakeShaderProgram();
 }
 
+//셰이더 생성 함수
 GLuint BaseShader::MakeVertexShader()
 {
-	GLchar* cVertexShaderSource = FileToBuf("Vertex_Shader.glsl");
+	GLchar* cVertexShaderSource = ReadGLSL("Vertex_Shader.glsl");
 	uiVertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(uiVertexShader, 1, &cVertexShaderSource, NULL);
 	glCompileShader(uiVertexShader);
@@ -45,7 +44,7 @@ GLuint BaseShader::MakeVertexShader()
 }
 GLuint BaseShader::MakeFragmentShader()
 {
-	GLchar* cFragmentShaderSource = FileToBuf("Fragment_Shader.glsl");
+	GLchar* cFragmentShaderSource = ReadGLSL("Fragment_Shader.glsl");
 	uiFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(uiFragmentShader, 1, &cFragmentShaderSource, NULL);
 	glCompileShader(uiFragmentShader);
@@ -90,34 +89,140 @@ GLuint BaseShader::MakeShaderProgram()
 	glGenVertexArrays(1, &(uiVAO));
 }
 
-GLvoid BaseShader::WorldTransform()
+//월드 변환 인자 Input 함수
+GLvoid BaseShader::InputTranslatePos(GLfloat fMove, GLchar cAxis, GLfloat fSign)
 {
-	mTranslate = glm::translate(mTranslate, vMove);														//이동 변환
-	rmRotate.X = glm::rotate(rmRotate.X, glm::radians(aDegree.X), glm::vec3(1.0f, 0.0f, 0.0f));			//X축 회전 변환
-	rmRotate.Y = glm::rotate(rmRotate.Y, glm::radians(aDegree.Y), glm::vec3(0.0f, 1.0f, 0.0f));			//Y축 회전 변환
-	rmRotate.Z = glm::rotate(rmRotate.Z, glm::radians(aDegree.Z), glm::vec3(0.0f, 0.0f, 1.0f));			//Z축 회전 변환
-	mScale = glm::scale(mScale, vSize);
+	this->fMove = fSign * fMove;
 
-	mWorld = mTranslate * rmRotate.X * rmRotate.Y * rmRotate.Z * mScale;								//월드 변환
+	switch (cAxis)
+	{
+	case 'x':
+	{
+		vMove = glm::vec3(this->fMove, 0.0f, 0.0f);
+
+		break;
+	}
+	case 'y':
+	{
+		vMove = glm::vec3(0.0f, this->fMove, 0.0f);
+
+		break;
+	}
+	case 'z':
+	{
+		vMove = glm::vec3(0.0f, 0.0f, this->fMove);
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+GLvoid BaseShader::InputRotateAngle(GLfloat fDegree, GLchar cAxis, GLfloat fSign)
+{
+	this->fDegree = fSign * fDegree;
+
+	switch (cAxis)
+	{
+	case 'x':
+	{
+		vAxis = glm::vec3(1.0f, 0.0f, 0.0f);
+
+		break;
+	}
+	case 'y':
+	{
+		vAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+
+		break;
+	}
+	case 'z':
+	{
+		vAxis = glm::vec3(0.0f, 0.0f, 1.0f);
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+GLvoid BaseShader::InputScaleSize(GLfloat fSize, GLchar cAxis, GLfloat fSign)
+{
+	this->fSize = fSign * fSize;
+
+	switch (cAxis)
+	{
+	case 'x':
+	{
+		vSize = glm::vec3(this->fSize, 0.0f, 0.0f);
+
+		break;
+	}
+	case 'y':
+	{
+		vSize = glm::vec3(0.0f, this->fSize, 0.0f);
+
+		break;
+	}
+	case 'z':
+	{
+		vSize = glm::vec3(0.0f, 0.0f, this->fSize);
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+//월드 변환 함수
+GLvoid BaseShader::TranslateWorld()
+{
+	mTranslate = glm::translate(mTranslate, vMove);
+	mWorld = mWorld * mTranslate;
+	mTranslate = glm::mat4(1.0f);
+}
+GLvoid BaseShader::RotateWorld()
+{
+	mRotate = glm::rotate(mRotate, glm::radians(fDegree), vAxis);
+	mWorld = mWorld * mRotate;
+	mRotate = glm::mat4(1.0f);
+}
+GLvoid BaseShader::ScaleWorld()
+{
+	mScale = glm::scale(mScale, vSize);
+	mWorld = mWorld * mScale;
+	mScale = glm::mat4(1.0f);
+}
+GLvoid BaseShader::ResetWorldTransform()
+{
+	mWorld = glm::mat4(1.0f);
+}
+
+//뷰 변환 함수
+GLvoid BaseShader::MoveCamera(glm::vec3 vCameraPos, glm::vec3 vCameraDirection, glm::vec3 vCameraUp)
+{
+	mView = glm::lookAt(vCameraPos, vCameraDirection, vCameraUp);
+}
+
+//전체 변환 함수
+GLvoid BaseShader::TransformShader()
+{
+	//월드 변환
 	uiWorldLocation = glGetUniformLocation(uiShaderID, "mWorld");
 	glUniformMatrix4fv(uiWorldLocation, 1, GL_FALSE, glm::value_ptr(mWorld));
-}
-GLvoid BaseShader::ViewTransform()
-{
-	mView = glm::lookAt(vPos, vDirection, vUp);
 
+	//뷰 변환
 	uiViewLocation = glGetUniformLocation(uiShaderID, "mView");
 	glUniformMatrix4fv(uiViewLocation, 1, GL_FALSE, glm::value_ptr(mView));
-}
-GLvoid BaseShader::ProjectionTransform()
-{
-	mProjection = glm::perspective(glm::radians(45.0f), (GLfloat)NUM::WINDOW_WIDTH / (GLfloat)NUM::WINDOW_HEIGHT, 1.0f, 200.0f);
 
+	//투영 변환
+	mProjection = glm::perspective(glm::radians(60.0f), (GLfloat)Num::WINDOW_WIDTH / (GLfloat)Num::WINDOW_HEIGHT, 0.1f, 100.0f);
 	uiProjectionLocation = glGetUniformLocation(uiShaderID, "mProjection");
 	glUniformMatrix4fv(uiProjectionLocation, 1, GL_FALSE, glm::value_ptr(mProjection));
 }
 
-GLchar* BaseShader::FileToBuf(const GLchar* cFile)
+GLchar* BaseShader::ReadGLSL(const GLchar* cFile)
 {
 	FILE* fFile;
 	GLulong ulLength;

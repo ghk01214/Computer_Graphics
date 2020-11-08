@@ -7,8 +7,8 @@ GLvoid main(GLint iArgc, GLchar** cArgv)
 	//윈도우 생성하기
 	glutInit(&iArgc, cArgv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition(NUM::WINDOW_POS, NUM::WINDOW_POS);
-	glutInitWindowSize(NUM::WINDOW_WIDTH, NUM::WINDOW_HEIGHT);
+	glutInitWindowPosition(Num::WINDOW_POS, Num::WINDOW_POS);
+	glutInitWindowSize(Num::WINDOW_WIDTH, Num::WINDOW_HEIGHT);
 	glutCreateWindow("openGL");
 
 	//GLEW 초기화하기
@@ -19,7 +19,7 @@ GLvoid main(GLint iArgc, GLchar** cArgv)
 		exit(EXIT_FAILURE);
 	}
 	else
-		std::cout << "GLEW Initialized n";
+		std::cout << "GLEW Initialized" << std::endl;
 
 	CallBackFunc();
 	glutMainLoop();
