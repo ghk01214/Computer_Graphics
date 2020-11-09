@@ -172,7 +172,7 @@ GLvoid ShaderAdmin::Special(GLint iKey, GLint iX, GLint iY)
 	{
 	case GLUT_KEY_LEFT:
 	{
-
+		cView.Rotate('y', -1);
 
 		break;
 	}
@@ -190,6 +190,7 @@ GLvoid ShaderAdmin::Special(GLint iKey, GLint iX, GLint iY)
 	}
 	case GLUT_KEY_DOWN:
 	{
+		cView.Rotate('x', -1);
 
 		break;
 	}
