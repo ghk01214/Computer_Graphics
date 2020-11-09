@@ -101,25 +101,25 @@ GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	case 'w':
 	{
-		cView.Move('z', 1);
+		cView.Move('z', 1, ubKey);
 
 		break;
 	}
 	case 'a':
 	{
-		cView.Move(cAxis, 1);
+		cView.Move('z', -1, ubKey);
 
 		break;
 	}
 	case 's':
 	{
-		cView.Move(cAxis, 1);
+		cView.Move('z', -1, ubKey);
 
 		break;
 	}
 	case 'd':
 	{
-		cView.Move(cAxis, 1);
+		cView.Move('x', 1, ubKey);
 
 		break;
 	}
@@ -146,6 +146,11 @@ GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	default:
 		break;
+	}
+
+	for (GLint i = 0; i < vList.size(); ++i)
+	{
+		vList[i].first->MoveCamera(cView.ReturnCameraPos(), cView.ReturnCameraDirection(), cView.ReturnCameraUp());
 	}
 }
 

@@ -3,6 +3,7 @@
 Camera::Camera()
 {
 	vPos = glm::vec3(0.0f, 0.0f, 5.0f);
+	vTarget = glm::vec3(0.0f, 0.0f, -1.0f);
 	vDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 	vUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	
@@ -11,25 +12,33 @@ Camera::Camera()
 	vDegree = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-GLvoid Camera::Move(GLchar cAxis, GLfloat fSign)
+GLvoid Camera::Move(GLchar cAxis, GLfloat fSign, GLubyte ubKey)
 {
+	GLfloat fSpeed = 0.05f;
+
 	switch (cAxis)
 	{
 	case 'x':
 	{
-		fDistance += fSign * 0.5f;
+		if (ubKey == 'a' || ubKey == 'd')
+			vPos += fSign * fSpeed * glm::normalize(glm::cross(vTarget, vUp));
+		else
+			vPos += fSign * fSpeed * vTarget;
 
 		break;
 	}
 	case 'y':
 	{
-		vPos.y += 0.5f;
+		vPos += fSign * fSpeed * glm::normalize(glm::cross(vTarget, vUp));
 
 		break;
 	}
 	case 'z':
 	{
-		vPos.z += 0.5f;
+		if (ubKey == 'a' || ubKey == 'd')
+			vPos += fSign * fSpeed * glm::normalize(glm::cross(vTarget, vUp));
+		else
+			vPos += fSign * fSpeed * vTarget;
 
 		break;
 	}

@@ -29,7 +29,7 @@ public:
 	glm::vec3 ReturnCameraDirection() { return vDirection; }
 	glm::vec3 ReturnCameraUp() { return vUp; }
 public:
-	GLvoid Move(GLchar cAxis, GLfloat fSign);
+	GLvoid Move(GLchar cAxis, GLfloat fSign, GLubyte ubKey);
 	GLvoid Rotate(GLchar cAxis, GLfloat fSign);
 	GLvoid UpdateDistance();
 };
