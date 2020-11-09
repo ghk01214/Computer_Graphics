@@ -15,21 +15,21 @@ private:
 	glm::vec3 vUp;					//v벡터
 
 	GLfloat fDistance;
-	GLfloat fDegree;
+	glm::vec3 vDegree;
 
 public:
 	Camera();
 	~Camera();
 public:
 	//Input 함수
-	GLvoid InputRoateAngle(GLfloat fDegree) { this->fDegree = fDegree; }
+
 public:
 	//Return 함수
 	glm::vec3 ReturnCameraPos() { return vPos; }
 	glm::vec3 ReturnCameraDirection() { return vDirection; }
 	glm::vec3 ReturnCameraUp() { return vUp; }
 public:
-	GLvoid Move(GLchar);
+	GLvoid Move(GLchar cAxis, GLfloat fSign);
 	GLvoid Rotate(GLchar cAxis, GLfloat fSign);
 	GLvoid UpdateDistance();
 };

@@ -8,16 +8,16 @@ Camera::Camera()
 	
 	UpdateDistance();
 
-	fDegree = 0.0f;
+	vDegree = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-GLvoid Camera::Move(GLchar cAxis)
+GLvoid Camera::Move(GLchar cAxis, GLfloat fSign)
 {
 	switch (cAxis)
 	{
 	case 'x':
 	{
-		vPos.x += 0.5f;
+		fDistance += fSign * 0.5f;
 
 		break;
 	}
@@ -44,20 +44,19 @@ GLvoid Camera::Rotate(GLchar cAxis, GLfloat fSign)
 	{
 	case 'x':
 	{
-		if (fDegree < 90.0f)
-			vPos = glm::vec3(vPos.x, (GLfloat)sin(glm::radians(fSign * fDegree)) * fDistance, (GLfloat)cos(glm::radians(fSign * fDegree)) * fDistance);
-		std::cout << fDegree << std::endl;
+		vPos = glm::vec3(vPos.x, (GLfloat)sin(glm::radians(vDegree.x)) * fDistance, (GLfloat)cos(glm::radians(vDegree.x)) * fDistance);
+
 		break;
 	}
 	case 'y':
 	{
-		vPos = glm::vec3((GLfloat)sin(glm::radians(fSign * fDegree)) * fDistance, vPos.y, (GLfloat)cos(glm::radians(fSign * fDegree)) * fDistance);
+		vPos = glm::vec3((GLfloat)sin(glm::radians(vDegree.x)) * fDistance, vPos.y, (GLfloat)cos(glm::radians(vDegree.x)) * fDistance);
 
 		break;
 	}
 	case 'z':
 	{
-		vPos = glm::vec3((GLfloat)sin(glm::radians(fSign * fDegree)) * fDistance, (GLfloat)cos(glm::radians(fSign * fDegree)) * fDistance, vPos.z);
+		vPos = glm::vec3((GLfloat)sin(glm::radians(fSign * vDegree.z)) * fDistance, (GLfloat)cos(glm::radians(fSign * vDegree.z)) * fDistance, vPos.z);
 
 		break;
 	}
@@ -65,13 +64,13 @@ GLvoid Camera::Rotate(GLchar cAxis, GLfloat fSign)
 		break;
 	}
 
-	if (fDegree > 360.0f)
+	if (vDegree.x > 360.0f)
 	{
-		fDegree = 0.0f;
+		vDegree.x = 0.0f;
 	}
 	else
 	{
-		fDegree += fSign * 1.0f;
+		vDegree.x += fSign * 1.0f;
 	}
 }
 
