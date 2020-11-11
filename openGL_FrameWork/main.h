@@ -3,12 +3,6 @@
 
 ShaderAdmin sAdmin;
 
-//이벤트가 없을 때 호출되는 함수
-GLvoid Idle()
-{
-
-}
-
 //키보드 입력
 GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 {
@@ -95,22 +89,10 @@ GLvoid Mouse(GLint iButton, GLint iState, GLint iX, GLint iY)
 	//iX, iY = 마우스 위치
 }
 
-//마우스 누르고 이동
-GLvoid Motion(GLint iX, GLint iY)
-{
-
-}
-
-//마우스 누르지 않고 이동
-GLvoid Passive(GLint iX, GLint iY)
-{
-
-}
-
 //출력 함수
 GLvoid DrawScene()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	sAdmin.Render();
@@ -128,12 +110,9 @@ GLvoid CallBackFunc()
 {
 	glutDisplayFunc(DrawScene);
 	glutReshapeFunc(Reshape);
-	glutIdleFunc(Idle);
 	glutKeyboardFunc(Keyboard);
 	glutSpecialFunc(Special);
 	glutKeyboardUpFunc(KeyboardUp);
 	glutSpecialUpFunc(SpecialUp);
 	glutMouseFunc(Mouse);
-	glutMotionFunc(Motion);
-	glutPassiveMotionFunc(Passive);
 }
