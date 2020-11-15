@@ -7,16 +7,19 @@ private:
 	GLuint uiVAO;
 	GLuint uiVBO[Num::VBO];
 	GLuint uiEBO;
-	Pos pBarycenter;
+	
+	Pos pCenter;
+	std::vector<Color> vColor;
 public:
 	Shader2D(GLint);
 	~Shader2D();
 public:
-	virtual GLvoid InputBarycenter(Pos pBarycenter) override {};
-	virtual Pos ReturnBarycenter() override { return pBarycenter; }
+	virtual Pos ReturnPos(GLint i) override { return pPos[i]; }
+	virtual Pos ReturnCenter() override { return pCenter; }
 public:
 	virtual GLvoid InputPos(Pos pPos, GLint i) override;
 	virtual GLvoid InputColor(Color cColor) override;
+	virtual GLvoid InputCenter(Pos tempCenter) override { pCenter = tempCenter; }
 public:
 	virtual GLvoid InitializeBuffer() override;
 	virtual GLvoid Render() override;

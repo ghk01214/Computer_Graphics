@@ -6,7 +6,7 @@ Shader1D::Shader1D(GLint k)
 	cColor = new Color[k];
 
 	iVertexNum = k;
-	
+
 	glGenBuffers(Num::VBO, uiVBO);
 }
 
@@ -38,28 +38,31 @@ GLvoid Shader1D::CreateObject(GLint iType, GLint iDirection)
 			case Num::RT:
 			{
 				std::uniform_real_distribution<GLfloat> uDis(1.0f, 2.0f);
-				pPos[1] = { uDis(mGen), uDis(mGen) - 0.5f, 0.0f };
+				pPos[1] = { uDis(mGen), uDis(mGen), 0.0f };
 
 				break;
 			}
 			case Num::LT:
 			{
-				std::uniform_real_distribution<GLfloat> uDis(-2.0f, -1.0f);
-				pPos[1] = { uDis(mGen), uDis(mGen) - 0.5f, 0.0f };
+				std::uniform_real_distribution<GLfloat> uDisX(-2.0f, -1.0f);
+				std::uniform_real_distribution<GLfloat> uDisY(1.0f, 2.0f);
+				pPos[1] = { uDisX(mGen), uDisY(mGen), 0.0f };
 
 				break;
 			}
 			case Num::RB:
 			{
-				std::uniform_real_distribution<GLfloat> uDis(1.0f, 2.0f);
-				pPos[1] = { uDis(mGen), uDis(mGen) - 0.5f, 0.0f };
+				std::uniform_real_distribution<GLfloat> uDisX(1.0f, 2.0f);
+				std::uniform_real_distribution<GLfloat> uDisY(-0.42f, 0.58f);
+				pPos[1] = { uDisX(mGen), uDisY(mGen), 0.0f };
 
 				break;
 			}
 			case Num::LB:
 			{
-				std::uniform_real_distribution<GLfloat> uDis(-2.0f, -1.0f);
-				pPos[1] = { uDis(mGen), uDis(mGen) - 0.5f, 0.0f };
+				std::uniform_real_distribution<GLfloat> uDisX(-2.0f, -1.0f);
+				std::uniform_real_distribution<GLfloat> uDisY(-0.42f, 0.58f);
+				pPos[1] = { uDisX(mGen), uDisY(mGen), 0.0f };
 
 				break;
 			}
@@ -68,14 +71,12 @@ GLvoid Shader1D::CreateObject(GLint iType, GLint iDirection)
 			}
 		}
 
-		if (cColor[0].R < 0.0f || cColor[0].R > 1.0f)
+		if (cColor->R < 0.0f || cColor->R > 1.0f)
 		{
-			for (GLint i = 0; i < iVertexNum; ++i)
-			{
-				cColor[i] = { 1.0f, 1.0f, 1.0f };
-			}
+			cColor[0] = { 0.0f, 0.0f, 0.0f };
+			cColor[1] = { 0.0f, 0.0f, 0.0f };
 		}
-
+		
 		break;
 	}
 	default:

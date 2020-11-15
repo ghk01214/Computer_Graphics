@@ -31,13 +31,13 @@ GLvoid Motion(GLint iX, GLint iY)
 GLvoid Timer(GLint iValue)
 {
 	sAdmin.Timer(iValue);
-	glutTimerFunc(1, Timer, 1);
+	glutTimerFunc(50, Timer, 1);
 }
 
 //출력 함수
 GLvoid DrawScene()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	sAdmin.Render();

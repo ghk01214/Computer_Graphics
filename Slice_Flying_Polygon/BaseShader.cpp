@@ -113,6 +113,8 @@ GLvoid BaseShader::InputTranslatePos(GLfloat fMove, GLchar cAxis, GLfloat fSign)
 	default:
 		break;
 	}
+
+	TranslateWorld();
 }
 GLvoid BaseShader::InputRotateAngle(GLfloat fDegree, GLchar cAxis, GLfloat fSign)
 {

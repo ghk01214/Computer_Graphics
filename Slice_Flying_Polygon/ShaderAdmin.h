@@ -9,7 +9,6 @@ private:
 	Shader1D* s1CutTrack;
 	std::pair<Shader2D*, GLbool> pSpace[3][8];
 	std::vector<std::pair<BaseShader*, std::pair<GLint, GLint>>> vFlyingPolygon;
-	//std::vector<>
 
 	GLint iShaderNum;
 	GLchar cAxis;
@@ -18,12 +17,24 @@ private:
 	std::pair<GLfloat, GLfloat> pMouseStart;
 	std::pair<GLfloat, GLfloat> pMouseEnd;
 
-	Pos pBarycenter;
+	Pos pTempStart;
+	Pos pTempEnd;
+
+	std::vector<Pos> vStart;
+	std::vector<Pos> vEnd;
+	std::vector<GLfloat> vDelta;
 	GLint iDirection;
+
+	GLfloat fSpeed;
+	GLint iShowPath;
+
+	Pos pCrossPoint[2];
 
 public:
 	ShaderAdmin();
 	~ShaderAdmin();
+public:
+	GLfloat FindCrossPoint(GLfloat fX, GLint i);
 public:
 	GLvoid DrawSpace();
 	GLvoid MakeShader(GLint iType);

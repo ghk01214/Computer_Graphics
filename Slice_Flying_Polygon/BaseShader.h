@@ -78,9 +78,10 @@ public:
 
 	virtual GLvoid InputPos(Pos, GLint) = 0;
 	virtual GLvoid InputColor(Color) = 0;
+	virtual GLvoid InputCenter(Pos) = 0;
 public:
-	virtual GLvoid InputBarycenter(Pos pBarycenter) = 0;
-	virtual Pos ReturnBarycenter() = 0;
+	virtual Pos ReturnPos(GLint i) = 0;
+	virtual Pos ReturnCenter() = 0;
 public:
 	GLchar* ReadGLSL(const GLchar*);									//glsl 파일 읽기
 };
