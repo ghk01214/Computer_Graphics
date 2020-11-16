@@ -8,6 +8,9 @@ ShaderAdmin::ShaderAdmin()
 	iShowPath = 0;
 	fSpeed = 0.01f;
 
+	iCutPolygonNum = -1;
+	bCutTimer = GL_FALSE;
+
 	for (GLint i = 0; i < 2; ++i)
 	{
 		pCrossPoint[i] = { -10.0f, -10.0f, 0.0f };
@@ -20,11 +23,6 @@ ShaderAdmin::ShaderAdmin()
 			pSpace[i][j].second = GL_FALSE;
 		}
 	}
-
-	vFlyingPolygon.reserve(10);
-	vStart.reserve(5);
-	vEnd.reserve(5);
-	vFlyingCenter.reserve(5);
 }
 
 GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
@@ -79,11 +77,7 @@ GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 
 GLvoid ShaderAdmin::Mouse(GLint iButton, GLint iState, GLint iX, GLint iY)
 {
-	//iButton = 버튼 파라미터(GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, GLUT_RIGHT_BUTTON)
-	//iState = 상태 파라미터(GLUT_UP, GLUT_DOWN)
-	//iX, iY = 마우스 위치
-
-	//마우스 위치 openGL 좌표로 정규화
+	//마우스 위치를 openGL 좌표계에 맞춰 정규화
 	GLfloat fX = (GLfloat)(iX - glutGet(GLUT_WINDOW_WIDTH) / 2.0f) / ((GLfloat)glutGet(GLUT_WINDOW_WIDTH) / 2.0f);
 	GLfloat fY = (GLfloat)(glutGet(GLUT_WINDOW_HEIGHT) / 2.0f - iY) / ((GLfloat)glutGet(GLUT_WINDOW_HEIGHT) / 2.0f);
 
@@ -94,15 +88,30 @@ GLvoid ShaderAdmin::Mouse(GLint iButton, GLint iState, GLint iX, GLint iY)
 		case GLUT_DOWN:
 		{
 			pMouseStart = std::make_pair(fX, fY);
-			
+
 			break;
 		}
 		case GLUT_UP:
 		{
-			for (GLint i = 0; i < 4; ++i)
+			FindCrossPoint();
+
+			if (pCrossPoint[0].X != -10.0f)
 			{
-				std::cout << "pPos[" << i << "] : ";
-				std::cout << vFlyingPolygon[0].first->ReturnPos(i).X << ", " << vFlyingPolygon[0].first->ReturnPos(i).Y << std::endl;
+				for (GLint i = 0; i < 2; ++i)
+					tempShader[i] = new Shader2D(3);
+
+				for (GLint i = 0; i < 2; ++i)
+				{
+					tempCenter[i] = vFlyingPolygon[iCutPolygonNum].first->ReturnPos(i);
+					tempShader[i]->InputCenter(tempCenter[i]);
+					tempShader[i]->CreateObject(Manage::Triangle, 0);
+				}
+
+				vCutPolygon.push_back(std::make_pair(tempShader[0], tempShader[1]));
+				vCutCenter.push_back(std::make_pair(tempCenter[0], tempCenter[1]));
+				DeleteShader(iCutPolygonNum);
+
+				bCutTimer = GL_TRUE;
 			}
 
 			delete s1CutTrack;
@@ -138,14 +147,14 @@ GLvoid ShaderAdmin::Motion(GLint iX, GLint iY)
 
 	glutPostRedisplay();
 }
-GLvoid ShaderAdmin::Timer(GLint iValue)
+GLvoid ShaderAdmin::TimerFunc(GLint iValue)
 {
 	std::random_device rRandom;
 	std::mt19937 mGen(rRandom());
 	std::uniform_int_distribution<GLint> uDis(Manage::Triangle, Manage::Square);
 	std::uniform_int_distribution<GLint> uDirec(Num::RT, Num::LB);
 
-	//부유 도형을 최대 5개까지만 생성 가능하도록 설정
+	//부유 도형을 사전에 설정한 개수만 생성 가능하도록 설정
 	if (vFlyingPolygon.size() < vFlyingPolygon.capacity())
 	{
 		iDirection = uDirec(mGen);
@@ -153,43 +162,78 @@ GLvoid ShaderAdmin::Timer(GLint iValue)
 		MakeShader(Manage::Line);
 	}
 
+	glutPostRedisplay();
+}
+GLvoid ShaderAdmin::Timer(GLint iValue)
+{
 	//부유 도형 이동
 	for (GLint i = 0; i < vFlyingPolygon.size() / 2; ++i)
 	{
-		GLfloat fX = vFlyingCenter[i].X, fY = vFlyingCenter[i].Y;
-
 		switch (vFlyingPolygon[i * 2].second.second)
 		{
-		case Num::RT: case Num::RB:
+		case Num::RT:
 		{
-			fX += fSpeed;
+			if ((vFlyingCenter[i].X >= vEnd[i].X || vFlyingCenter[i].Y >= vEnd[i].Y) && i < vFlyingPolygon.size() / 2 - 1)
+				DeleteShader(i);
+			else
+				MovePolygon(1, i);
 
 			break;
 		}
-		case Num::LT: case Num::LB:
+		case Num::RB:
 		{
-			fX -= fSpeed;
+			if ((vFlyingCenter[i].X >= vEnd[i].X || vFlyingCenter[i].Y <= vEnd[i].Y) && i < vFlyingPolygon.size() / 2 - 1)
+				DeleteShader(i);
+			else
+				MovePolygon(1, i);
+
+			break;
+		}
+		case Num::LT:
+		{
+			if ((vFlyingCenter[i].X <= vEnd[i].X || vFlyingCenter[i].Y >= vEnd[i].Y) && i < vFlyingPolygon.size() / 2 - 1)
+				DeleteShader(i);
+			else
+				MovePolygon(-1, i);
+
+			break;
+		}
+		case Num::LB:
+		{
+			if ((vFlyingCenter[i].X <= vEnd[i].X || vFlyingCenter[i].Y <= vEnd[i].Y) && i < vFlyingPolygon.size() / 2 - 1)
+				DeleteShader(i);
+			else
+				MovePolygon(-1, i);
 
 			break;
 		}
 		default:
 			break;
 		}
+	}
 
-		fY = ((vEnd[i].Y - vStart[i].Y) / (vEnd[i].X - vStart[i].X)) * (fX - vStart[i].X) + vStart[i].Y;
-		vFlyingCenter[i].X = fX;
-		vFlyingCenter[i].Y = fY;
+	glutPostRedisplay();
+}
+GLvoid ShaderAdmin::FallTimer(GLint iValue)
+{
+	for (GLint i = 0; i <= vCutCenter.size() / 2; ++i)
+	{
+		vCutCenter[i].first.X += 0.001f;
+		vCutCenter[i].first.Y -= 0.01f;
+		vCutCenter[i].second.X -= 0.001f;
+		vCutCenter[i].second.Y -= 0.01f;
 
-		vFlyingPolygon[i * 2].first->InputCenter(vFlyingCenter[i]);
-		vFlyingPolygon[i * 2].first->CreateObject(vFlyingPolygon[i * 2].second.first, vFlyingPolygon[i * 2].second.second);
+		vCutPolygon[i].first->InputCenter(vCutCenter[i].first);
+		vCutPolygon[i].first->CreateObject(Manage::Triangle, 0);
+		vCutPolygon[i].second->InputCenter(vCutCenter[i].second);
+		vCutPolygon[i].second->CreateObject(Manage::Triangle, 0);
 	}
 
 	glutPostRedisplay();
 }
 
-GLfloat ShaderAdmin::FindCrossPoint(GLfloat fX, GLint i)
+GLvoid ShaderAdmin::FindCrossPoint()
 {
-	GLfloat f;
 	for (GLint i = 0; i < vFlyingPolygon.size() / 2; ++i)
 	{
 		GLint iVertexNum = vFlyingPolygon[i * 2].second.first;
@@ -239,7 +283,10 @@ GLfloat ShaderAdmin::FindCrossPoint(GLfloat fX, GLint i)
 						y = ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;
 
 						if (pCrossPoint[0].X == -10.0f)
+						{
 							pCrossPoint[0] = { x, y, 0.0f };
+							iCutPolygonNum = i * 2;
+						}
 						else
 							pCrossPoint[1] = { x, y, 0.0f };
 					}
@@ -252,7 +299,10 @@ GLfloat ShaderAdmin::FindCrossPoint(GLfloat fX, GLint i)
 						y = ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;
 
 						if (pCrossPoint[0].X == -10.0f)
+						{
 							pCrossPoint[0] = { x, y, 0.0f };
+							iCutPolygonNum = i * 2;
+						}
 						else
 							pCrossPoint[1] = { x, y, 0.0f };
 					}
@@ -269,7 +319,10 @@ GLfloat ShaderAdmin::FindCrossPoint(GLfloat fX, GLint i)
 						y = ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;
 
 						if (pCrossPoint[0].X == -10.0f)
+						{
 							pCrossPoint[0] = { x, y, 0.0f };
+							iCutPolygonNum = i * 2;
+						}
 						else
 							pCrossPoint[1] = { x, y, 0.0f };
 					}
@@ -281,7 +334,10 @@ GLfloat ShaderAdmin::FindCrossPoint(GLfloat fX, GLint i)
 						y = ((y2 - y1) / (x2 - x1)) * (x - x1) + y1;
 
 						if (pCrossPoint[0].X == -10.0f)
+						{
 							pCrossPoint[0] = { x, y, 0.0f };
+							iCutPolygonNum = i * 2;
+						}
 						else
 							pCrossPoint[1] = { x, y, 0.0f };
 					}
@@ -294,8 +350,6 @@ GLfloat ShaderAdmin::FindCrossPoint(GLfloat fX, GLint i)
 			}
 		}
 	}
-
-	return f;
 }
 
 //3행 8열 공간 그리기
@@ -373,6 +427,29 @@ GLvoid ShaderAdmin::MakeShader(GLint iType)
 
 	vFlyingPolygon.push_back(std::make_pair(bShader, std::make_pair(iType, iDirection)));
 }
+GLvoid ShaderAdmin::MovePolygon(GLint iSign, GLint i)
+{
+	GLfloat fX = vFlyingCenter[i].X, fY = vFlyingCenter[i].Y;
+
+	fX += iSign * fSpeed;
+	fY = ((vEnd[i].Y - vStart[i].Y) / (vEnd[i].X - vStart[i].X)) * (fX - vStart[i].X) + vStart[i].Y;
+	vFlyingCenter[i].X = fX;
+	vFlyingCenter[i].Y = fY;
+
+	vFlyingPolygon[i * 2].first->InputCenter(vFlyingCenter[i]);
+	vFlyingPolygon[i * 2].first->CreateObject(vFlyingPolygon[i * 2].second.first, vFlyingPolygon[i * 2].second.second);
+}
+GLvoid ShaderAdmin::DeleteShader(GLint i)
+{
+	vStart.erase(vStart.begin() + i);
+	vEnd.erase(vEnd.begin() + i);
+	vFlyingCenter.erase(vFlyingCenter.begin() + i);
+
+	delete vFlyingPolygon[i * 2].first;
+	delete vFlyingPolygon[i * 2 + 1].first;
+	vFlyingPolygon.erase(vFlyingPolygon.begin() + i * 2, vFlyingPolygon.begin() + i * 2 + 2);
+}
+
 
 GLvoid ShaderAdmin::Render()
 {
@@ -385,6 +462,15 @@ GLvoid ShaderAdmin::Render()
 			vFlyingPolygon[i * 2 + 1].first->Render();
 
 		vFlyingPolygon[i * 2].first->Render();
+	}
+
+	if (bCutTimer)
+	{
+		for (GLint i = 0; i <= vCutPolygon.size() / 2; ++i)
+		{
+			vCutPolygon[i].first->Render();
+			vCutPolygon[i].second->Render();
+		}
 	}
 
 	//마우스 궤적 표시

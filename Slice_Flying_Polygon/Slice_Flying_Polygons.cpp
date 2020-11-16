@@ -6,7 +6,7 @@ GLvoid main(GLint iArgc, GLchar** cArgv)
 {
 	//윈도우 생성하기
 	glutInit(&iArgc, cArgv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(Num::WINDOW_POS, Num::WINDOW_POS);
 	glutInitWindowSize(Num::WINDOW_WIDTH, Num::WINDOW_HEIGHT);
 	glutCreateWindow("Slice Flying Polygon");

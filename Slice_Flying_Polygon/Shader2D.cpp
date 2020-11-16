@@ -112,7 +112,7 @@ GLvoid Shader2D::CreateObject(GLint iType, GLint iDirection)
 
 	if (cColor->R < 0.0f || cColor->R > 1.0f)
 	{
-		std::uniform_int_distribution<GLint> uDis(0, 6);
+		std::uniform_int_distribution<GLint> uDis(0, 5);
 		GLint iTemp = uDis(mGen);
 
 		for (GLint i = 0; i < iVertexNum; ++i)
@@ -157,7 +157,5 @@ GLvoid Shader2D::Render()
 
 Shader2D::~Shader2D()
 {
-	delete[] pPos;
-	delete[] cColor;
-	delete[] iIndex;
+
 }

@@ -107,5 +107,6 @@ GLchar* BaseShader::ReadGLSL(const GLchar* cFile)
 
 BaseShader::~BaseShader()
 {
-
+	delete[] pPos;
+	delete[] cColor;
 }

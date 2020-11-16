@@ -117,6 +117,5 @@ GLvoid Shader1D::Render()
 
 Shader1D::~Shader1D()
 {
-	delete[] pPos;
-	delete[] cColor;
+
 }
