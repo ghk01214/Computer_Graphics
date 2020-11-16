@@ -6,16 +6,25 @@ ShaderAdmin::ShaderAdmin()
 	fSign = 1.0f;
 
 	iShowPath = 0;
-	fSpeed = 0.0f;
+	fSpeed = 0.01f;
 
 	for (GLint i = 0; i < 2; ++i)
 	{
 		pCrossPoint[i] = { -10.0f, -10.0f, 0.0f };
 	}
 
-	vFlyingPolygon.reserve(2);
+	for (GLint i = 0; i < 3; ++i)
+	{
+		for (GLint j = 0; j < 8; ++j)
+		{
+			pSpace[i][j].second = GL_FALSE;
+		}
+	}
+
+	vFlyingPolygon.reserve(10);
 	vStart.reserve(5);
 	vEnd.reserve(5);
+	vFlyingCenter.reserve(5);
 }
 
 GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
@@ -147,19 +156,19 @@ GLvoid ShaderAdmin::Timer(GLint iValue)
 	//부유 도형 이동
 	for (GLint i = 0; i < vFlyingPolygon.size() / 2; ++i)
 	{
-		GLfloat fX, fY;
+		GLfloat fX = vFlyingCenter[i].X, fY = vFlyingCenter[i].Y;
 
 		switch (vFlyingPolygon[i * 2].second.second)
 		{
 		case Num::RT: case Num::RB:
 		{
-			fX = 0.01f + fSpeed;
+			fX += fSpeed;
 
 			break;
 		}
 		case Num::LT: case Num::LB:
 		{
-			fX = -0.01f - fSpeed;
+			fX -= fSpeed;
 
 			break;
 		}
@@ -167,10 +176,12 @@ GLvoid ShaderAdmin::Timer(GLint iValue)
 			break;
 		}
 
-		fY = (vEnd[i].Y - vStart[i].Y) / (vEnd[i].X - vStart[i].X) * fX;
+		fY = ((vEnd[i].Y - vStart[i].Y) / (vEnd[i].X - vStart[i].X)) * (fX - vStart[i].X) + vStart[i].Y;
+		vFlyingCenter[i].X = fX;
+		vFlyingCenter[i].Y = fY;
 
-		vFlyingPolygon[i * 2].first->InputTranslatePos(fX, 'x', 1);
-		vFlyingPolygon[i * 2].first->InputTranslatePos(fY, 'y', 1);
+		vFlyingPolygon[i * 2].first->InputCenter(vFlyingCenter[i]);
+		vFlyingPolygon[i * 2].first->CreateObject(vFlyingPolygon[i * 2].second.first, vFlyingPolygon[i * 2].second.second);
 	}
 
 	glutPostRedisplay();
@@ -298,7 +309,6 @@ GLvoid ShaderAdmin::DrawSpace()
 		for (GLint j = 0; j < 8; ++j)
 		{
 			pSpace[i][j].first = new Shader2D(4);
-			pSpace[i][j].second = GL_FALSE;
 
 			Color cColor = { 0.0f, 1.0f, 0.0f };
 
@@ -354,6 +364,7 @@ GLvoid ShaderAdmin::MakeShader(GLint iType)
 	{
 		pTempStart = bShader->ReturnCenter();
 		vStart.push_back(pTempStart);
+		vFlyingCenter.push_back(pTempStart);
 	}
 	else
 	{

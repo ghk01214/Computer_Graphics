@@ -25,6 +25,8 @@ private:
 	std::vector<GLfloat> vDelta;
 	GLint iDirection;
 
+	std::vector<Pos> vFlyingCenter;
+
 	GLfloat fSpeed;
 	GLint iShowPath;
 

@@ -12,7 +12,6 @@ Shader2D::Shader2D(GLint k)
 
 	vColor.push_back({ 0.0f, 0.0f, 0.0f });
 	vColor.push_back({ 0.0f, 0.0f, 1.0f });
-	vColor.push_back({ 0.0f, 1.0f, 0.0f });
 	vColor.push_back({ 0.0f, 1.0f, 1.0f });
 	vColor.push_back({ 1.0f, 0.0f, 0.0f });
 	vColor.push_back({ 1.0f, 1.0f, 0.0f });
@@ -94,7 +93,7 @@ GLvoid Shader2D::CreateObject(GLint iType, GLint iDirection)
 	}
 	case Manage::Square:
 	{
-		if (pPos->X < -2.0f || pPos->X > 2.0f)
+		if (pCenter.Y > -0.58)
 		{
 			pPos[0] = { pCenter.X - 0.15f, pCenter.Y + 0.15f, 0.0f };
 			pPos[1] = { pCenter.X - 0.15f, pCenter.Y - 0.15f, 0.0f };
@@ -151,8 +150,6 @@ GLvoid Shader2D::InitializeBuffer()
 GLvoid Shader2D::Render()
 {
 	glUseProgram(ReturnShaderID());
-
-	TransformShader();
 
 	glBindVertexArray(ReturnVAO());
 	glDrawElements(GL_TRIANGLES, iIndexNum * 3, GL_UNSIGNED_INT, 0);
