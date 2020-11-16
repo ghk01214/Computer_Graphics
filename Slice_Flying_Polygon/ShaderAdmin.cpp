@@ -96,9 +96,6 @@ GLvoid ShaderAdmin::Mouse(GLint iButton, GLint iState, GLint iX, GLint iY)
 				std::cout << vFlyingPolygon[0].first->ReturnPos(i).X << ", " << vFlyingPolygon[0].first->ReturnPos(i).Y << std::endl;
 			}
 
-			//std::cout << pCrossPoint[0].X << ", " << pCrossPoint[0].Y << std::endl;
-			//std::cout << pCrossPoint[1].X << ", " << pCrossPoint[1].Y << std::endl;
-
 			delete s1CutTrack;
 			s1CutTrack = GLM_NULLPTR;
 
