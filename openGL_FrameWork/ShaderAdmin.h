@@ -3,6 +3,7 @@
 #include "Shader1D.h"
 #include "Shader2D.h"
 #include "Shader3D.h"
+#include "player.h"
 
 class ShaderAdmin
 {
@@ -13,6 +14,8 @@ private:
 	GLint iShaderNum;
 	GLchar cAxis;
 	GLfloat fSign;
+
+	Player* pPlayer;
 
 	//Ä«¸Þ¶ó
 	Camera cView;

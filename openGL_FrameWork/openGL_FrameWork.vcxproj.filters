@@ -25,6 +25,9 @@
     <Filter Include="소스 파일\obj">
       <UniqueIdentifier>{cc57b157-ef1d-4227-b5ac-319b71e524d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\player">
+      <UniqueIdentifier>{cc91fe84-5808-45ba-887d-c572d059a133}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>소스 파일\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>소스 파일\player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>소스 파일\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>소스 파일\player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

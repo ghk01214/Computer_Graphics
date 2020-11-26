@@ -5,10 +5,9 @@ BaseShader::BaseShader()
 	mTranslate = glm::mat4(1.0f);
 	mRotate = glm::mat4(1.0f);
 	mScale = glm::mat4(1.0f);
+
 	mWorld = glm::mat4(1.0f);
-
-	mView = glm::lookAt(vCameraPos, vCameraDirection, vCameraUp);
-
+	mView = glm::mat4(1.0f);
 	mProjection = glm::mat4(1.0f);
 
 	uiWorldLocation = 0;
@@ -154,19 +153,25 @@ GLvoid BaseShader::InputScaleSize(GLfloat fSize, GLchar cAxis, GLfloat fSign)
 	{
 	case 'x':
 	{
-		vSize = glm::vec3(this->fSize, 0.0f, 0.0f);
+		vSize = glm::vec3(this->fSize, vSize.y, vSize.z);
 
 		break;
 	}
 	case 'y':
 	{
-		vSize = glm::vec3(0.0f, this->fSize, 0.0f);
+		vSize = glm::vec3(vSize.x, this->fSize, vSize.z);
 
 		break;
 	}
 	case 'z':
 	{
-		vSize = glm::vec3(0.0f, 0.0f, this->fSize);
+		vSize = glm::vec3(vSize.x, vSize.y, this->fSize);
+
+		break;
+	}
+	case 'a':
+	{
+		vSize = glm::vec3(this->fSize, this->fSize, this->fSize);
 
 		break;
 	}
@@ -179,19 +184,19 @@ GLvoid BaseShader::InputScaleSize(GLfloat fSize, GLchar cAxis, GLfloat fSign)
 GLvoid BaseShader::TranslateWorld()
 {
 	mTranslate = glm::translate(mTranslate, vMove);
-	mWorld = mWorld * mTranslate;
+	mWorld *= mTranslate;
 	mTranslate = glm::mat4(1.0f);
 }
 GLvoid BaseShader::RotateWorld()
 {
 	mRotate = glm::rotate(mRotate, glm::radians(fDegree), vAxis);
-	mWorld = mWorld * mRotate;
+	mWorld *= mRotate;
 	mRotate = glm::mat4(1.0f);
 }
 GLvoid BaseShader::ScaleWorld()
 {
 	mScale = glm::scale(mScale, vSize);
-	mWorld = mWorld * mScale;
+	mWorld *= mScale;
 	mScale = glm::mat4(1.0f);
 }
 GLvoid BaseShader::ResetWorldTransform()
@@ -200,9 +205,9 @@ GLvoid BaseShader::ResetWorldTransform()
 }
 
 //뷰 변환 함수
-GLvoid BaseShader::MoveCamera(glm::vec3 vCameraPos, glm::vec3 vCameraDirection, glm::vec3 vCameraUp)
+GLvoid BaseShader::MoveCamera(Camera cView)
 {
-	mView = glm::lookAt(vCameraPos, vCameraDirection, vCameraUp);
+	mView = glm::lookAt(cView.ReturnCameraPos(), cView.ReturnCameraDirection(), cView.ReturnCameraUp());
 }
 
 //전체 변환 함수

@@ -2,17 +2,10 @@
 
 ShaderAdmin::ShaderAdmin()
 {
-	//for (GLint i = Manage::X; i <= Manage::Z; ++i)
-	//{
-	//	Pos temp = { 0.0f, 0.0f, 0.0f };
-	//	bShader = new Shader1D(2);
-
-	//	bShader->CreateObject(i, temp);
-	//	vNorm.push_back(std::make_pair(bShader, std::make_pair(i, temp)));
-	//}
-
 	iShaderNum = -1;
 	fSign = 0.0f;
+
+	pPlayer = new Player(cView);
 }
 
 //조작 중인 셰이더 정보 출력
@@ -101,25 +94,25 @@ GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	}
 	case 'w':
 	{
-		cView.Move('z', 1, ubKey);
+		cView.Move('z', 1);
 
 		break;
 	}
 	case 'a':
 	{
-		cView.Move('z', -1, ubKey);
+		cView.Move('x', -1);
 
 		break;
 	}
 	case 's':
 	{
-		cView.Move('z', -1, ubKey);
+		cView.Move('z', -1);
 
 		break;
 	}
 	case 'd':
 	{
-		cView.Move('x', 1, ubKey);
+		cView.Move('x', 1);
 
 		break;
 	}
@@ -132,7 +125,7 @@ GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 	//키를 누르는 동안 신축변환
 	case 'v':
 	{
-		vList[iShaderNum].first->InputScaleSize(1.0f, cAxis, fSign);
+		vList[iShaderNum].first->InputScaleSize(0.1f, cAxis, fSign);
 		vList[iShaderNum].first->ScaleWorld();
 
 		break;
@@ -150,8 +143,10 @@ GLvoid ShaderAdmin::Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 
 	for (GLint i = 0; i < vList.size(); ++i)
 	{
-		vList[i].first->MoveCamera(cView.ReturnCameraPos(), cView.ReturnCameraDirection(), cView.ReturnCameraUp());
+		vList[i].first->MoveCamera(cView);
 	}
+
+	pPlayer->InputCameraAttribute(cView);
 }
 
 //ASCII가 아닌 특수 키 입력
@@ -219,8 +214,10 @@ GLvoid ShaderAdmin::Special(GLint iKey, GLint iX, GLint iY)
 
 	for (GLint i = 0; i < vList.size(); ++i)
 	{
-		vList[i].first->MoveCamera(cView.ReturnCameraPos(), cView.ReturnCameraDirection(), cView.ReturnCameraUp());
+		vList[i].first->MoveCamera(cView);
 	}
+
+	pPlayer->InputCameraAttribute(cView);
 }
 
 GLvoid ShaderAdmin::MakeShader(GLint iType, Pos pPos)
@@ -278,7 +275,7 @@ GLvoid ShaderAdmin::MakeShader(GLint iType, Pos pPos)
 	}
 
 	vList.push_back(std::make_pair(bShader, std::make_pair(iType, pPos)));
-	vList[iShaderNum].first->MoveCamera(cView.ReturnCameraPos(), cView.ReturnCameraDirection(), cView.ReturnCameraUp());
+	vList[iShaderNum].first->MoveCamera(cView);
 }
 
 GLvoid ShaderAdmin::Render()
@@ -291,10 +288,21 @@ GLvoid ShaderAdmin::Render()
 	{
 		vList[i].first->CreateObject(vList[i].second.first, vList[i].second.second);
 	}
+
+	pPlayer->Render();
 }
 
 ShaderAdmin::~ShaderAdmin()
 {
-	if (bShader != nullptr)
+	if (bShader != GLM_NULLPTR)
+	{
 		delete bShader;
+		bShader == GLM_NULLPTR;
+	}
+
+	if (pPlayer != GLM_NULLPTR)
+	{
+		delete pPlayer;
+		pPlayer == GLM_NULLPTR;
+	}
 }

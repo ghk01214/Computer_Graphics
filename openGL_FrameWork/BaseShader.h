@@ -22,9 +22,6 @@ private:
 	GLuint uiWorldLocation;			//월드 변환 후 객체 위치
 
 	//뷰 변환
-	glm::vec3 vCameraPos;			//카메라 위치
-	glm::vec3 vCameraDirection;		//카메라가 바라보는 방향
-	glm::vec3 vCameraUp;			//카메라 v벡터
 	glm::mat4 mView;				//뷰 변환 행렬
 	GLuint uiViewLocation;			//뷰 변환 우 객체 위치
 
@@ -63,6 +60,9 @@ public:
 	GLvoid InputRotateAngle(GLfloat fDegree, GLchar cAxis, GLfloat fSign);			//객체 회전 각도 Input
 	GLvoid InputScaleSize(GLfloat fSize, GLchar cAxis, GLfloat fSign);				//객체 신축량 Input
 
+	GLvoid InputVertexNum(GLint iVertexNum) { this->iVertexNum = iVertexNum; }
+	GLvoid InputIndexNum(GLint iIndexNum) { this->iIndexNum = iIndexNum; }
+
 	//뷰 변환 인자 Input 함수
 	//GLvoid InputCameraPos(glm::vec3 vCameraPos) { this->vCameraPos = vCameraPos; }
 	//GLvoid InputCameraDirection(glm::vec3 vCameraDirection) { this->vCameraDirection = vCameraDirection; }
@@ -71,6 +71,9 @@ public:
 	//Return 함수
 	GLuint ReturnShaderID() { return uiShaderID; }
 	GLuint ReturnVAO() { return uiVAO; }
+
+	GLint ReturnVertexNum() { return iVertexNum; }
+	GLint ReturnIndexNum() { return iIndexNum; }
 public:
 	//셰이더 생성 함수
 	GLuint MakeVertexShader();											//Vertex Shader 생성
@@ -84,7 +87,7 @@ public:
 	GLvoid ResetWorldTransform();										//월드 변환 초기화
 
 	//뷰 변환
-	GLvoid MoveCamera(glm::vec3 vCameraPos, glm::vec3 vCameraDirection, glm::vec3 vCameraUp);												//카메라 이동
+	GLvoid MoveCamera(Camera cView);												//카메라 이동
 
 	//전체 변환 함수
 	GLvoid TransformShader();											//전체 변환

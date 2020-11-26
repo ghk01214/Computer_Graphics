@@ -42,6 +42,8 @@ GLvoid Shader2D::Render()
 {
 	glUseProgram(ReturnShaderID());
 
+	TransformShader();
+
 	glBindVertexArray(ReturnVAO());
 	glDrawElements(GL_TRIANGLES, iIndexNum * 3, GL_UNSIGNED_INT, 0);
 }

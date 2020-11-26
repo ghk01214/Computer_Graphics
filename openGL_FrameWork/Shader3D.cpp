@@ -95,7 +95,7 @@ GLvoid Shader3D::CreateObject(GLint iType, Pos pCenter)
 	{
 		for (GLint i = 0; i < iVertexNum; ++i)
 		{
-			cColor[i] = { uDis(mGen), uDis(mGen), uDis(mGen) };
+			cColor[i] = { 0.0f, 1.0f, 0.0f };
 		}
 	}
 

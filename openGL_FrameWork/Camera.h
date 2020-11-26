@@ -14,8 +14,13 @@ private:
 
 	glm::vec3 vUp;					//v벡터
 
-	GLfloat fDistance;
-	glm::vec3 vDegree;
+	GLfloat fDistance;				//카메라와 바라보는 좌표 사이의 거리
+	GLfloat fSpeed;
+	glm::vec3 vDegree;				//회전 각도
+
+	GLfloat fDeltaTime;
+	GLfloat fCurrentFrame;
+	GLfloat fLastFrame;
 
 public:
 	Camera();
@@ -29,7 +34,9 @@ public:
 	glm::vec3 ReturnCameraDirection() { return vDirection; }
 	glm::vec3 ReturnCameraUp() { return vUp; }
 public:
-	GLvoid Move(GLchar cAxis, GLfloat fSign, GLubyte ubKey);
+	GLvoid Move(GLchar cAxis, GLfloat fSign);
 	GLvoid Rotate(GLchar cAxis, GLfloat fSign);
+
 	GLvoid UpdateDistance();
+	GLfloat LinearFunction(GLfloat fPos, GLfloat fSign);
 };

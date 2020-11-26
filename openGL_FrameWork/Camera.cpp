@@ -2,49 +2,49 @@
 
 Camera::Camera()
 {
-	vPos = glm::vec3(0.0f, 0.0f, 5.0f);
-	vTarget = glm::vec3(0.0f, 0.0f, -1.0f);
+	vPos = glm::vec3(0.0f, 0.0f, -5.0f);
+	vTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 	vDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 	vUp = glm::vec3(0.0f, 1.0f, 0.0f);
-	
-	UpdateDistance();
 
-	vDegree = glm::vec3(0.0f, 0.0f, 0.0f);
+	fDeltaTime = 0.0f;
+	fLastFrame = 0.0f;
+
+	UpdateDistance();
+	fSpeed = 0.1f;
+
+	vDegree = glm::vec3(180.0f, 180.0f, 0.0f);
 }
 
-GLvoid Camera::Move(GLchar cAxis, GLfloat fSign, GLubyte ubKey)
+GLvoid Camera::Move(GLchar cAxis, GLfloat fSign)
 {
-	GLfloat fSpeed = 0.05f;
-
 	switch (cAxis)
 	{
 	case 'x':
 	{
-		if (ubKey == 'a' || ubKey == 'd')
-			vPos += fSign * fSpeed * glm::normalize(glm::cross(vTarget, vUp));
-		else
-			vPos += fSign * fSpeed * vTarget;
+		vPos.x += fSign * fSpeed;
+		vDirection.x += fSign * fSpeed;
 
-		break;
-	}
-	case 'y':
-	{
-		vPos += fSign * fSpeed * glm::normalize(glm::cross(vTarget, vUp));
+		vPos.z = LinearFunction(vPos.x, -1);
+		vDirection.z = LinearFunction(vDirection.x, -1);
 
 		break;
 	}
 	case 'z':
 	{
-		if (ubKey == 'a' || ubKey == 'd')
-			vPos += fSign * fSpeed * glm::normalize(glm::cross(vTarget, vUp));
-		else
-			vPos += fSign * fSpeed * vTarget;
+		vPos.z += fSign * fSpeed;
+		vDirection.z += fSign * fSpeed;
+
+		//LinearFunction(vPos.x, 1);
+		//LinearFunction(vDirection.x, 1);
 
 		break;
 	}
 	default:
 		break;
 	}
+
+	UpdateDistance();
 }
 
 GLvoid Camera::Rotate(GLchar cAxis, GLfloat fSign)
@@ -53,43 +53,44 @@ GLvoid Camera::Rotate(GLchar cAxis, GLfloat fSign)
 	{
 	case 'x':
 	{
-		vPos = glm::vec3(vPos.x, (GLfloat)sin(glm::radians(vDegree.x)) * fDistance, (GLfloat)cos(glm::radians(vDegree.x)) * fDistance);
+		vPos.y = (GLfloat)sin(glm::radians(vDegree.y)) * fDistance;
+		vPos.z = (GLfloat)cos(glm::radians(vDegree.y)) * fDistance;
+
+		if (vDegree.y < 269.0f && vDegree.y > 89.0f)
+		{
+			vDegree.y += fSign * 1.0f;
+		}
 
 		break;
 	}
 	case 'y':
 	{
-		vPos = glm::vec3((GLfloat)sin(glm::radians(vDegree.x)) * fDistance, vPos.y, (GLfloat)cos(glm::radians(vDegree.x)) * fDistance);
+		vPos.x = (GLfloat)sin(glm::radians(vDegree.x)) * fDistance;
+		vPos.z = (GLfloat)cos(glm::radians(vDegree.x)) * fDistance;
 
-		break;
-	}
-	case 'z':
-	{
-		vPos = glm::vec3((GLfloat)sin(glm::radians(fSign * vDegree.z)) * fDistance, (GLfloat)cos(glm::radians(fSign * vDegree.z)) * fDistance, vPos.z);
+		vDegree.x += fSign * 1.0f;
 
 		break;
 	}
 	default:
 		break;
 	}
-
-	if (vDegree.x > 360.0f)
-	{
-		vDegree.x = 0.0f;
-	}
-	else
-	{
-		vDegree.x += fSign * 1.0f;
-	}
 }
 
 GLvoid Camera::UpdateDistance()
 {
-	GLfloat distanceX = pow(vPos.x - vTarget.x, 2);
-	GLfloat distanceY = pow(vPos.y - vTarget.y, 2);
-	GLfloat distanceZ = pow(vPos.z - vTarget.z, 2);
+	GLfloat distanceX = pow(vPos.x - vDirection.x, 2);
+	GLfloat distanceY = pow(vPos.y - vDirection.y, 2);
+	GLfloat distanceZ = pow(vPos.z - vDirection.z, 2);
 
 	fDistance = sqrtf(distanceX + distanceY + distanceZ);
+}
+
+GLfloat Camera::LinearFunction(GLfloat fPos, GLfloat fSign)
+{
+	GLfloat fGrade = (vDirection.z - vPos.z) / (vDirection.x - vPos.x);
+
+	return fGrade * (fSign * fPos - vPos.x) + vPos.z;
 }
 
 Camera::~Camera()

@@ -36,6 +36,8 @@ GLvoid Shader1D::Render()
 {
 	glUseProgram(ReturnShaderID());
 
+	TransformShader();
+
 	glBindVertexArray(uiVAO);
 	glDrawArrays(GL_LINES, 0, 2);
 }
