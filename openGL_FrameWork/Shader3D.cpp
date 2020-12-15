@@ -16,7 +16,7 @@ GLvoid Shader3D::CreateObject(GLint iType)
 
 GLvoid Shader3D::CreateObject(GLint iType, glm::vec3 color)
 {
-	FILE* fObj;
+	FILE* fObj = GLM_NULLPTR;
 
 	switch (iType)
 	{

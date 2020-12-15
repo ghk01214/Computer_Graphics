@@ -67,10 +67,7 @@ GLvoid SpecialUp(GLint iKey, GLint iX, GLint iY)
 	GLUT_KEY_HOME, GLUT_KEY_END, GLUT_KEY_INSERT, GLUT_KEY_PAGE_UP, GLUT_KEY_PAGE_DOWN
 	*/
 
-	switch (iKey)
-	{
 
-	}
 }
 
 //마우스 입력
