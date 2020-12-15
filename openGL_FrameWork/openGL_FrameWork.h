@@ -1,45 +1,37 @@
-#pragma once
-#include "ShaderAdmin.h"
+О╩©#pragma once
+#include "RunTime_FrameWork.h"
 
-ShaderAdmin sAdmin;
+RunTime_FrameWork frame;
 
-//е╟╨╦╣Е ют╥б
+//М┌╓КЁ╢К⌠° Л·┘К═╔
 GLvoid Keyboard(GLubyte ubKey, GLint iX, GLint iY)
 {
-	//ubKey = ют╥б е╟╨╦╣Е
-	//iX, iY = е╟╨╦╣Е ют╥б ╫ц ╦╤©Л╫╨ ю╖д║
+	//ubKey = Л·┘К═╔ М┌╓КЁ╢К⌠°
+	//iX, iY = М┌╓КЁ╢К⌠° Л·┘К═╔ Л▀° К╖┬Л ╟Л┼╓ Л°└Л╧≤
 
-	sAdmin.Keyboard(ubKey, iX, iY);
+	frame.KeyboardDown(ubKey, iX, iY);
 
 	switch (ubKey)
 	{
-	case 'l':
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		break;
-	}
-	case 'f':
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		break;
-	}
-	//а╬╥А
+	//Л╒┘Кё▄
 	case 'Q': case 'q':
 	{
 		exit(0);
 		break;
 	}
+	default:
+		break;
 	}
 
 	glutPostRedisplay();
 }
 
-//ASCII╟║ ╬ф╢я ф╞╪Ж е╟ ют╥б
+//ASCIIЙ╟─ Л∙└К▀▄ М┼╧Л┬≤ М┌╓ Л·┘К═╔
 GLvoid Special(GLint iKey, GLint iX, GLint iY)
 {
-	//ubKey = ют╥б е╟╨╦╣Е
-	//iX, iY = е╟╨╦╣Е ют╥б ╫ц ╦╤©Л╫╨ ю╖д║
-		
+	//ubKey = Л·┘К═╔ М┌╓КЁ╢К⌠°
+	//iX, iY = М┌╓КЁ╢К⌠° Л·┘К═╔ Л▀° К╖┬Л ╟Л┼╓ Л°└Л╧≤
+
 	/*
 	KEY_MAP
 	GLUT_KEY_F1 ~ GLUT_KEY_F12
@@ -47,26 +39,26 @@ GLvoid Special(GLint iKey, GLint iX, GLint iY)
 	GLUT_KEY_HOME, GLUT_KEY_END, GLUT_KEY_INSERT, GLUT_KEY_PAGE_UP, GLUT_KEY_PAGE_DOWN
 	*/
 
-	sAdmin.Special(iKey, iX, iY);
+	frame.SpecialKeyDown(iKey, iX, iY);
 
 	glutPostRedisplay();
 }
 
-//е╟╨╦╣Е ╤╪╠Б
+//М┌╓КЁ╢К⌠° К√╪Й╦╟
 GLvoid KeyboardUp(GLubyte ubKey, GLint iX, GLint iY)
 {
-	//ubKey = ют╥б е╟╨╦╣Е
-	//iX, iY = е╟╨╦╣Е ют╥б ╫ц ╦╤©Л╫╨ ю╖д║
+	//ubKey = Л·┘К═╔ М┌╓КЁ╢К⌠°
+	//iX, iY = М┌╓КЁ╢К⌠° Л·┘К═╔ Л▀° К╖┬Л ╟Л┼╓ Л°└Л╧≤
 
 
 	glutPostRedisplay();
 }
 
-//ASCII╟║ ╬ф╢я ф╞╪Ж е╟ ╤╪╠Б
+//ASCIIЙ╟─ Л∙└К▀▄ М┼╧Л┬≤ М┌╓ К√╪Й╦╟
 GLvoid SpecialUp(GLint iKey, GLint iX, GLint iY)
 {
-	//ubKey = ют╥б е╟╨╦╣Е
-	//iX, iY = е╟╨╦╣Е ют╥б ╫ц ╦╤©Л╫╨ ю╖д║
+	//ubKey = Л·┘К═╔ М┌╓КЁ╢К⌠°
+	//iX, iY = М┌╓КЁ╢К⌠° Л·┘К═╔ Л▀° К╖┬Л ╟Л┼╓ Л°└Л╧≤
 
 	/*
 	KEY_MAP
@@ -81,26 +73,25 @@ GLvoid SpecialUp(GLint iKey, GLint iX, GLint iY)
 	}
 }
 
-//╦╤©Л╫╨ ют╥б
+//К╖┬Л ╟Л┼╓ Л·┘К═╔
 GLvoid Mouse(GLint iButton, GLint iState, GLint iX, GLint iY)
 {
-	//iButton = ╧Жф╟ фд╤С╧лем(GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, GLUT_RIGHT_BUTTON)
-	//iState = ╩Себ фд╤С╧лем(GLUT_UP, GLUT_DOWN)
-	//iX, iY = ╦╤©Л╫╨ ю╖д║
+	//iButton = К╡└М┼╪ М▄▄К²╪К╞╦М└╟(GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, GLUT_RIGHT_BUTTON)
+	//iState = Л┐│М┐° М▄▄К²╪К╞╦М└╟(GLUT_UP, GLUT_DOWN)
+	//iX, iY = К╖┬Л ╟Л┼╓ Л°└Л╧≤
 }
 
-//цБ╥б гт╪Ж
+//Л╤°К═╔ М∙╗Л┬≤
 GLvoid DrawScene()
 {
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	sAdmin.Render();
-
+	frame.Render();
 	glutSwapBuffers();
 }
 
-//х╜╦И е╘╠Б ╨╞х╜ юл╨╔ф╝ цЁ╦╝ гт╪Ж
+//М≥■К╘╢ М│╛Й╦╟ КЁ─М≥■ Л²╢К╡╓М┼╦ Л╡≤К╕╛ М∙╗Л┬≤
 GLvoid Reshape(GLint iWidth, GLint iHeight)
 {
 	glViewport(0, 0, iWidth, iHeight);

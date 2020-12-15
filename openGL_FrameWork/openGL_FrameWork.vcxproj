@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{93d33ce8-fb58-403f-a186-d481a5c532ca}</ProjectGuid>
+    <ProjectGuid>{50037faf-0509-4d45-923f-92dbadfb36cb}</ProjectGuid>
     <RootNamespace>openGLFrameWork</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -88,11 +88,12 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>glew32.lib freeglut.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>freeglut.lib glew32.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,36 +143,31 @@
   <ItemGroup>
     <ClCompile Include="BaseShader.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="Shader1D.cpp" />
-    <ClCompile Include="Shader2D.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="openGL_FrameWork.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RunTime_FrameWork.cpp" />
+    <ClCompile Include="Shader2D.cpp" />
     <ClCompile Include="Shader3D.cpp" />
-    <ClCompile Include="ShaderAdmin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseShader.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="define.h" />
-    <ClInclude Include="header.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="Shader1D.h" />
+    <ClInclude Include="openGL_FrameWork.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="RunTime_FrameWork.h" />
     <ClInclude Include="Shader2D.h" />
     <ClInclude Include="Shader3D.h" />
-    <ClInclude Include="ShaderAdmin.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Fragment_Shader.glsl" />
-    <None Include="Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="cone.txt" />
     <Text Include="cube.txt" />
     <Text Include="sphere.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Fragment_Shader.glsl" />
+    <None Include="Vertex_Shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

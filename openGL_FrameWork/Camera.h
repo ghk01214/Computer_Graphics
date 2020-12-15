@@ -1,42 +1,42 @@
 #pragma once
-#include "define.h"
 
 class Camera
 {
 private:
-	glm::vec3 vPos;					//카메라 위치
+	glm::vec3 vPos;				//카메라 위치
+	glm::vec3 vTarget;			//카메라 초점 위치
+	glm::vec3 vUp;				//v(Up) 벡터
 
-	glm::vec3 vTarget;				//카메라가 바라보는 좌표
-	glm::vec3 vDirection;			//카메라가 바라보는 방향
+	glm::vec3 vDirection;
+private:
+	glm::vec3 vDegree;			//카메라 회전 각도
+	glm::vec3 deltaPos;
+	glm::vec3 deltaTarget;
 
-	glm::vec3 vUPVec;				//UP 벡터
-	glm::vec3 vRight;				//u벡터
-
-	glm::vec3 vUp;					//v벡터
-
-	GLfloat fDistance;				//카메라와 바라보는 좌표 사이의 거리
-	GLfloat fSpeed;
-	glm::vec3 vDegree;				//회전 각도
-
-	GLfloat fDeltaTime;
-	GLfloat fCurrentFrame;
-	GLfloat fLastFrame;
-
+	glm::vec3 vPosPin;
+	glm::vec3 vTargetPin;
 public:
 	Camera();
 	~Camera();
 public:
-	//Input 함수
-
+	glm::vec3 ReturnPos() { return vPos; }
+	glm::vec3 ReturnTarget() { return vTarget; }
+	glm::vec3 ReturnUp() { return vUp; }
 public:
-	//Return 함수
-	glm::vec3 ReturnCameraPos() { return vPos; }
-	glm::vec3 ReturnCameraDirection() { return vDirection; }
-	glm::vec3 ReturnCameraUp() { return vUp; }
+	GLvoid InputPos(glm::vec3 pos) { vPos = pos; }
+	GLvoid InputTarget(glm::vec3 target) { vTarget = target; }
+	GLvoid InputDirection(glm::vec3 direction) { vDirection = direction; }
+	GLvoid InputUp(glm::vec3 up) { vUp = up; }
 public:
-	GLvoid Move(GLchar cAxis, GLfloat fSign);
-	GLvoid Rotate(GLchar cAxis, GLfloat fSign);
-
-	GLvoid UpdateDistance();
-	GLfloat LinearFunction(GLfloat fPos, GLfloat fSign);
+	GLvoid Move(GLint iDirection, GLfloat fSpeed);
+	GLvoid Rotate(GLfloat fSign);
+public:
+	GLfloat UpdateDistance();
+	GLfloat LinearFunction(GLfloat attribX);
+	GLfloat NormalFunction(GLfloat attribX);
+public:
+	enum Direction
+	{
+		Forward, Backward, Left, Right
+	};
 };

@@ -13,97 +13,91 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\Shader">
-      <UniqueIdentifier>{2f1d96cc-b01b-472a-bb88-c576979abe7e}</UniqueIdentifier>
+    <Filter Include="glsl">
+      <UniqueIdentifier>{ceebaf28-78e7-4cde-8097-3ccb6ed4fc26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GLSL">
-      <UniqueIdentifier>{0facfcd3-2601-486e-88a2-64c8bdff6bcf}</UniqueIdentifier>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{71808526-2de1-4d7f-a81d-37500f052c0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Camera">
-      <UniqueIdentifier>{320795ad-4f8b-433c-98a4-aa7bd5ec3c5b}</UniqueIdentifier>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{7c491804-54aa-45ae-b331-3834607562be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\obj">
-      <UniqueIdentifier>{cc57b157-ef1d-4227-b5ac-319b71e524d5}</UniqueIdentifier>
+    <Filter Include="Player">
+      <UniqueIdentifier>{af6bdc1c-ade2-48f7-9699-f748030d61ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\player">
-      <UniqueIdentifier>{cc91fe84-5808-45ba-887d-c572d059a133}</UniqueIdentifier>
+    <Filter Include="obj">
+      <UniqueIdentifier>{0292a74e-4715-4a9c-8726-927469fc0dd1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="openGL_FrameWork.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Shader1D.cpp">
-      <Filter>소스 파일\Shader</Filter>
+    <ClCompile Include="pch.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Shader2D.cpp">
-      <Filter>소스 파일\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader3D.cpp">
-      <Filter>소스 파일\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderAdmin.cpp">
-      <Filter>소스 파일\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseShader.cpp">
-      <Filter>소스 파일\Shader</Filter>
+    <ClCompile Include="RunTime_FrameWork.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>소스 파일\Camera</Filter>
+      <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>소스 파일\player</Filter>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader2D.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader3D.cpp">
+      <Filter>Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader1D.h">
-      <Filter>소스 파일\Shader</Filter>
+    <ClInclude Include="openGL_FrameWork.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Shader2D.h">
-      <Filter>소스 파일\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader3D.h">
-      <Filter>소스 파일\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderAdmin.h">
-      <Filter>소스 파일\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseShader.h">
-      <Filter>소스 파일\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="header.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="define.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="RunTime_FrameWork.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>소스 파일\Camera</Filter>
+      <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>소스 파일\player</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader2D.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader3D.h">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fragment_Shader.glsl">
-      <Filter>소스 파일\GLSL</Filter>
-    </None>
-    <None Include="Vertex_Shader.glsl">
-      <Filter>소스 파일\GLSL</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="sphere.txt">
-      <Filter>소스 파일\obj</Filter>
-    </Text>
     <Text Include="cone.txt">
-      <Filter>소스 파일\obj</Filter>
+      <Filter>obj</Filter>
     </Text>
     <Text Include="cube.txt">
-      <Filter>소스 파일\obj</Filter>
+      <Filter>obj</Filter>
     </Text>
+    <Text Include="sphere.txt">
+      <Filter>obj</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vertex_Shader.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Fragment_Shader.glsl">
+      <Filter>glsl</Filter>
+    </None>
   </ItemGroup>
 </Project>

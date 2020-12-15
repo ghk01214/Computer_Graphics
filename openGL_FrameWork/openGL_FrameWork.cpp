@@ -1,17 +1,19 @@
-#include "header.h"
-#include "define.h"
-#include "main.h"
+﻿// openGL_FrameWork.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+//
+
+#include "pch.h"
+#include "openGL_FrameWork.h"
 
 GLvoid main(GLint iArgc, GLchar** cArgv)
 {
-	//������ �����ϱ�
+	//윈도우 생성하기
 	glutInit(&iArgc, cArgv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition(Num::WINDOW_POS, Num::WINDOW_POS);
-	glutInitWindowSize(Num::WINDOW_WIDTH, Num::WINDOW_HEIGHT);
+	glutInitWindowPosition(300, 300);
+	glutInitWindowSize(800, 600);
 	glutCreateWindow("openGL");
 
-	//GLEW �ʱ�ȭ�ϱ�
+	//GLEW 초기화하기
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
@@ -22,5 +24,7 @@ GLvoid main(GLint iArgc, GLchar** cArgv)
 		std::cout << "GLEW Initialized" << std::endl;
 
 	CallBackFunc();
+
+	frame.MakeShader();
 	glutMainLoop();
 }
